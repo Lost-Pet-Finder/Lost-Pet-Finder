@@ -1,0 +1,18 @@
+{
+  "name": "pet_backend",
+  "version": "1.0.0",
+  "description": "nodejs backend for lost pet finder app",
+  "main": "src/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "dotenv": "^8.2.0",
+    "eslint": "^7.11.0",
+    "express": "^4.17.1",
+    "mysql": "^2.18.1"
+  }
+}
