@@ -29,7 +29,9 @@ const App: () => React$Node = () => {
     <>
       <StatusBar barStyle="dark-content" />
       <SafeAreaView>
-        <Text style={styles.sectionTitle}>Lost Pet Finder</Text>
+        <Text style={styles.sectionTitle}>
+          Lost Pet Finder sdfsdfsdf sdfsd sdfsdf f asdasd sdfasdf
+        </Text>
       </SafeAreaView>
     </>
   );
