@@ -39,8 +39,7 @@ const LoginScreen = ({navigation}) => {
           onChangeText={(password) => setPassword(password)}
         />
       </View>
-      <TouchableOpacity style={styles.loginButton}
-      onPress={pressHandler} >
+      <TouchableOpacity style={styles.loginButton} onPress={pressHandler} >
         <Text style={styles.loginText}>Login</Text>
 
       </TouchableOpacity>

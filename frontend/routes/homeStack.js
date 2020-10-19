@@ -6,11 +6,20 @@ import Login from '../screens/LoginScreen';
 import FindPet from '../screens/FindScreen';
 
 const screens = {
+
     FirstPage: {
-        screen: Login
+        screen: Login,
+        navigationOptions: {
+            title: 'FirstPage',
+            headerShown: false
+        },
     },
     FindPetPage: {
-        screen: FindPet
+        screen: FindPet,
+        navigationOptions: {
+            title: 'FindPage',
+            headerShown: false
+        },
     }
 }
 
