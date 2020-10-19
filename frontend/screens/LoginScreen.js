@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import React, {useState} from 'react';
 import {
   StyleSheet,
@@ -6,9 +7,13 @@ import {
   Text,
   Image,
   TouchableOpacity,
+  Button
 } from 'react-native';
 
-const LoginScreen = () => {
+const LoginScreen = ({navigation}) => {
+  const pressHandler = () => {
+    navigation.navigate('FindPetPage')
+  }
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   return (
@@ -34,8 +39,10 @@ const LoginScreen = () => {
           onChangeText={(password) => setPassword(password)}
         />
       </View>
-      <TouchableOpacity style={styles.loginButton}>
+      <TouchableOpacity style={styles.loginButton}
+      onPress={pressHandler} >
         <Text style={styles.loginText}>Login</Text>
+
       </TouchableOpacity>
       <TouchableOpacity>
         <Text style={styles.signup}>Don't have an account? Sign up</Text>
@@ -99,3 +106,4 @@ const styles = StyleSheet.create({
     resizeMode: 'stretch',
   },
 });
+
