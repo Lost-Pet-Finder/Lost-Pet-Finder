@@ -1,32 +1,94 @@
-import React from 'react';
+import React,{Component} from 'react';
 import 'react-native-gesture-handler';
-import Login from './LoginScreen';
-import{StyleSheet, View, Text, Button, TouchableOpacity} from 'react-native';
+
+import{StyleSheet, View, Text, Image, Button, TouchableOpacity} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
+import ImagePicker from 'react-native-image-picker';
+import CameraRollPicker from 'react-native-camera-roll-picker';
+import { withNavigation } from 'react-navigation';
 
-export default function FindScreen({navigation}){
+const options={
+    takePhotoButtonTitle:'Take Photos',
+    chooseFromLibraryButtonTitle:'Photo Gallery',
+}
 
-    const pressHandler=()=>{
-        navigation.goBack();
+class FindScreen extends Component{
+ 
+    // pressHandler=()=>{
+    //     navigation.goBack();
+    // }
+
+    constructor(props){
+        super(props);
+        this.state={
+            avatarSource: null
+        }
     }
 
-    return (
-        <View style={styles.container}>
-            <Text>This is Find Screen</Text>
-            <TouchableOpacity style={styles.GoBackButton}
-            onPress={pressHandler} >
-                <Text style={styles.loginText}>Go Back To Main Page</Text>
+    getSelectedImages(image){
+        if(image[0]){
+            alert(image[0].uri);
+        }
+    }
 
-            </TouchableOpacity>
-        </View>
-    )
-};
+
+    myfun=()=>{
+        ImagePicker.showImagePicker(options, (response) => {
+            //console.log('Response = ', response);
+          
+            if (response.didCancel) {
+              console.log('User cancelled image picker');
+            } else if (response.error) {
+              console.log('ImagePicker Error: ', response.error);
+            } else {
+              const source = { uri: response.uri };
+          
+              // You can also display the image using data:
+              //const source = { uri: 'data:image/jpeg;base64,' + response.data };
+          
+              this.setState({
+                avatarSource: source,
+              });
+            }
+          });
+    }
+
+    render(){
+        return (
+            <View style={styles.container}>
+                {/* <CameraRollPicker callBack={this.getSelectedImages}/> */}
+                <Image source={this.state.avatarSource}
+                 style={{width:200, height:200, padding:10}}/>
+
+                <TouchableOpacity style={styles.SearchButton} onPress={this.myfun} >
+                    <Text style={styles.loginText}>I lost my pet</Text>
+                </TouchableOpacity>
+
+                {/* <TouchableOpacity style={styles.SearchButton} onPress={this.props.goBack()} >
+                    <Text style={styles.loginText}>I lost my pet</Text>
+
+                </TouchableOpacity>
+    
+                <TouchableOpacity style={styles.ReportButton} onPress={pressHandler} >
+                    <Text style={styles.loginText}>I found a pet</Text>
+    
+                </TouchableOpacity> */}
+                
+            </View>
+        )
+    }
+
+    
+}
+
+export default withNavigation(FindScreen);
 
 const styles = StyleSheet.create({
+
     container: {
       flex: 1,
       backgroundColor: '#BBDEFB',
-      alignItems: 'center',
+      alignItems: 'stretch',
       justifyContent: 'center',
     },
     inputText: {
@@ -71,8 +133,10 @@ const styles = StyleSheet.create({
       height: 120,
       resizeMode: 'stretch',
     },
-    GoBackButton: {
-        width: '60%',
+
+    SearchButton: {
+        alignSelf: 'center',
+        padding: 12,
         backgroundColor: '#2196F3',
         borderRadius: 25,
         height: 45,
@@ -81,6 +145,19 @@ const styles = StyleSheet.create({
         marginTop: 20,
         marginBottom: 10,
       },
+    
+    ReportButton: {
+        alignSelf: 'center',
+        padding: 12,
+        backgroundColor: '#2196F3',
+        borderRadius: 25,
+        height: 45,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 20,
+        marginBottom: 10,
+      },
+    
   });
   
   
