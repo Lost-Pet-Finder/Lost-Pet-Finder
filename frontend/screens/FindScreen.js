@@ -51,17 +51,21 @@ class FindScreen extends React.Component{
         return (
             <View style={styles.container}>
                 {/* <CameraRollPicker callBack={this.getSelectedImages}/> */}
-                <Image source={this.state.avatarSource}
-                 style={styles.photoGallery}/>
+                <View style={styles.upperbox}>
+                  <Image source={this.state.avatarSource} style={styles.photolist}/>
+                </View>
+              
 
-                <TouchableOpacity style={styles.SearchButton} onPress={()=>this.getPhoto()} >
-                    <Text style={styles.loginText}>Upload Photos</Text>
-                </TouchableOpacity>
+                <View style={styles.lowerbox}>
+                    <TouchableOpacity style={styles.SearchButton} onPress={() => this.getPhoto()} >
+                      <Text style={styles.textStyle}>Upload Photos</Text>
+                    </TouchableOpacity>
 
-                 <TouchableOpacity style={styles.SearchButton} onPress={() => this.props.navigation.goBack()} >
-                    <Text style={styles.loginText}>Go Back</Text>
-
-                </TouchableOpacity>
+                    <TouchableOpacity style={styles.SearchButton} onPress={() => this.props.navigation.goBack()} >
+                      <Text style={styles.textStyle}>Go Back</Text>
+                    </TouchableOpacity>
+                </View>
+                
     
                 {/*<TouchableOpacity style={styles.ReportButton} onPress={pressHandler} >
                     <Text style={styles.loginText}>I found a pet</Text>
@@ -81,15 +85,59 @@ const styles = StyleSheet.create({
 
     container: {
       flex: 1,
+      flexDirection: 'column',
       backgroundColor: '#BBDEFB',
       alignItems: 'stretch',
       justifyContent: 'center',
     },
-    photoGallery: {
+    upperbox:{
+      flex:8,
+      flexWrap:'wrap',
+      backgroundColor:'#BBDEFB',
+      alignItems:'stretch',
+      justifyContent:'center',
+    },
+    lowerbox:{
+      flex:2,
+      flexDirection:'row',
+      backgroundColor:'#BBDEFB',
+      alignItems:'stretch',
+      justifyContent:'center',
+    },
+    photolist: {
         width:200,
         height:200,
         padding:10,
     }, 
+    SearchButton: {
+      flex:1,
+      alignSelf: 'center',
+      padding: 12,
+      backgroundColor: '#2196F3',
+      borderRadius: 25,
+      height: 45,
+      justifyContent: 'center',
+      marginHorizontal:20,
+      marginVertical:80,
+    },
+    ReportButton: {
+      flex:1,
+      alignSelf: 'center',
+      padding: 12,
+      backgroundColor: '#2196F3',
+      borderRadius: 25,
+      height: 45,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginTop: 20,
+      marginBottom: 10,
+    },
+    textStyle:{
+      textAlign:'center',
+      textAlignVertical:'center',
+      color: '#fff',
+      fontSize: 16,
+    },
     inputText: {
       height: 50,
       color: '#fff',
@@ -103,10 +151,6 @@ const styles = StyleSheet.create({
       marginBottom: 20,
       justifyContent: 'center',
       padding: 20,
-    },
-    loginText: {
-      color: '#fff',
-      fontSize: 16,
     },
     forgotPassword: {
       color: '#fff',
@@ -132,30 +176,6 @@ const styles = StyleSheet.create({
       height: 120,
       resizeMode: 'stretch',
     },
-
-    SearchButton: {
-        alignSelf: 'center',
-        padding: 12,
-        backgroundColor: '#2196F3',
-        borderRadius: 25,
-        height: 45,
-        justifyContent: 'center',
-        marginHorizontal:20,
-        marginVertical:80,
-      },
-    
-    ReportButton: {
-        alignSelf: 'center',
-        padding: 12,
-        backgroundColor: '#2196F3',
-        borderRadius: 25,
-        height: 45,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginTop: 20,
-        marginBottom: 10,
-      },
-    
   });
   
   
