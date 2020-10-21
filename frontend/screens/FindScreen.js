@@ -7,42 +7,35 @@ import ImagePicker from 'react-native-image-picker';
 import CameraRollPicker from 'react-native-camera-roll-picker';
 import { withNavigation } from 'react-navigation';
 
-const options={
+const options ={
     takePhotoButtonTitle:'Take Photos',
     chooseFromLibraryButtonTitle:'Photo Gallery',
 }
 
-class FindScreen extends Component{
- 
-    // pressHandler=()=>{
-    //     navigation.goBack();
-    // }
-
+class FindScreen extends React.Component{
     constructor(props){
         super(props);
-        this.state={
-            avatarSource: null
-        }
+        this.state={avatarSource: null};
     }
+    
+    // getSelectedImages(image){
+    //     if(image[0]){
+    //         alert(image[0].uri);
+    //     }
+    // }
 
-    getSelectedImages(image){
-        if(image[0]){
-            alert(image[0].uri);
-        }
-    }
-
-
-    myfun=()=>{
+    //get photo from photo gallery
+    getPhoto(){
         ImagePicker.showImagePicker(options, (response) => {
+            //don't need to print out the response for now
             //console.log('Response = ', response);
-          
             if (response.didCancel) {
               console.log('User cancelled image picker');
             } else if (response.error) {
               console.log('ImagePicker Error: ', response.error);
             } else {
               const source = { uri: response.uri };
-          
+        
               // You can also display the image using data:
               //const source = { uri: 'data:image/jpeg;base64,' + response.data };
           
@@ -54,22 +47,23 @@ class FindScreen extends Component{
     }
 
     render(){
+        console.log(JSON.stringify(this.props));
         return (
             <View style={styles.container}>
                 {/* <CameraRollPicker callBack={this.getSelectedImages}/> */}
                 <Image source={this.state.avatarSource}
-                 style={{width:200, height:200, padding:10}}/>
+                 style={styles.photoGallery}/>
 
-                <TouchableOpacity style={styles.SearchButton} onPress={this.myfun} >
-                    <Text style={styles.loginText}>I lost my pet</Text>
+                <TouchableOpacity style={styles.SearchButton} onPress={()=>this.getPhoto()} >
+                    <Text style={styles.loginText}>Upload Photos</Text>
                 </TouchableOpacity>
 
-                {/* <TouchableOpacity style={styles.SearchButton} onPress={this.props.goBack()} >
-                    <Text style={styles.loginText}>I lost my pet</Text>
+                 <TouchableOpacity style={styles.SearchButton} onPress={() => this.props.navigation.goBack()} >
+                    <Text style={styles.loginText}>Go Back</Text>
 
                 </TouchableOpacity>
     
-                <TouchableOpacity style={styles.ReportButton} onPress={pressHandler} >
+                {/*<TouchableOpacity style={styles.ReportButton} onPress={pressHandler} >
                     <Text style={styles.loginText}>I found a pet</Text>
     
                 </TouchableOpacity> */}
@@ -81,7 +75,7 @@ class FindScreen extends Component{
     
 }
 
-export default withNavigation(FindScreen);
+export default FindScreen;
 
 const styles = StyleSheet.create({
 
@@ -91,6 +85,11 @@ const styles = StyleSheet.create({
       alignItems: 'stretch',
       justifyContent: 'center',
     },
+    photoGallery: {
+        width:200,
+        height:200,
+        padding:10,
+    }, 
     inputText: {
       height: 50,
       color: '#fff',
@@ -140,10 +139,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#2196F3',
         borderRadius: 25,
         height: 45,
-        alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 20,
-        marginBottom: 10,
+        marginHorizontal:20,
+        marginVertical:80,
       },
     
     ReportButton: {

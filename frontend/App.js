@@ -12,9 +12,12 @@ import CameraRollPicker from 'react-native-camera-roll-picker';
 import {DrawerNavigator,TabNavigator,StackNavigator} from 'react-navigation';
 import Navigator from './routes/homeStack';
 
-export default function App(){
+export default class App extends React.Component{
   
-  return <Navigator/>;
+  render(){
+    return <Navigator />;
+  }
   
 }
+
 const styles = StyleSheet.create({});
