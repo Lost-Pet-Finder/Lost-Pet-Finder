@@ -1,12 +1,20 @@
+/* eslint-disable */
+
+// Imports
+// -- Express
 const express = require('express');
 
+// -- Environment Variables
 const dotenv = require('dotenv');
 dotenv.config();
 
-const sql = require('./sql/connection');
+// Core
+const awsRekognition = require('./aws/rekognitionClient');
+// const sql = require('./sql/connection');
+const awsRouter = require('./routers/awsRouter');
 
+// Objects
 const PORT = 6464;
-
 const app = express();
 app.use(express.json());
 
@@ -17,6 +25,8 @@ app.listen(PORT, () => {
 app.get('/', (req, res) => {
     res.status(200).send('This is the Lost Pet Finder API');
 });
+
+app.use('/aws', awsRouter);
 
 // Shutdown Protocol
 process.on("SIGTERM", shutdown);
