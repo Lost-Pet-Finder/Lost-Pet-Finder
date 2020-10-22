@@ -10,7 +10,7 @@ dotenv.config();
 
 // Core
 const awsRekognition = require('./aws/rekognitionClient');
-// const sql = require('./sql/connection');
+const sql = require('./sql/connection');
 const awsRouter = require('./routers/awsRouter');
 
 // Objects
