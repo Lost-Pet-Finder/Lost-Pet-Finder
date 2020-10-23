@@ -1,48 +1,41 @@
 const awsFunctions = require('../util/awsFunctions');
+const sqlPool = require('../sql/connection');
 
 async function searchLostPets(req, res) {
     var userid = req.body.userid;
 
-    
     //SQL: search for existing entry in found pets matching user_id
-    var entry = sqlDummy();
-    var results = [];
-    if( entry == null) {
-        //SQL: query the most recent lost pets (no further filtering)
-        results = sqlDummy();
-    }
-    else {
-        //SQL: query lost pets with results closest to entry's fields (complex logic later)
-        results = sqlDummy();
+    try {
+        const rows = await sqlPool.query('CALL get_all_lost_pets()', []);
+        const dataPackets = rows[0];
+
+        res.status(200).send(dataPackets);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Request failed');
     }
 
-    console.log(results);
-    res.send(results);
+    // // *** More advanced searching later
+    // var entry = sqlDummy();
+    // var results = [];
+    // if( entry == null) {
+    //     //SQL: query the most recent lost pets (no further filtering)
+    //     results = sqlDummy();
+    // }
+    // else {
+    //     //SQL: query lost pets with results closest to entry's fields (complex logic later)
+    //     results = sqlDummy();
+    // }
+    // console.log(results);
+    // res.send(results);
 }
 
 async function postLostPets(req, res) {
-    /**
-     * For NATHAN:
-     * instead of aggregateData function, just do this at the beginning of this function:
-     *  filename = req.body.filename;
-        location  = req.body.location;
-        date = req.body.date;
-        userid = req.body.userid;
-
-        then call tags = awsFunctions.getAWSTags(data)
-        and then leave one line thats like *store in SQL HERE*
-     */
-    var filename = "";
-    var location = [0,0];
-    var date = "";
-    var userid = 0;
-    var tags = [];
-    var bucketName = "";
-
-    filename = req.body.filename;
-    location  = req.body.location;
-    date = req.body.date;
-    userid = req.body.userid;
+    const userid = req.body.userid;
+    const filename = req.body.filename;
+    const location_x  = req.body.location_x;
+    const location_y  = req.body.location_y;
+    const date = req.body.date;
 
     var data = {
             "bucketName": req.body.bucketName,
@@ -50,8 +43,16 @@ async function postLostPets(req, res) {
     };
 
     console.log(data);
-    // awsFunctions.getAWSTags(data).then((value) => tags = value);
+    try {
+        const tags = await awsFunctions.getAWSTags(data);
 
-    //*Store in SQL here*
-    res.send(200);
+        const tagsString = JSON.stringify(tags);
+
+        const response = await sqlPool.query('CALL create_lost_pet_report(?, ?, POINT(?,?), ?, ?)', [userid, filename, location_x, location_y, date, tagsString]);
+
+        res.status(200).send(response[0]);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Request failed');
+    }
 }
