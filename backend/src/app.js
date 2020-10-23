@@ -74,7 +74,7 @@ function aggregateData(req) {
 }
 
 
-app.post('/post-lost-pet', (req, res) => {
+app.post('/postLostPet', (req, res) => {
     var dbEntry = aggregateData(req);
     
     //SQL: create entry inside the lost pet table, using aggregate data
@@ -83,7 +83,7 @@ app.post('/post-lost-pet', (req, res) => {
     res.json(200);
 });
 
-app.post('/post-found-pet', (req, res) => {
+app.post('/postFoundPet', (req, res) => {
     var dbEntry = aggregateData(req);
     
     //SQL: create entry in the found pet table, using aggregate data
@@ -92,7 +92,7 @@ app.post('/post-found-pet', (req, res) => {
     res.json(200);
 });
 
-app.get('/search-lost-pets', (req, res) => {
+app.get('/searchLostPets', (req, res) => {
     var userid = req.body.userid;
     
     //SQL: search for existing entry in found pets matching user_id
@@ -111,7 +111,7 @@ app.get('/search-lost-pets', (req, res) => {
     res.send(results);
 });
 
-app.get('/search-found-pets', (req, res) => {
+app.get('/searchFoundPets', (req, res) => {
     var userid = req.body.userid;
     
     //SQL: search for existing entry in lost pets matching user_id
