@@ -74,63 +74,6 @@ function aggregateData(req) {
 }
 
 
-app.post('/postLostPet', (req, res) => {
-    var dbEntry = aggregateData(req);
-    
-    //SQL: create entry inside the lost pet table, using aggregate data
-    console.log(dbEntry);
-
-    res.json(200);
-});
-
-app.post('/postFoundPet', (req, res) => {
-    var dbEntry = aggregateData(req);
-    
-    //SQL: create entry in the found pet table, using aggregate data
-    console.log(dbEntry);
-
-    res.json(200);
-});
-
-app.get('/searchLostPets', (req, res) => {
-    var userid = req.body.userid;
-    
-    //SQL: search for existing entry in found pets matching user_id
-    var entry = sqlDummy();
-    var results = [];
-    if( entry == null) {
-        //SQL: query the most recent lost pets (no further filtering)
-        results = sqlDummy();
-    }
-    else {
-        //SQL: query lost pets with results closest to entry's fields (complex logic later)
-        results = sqlDummy();
-    }
-
-    console.log(results);
-    res.send(results);
-});
-
-app.get('/searchFoundPets', (req, res) => {
-    var userid = req.body.userid;
-    
-    //SQL: search for existing entry in lost pets matching user_id
-    var entry = sqlDummy();
-    var results = [];
-    if( entry == null) {
-        //SQL: query the most recent found pets (no further filtering)
-        results = sqlDummy();
-    }
-    else {
-        //SQL: query found pets with results closest to entry's fields (complex logic later)
-        results = sqlDummy();
-    }
-
-    console.log(results);
-    res.send(results);
-});
-
-
 // app.get('/createpoststable', (req, res) => {
 //     let request = 'CREATE TABLE posts(id int AUTO_INCREMENT, title VARCHAR(255), body VARCHAR(255), PRIMARY KEY (id))';
 //     sql.query(request, (err, result) => {
