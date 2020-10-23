@@ -23,11 +23,11 @@ const PORT = 6464;
 const app = express();
 app.use(express.json());
 
-// app.listen(PORT, () => {
-//     console.log(`[Server] Listening on PORT ${PORT}`);
-// });
+app.listen(PORT, () => {
+    console.log(`[Server] Listening on PORT ${PORT}`);
+});
 
-app.listen(3000);
+// app.listen(3000);
 
 //ROUTES
 app.get('/', (req, res) => {
