@@ -41,7 +41,7 @@ async function postLostPets(req, res) {
     };
 
     console.log(data);
-    // awsFunctions.getAWSTags(data).then((value) => tags = value);
+    // tags = await awsFunctions.getAWSTags(data);
 
     //*Store in SQL here*
     res.send(200);
@@ -89,7 +89,7 @@ async function postFoundPets(req, res) {
     };
 
     console.log(data);
-    // awsFunctions.getAWSTags(data).then((value) => tags = value);
+    // tags = await awsFunctions.getAWSTags(data);
 
     //*Store in SQL here*
     res.send(200);
