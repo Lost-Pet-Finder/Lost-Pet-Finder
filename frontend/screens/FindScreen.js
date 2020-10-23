@@ -61,7 +61,7 @@ class FindScreen extends React.Component{
                       <Text style={styles.textStyle}>Upload Photos</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.SearchButton} onPress={() => this.props.navigation.goBack()} >
+                    <TouchableOpacity style={styles.SearchButton} onPress={() => this.props.navigation.navigate('BrowsePetPage')} >
                       <Text style={styles.textStyle}>Go Back</Text>
                     </TouchableOpacity>
                 </View>

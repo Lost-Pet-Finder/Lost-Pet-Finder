@@ -4,6 +4,7 @@ import {createAppContainer} from 'react-navigation';
 
 import Login from '../screens/LoginScreen';
 import Find from '../screens/FindScreen';
+import Browse from '../screens/BrowseScreen';
 
 const screens = {
     FirstPage: {
@@ -20,8 +21,13 @@ const screens = {
             headerShown: false
         },
     },
-    
-    
+    BrowsePetPage: {
+        screen: Browse,
+        navigationOptions: {
+            title: 'BrowsePage',
+            headerShown: false
+        }
+    },
 }
 
 //create new stack navigator, pass the screens you want to navigate in the app
