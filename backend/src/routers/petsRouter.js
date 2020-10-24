@@ -1,6 +1,6 @@
 // Imports
 const express = require('express');
-const petsController = require('../controllers/petController');
+const petsController = require('../controllers/petsController');
 
 // Objects
 const router = express.Router();
