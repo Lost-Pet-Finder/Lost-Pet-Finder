@@ -6,6 +6,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import ImagePicker from 'react-native-image-picker';
 import CameraRollPicker from 'react-native-camera-roll-picker';
 import { withNavigation } from 'react-navigation';
+import {RNS3} from 'react-native-aws3'
 
 const options ={
     takePhotoButtonTitle:'Take Photos',
@@ -28,7 +29,7 @@ class FindScreen extends React.Component{
     getPhoto(){
         ImagePicker.showImagePicker(options, (response) => {
             //don't need to print out the response for now
-            //console.log('Response = ', response);
+            console.log('Response = ', response);
             if (response.didCancel) {
               console.log('User cancelled image picker');
             } else if (response.error) {
@@ -38,7 +39,27 @@ class FindScreen extends React.Component{
         
               // You can also display the image using data:
               //const source = { uri: 'data:image/jpeg;base64,' + response.data };
-          
+              
+              // send images to S3
+              const file = {
+                uri: response.uri,
+                name: response.fileName,
+                type: 'image/png'
+              }
+              console.log(file);
+              const config = {
+                keyPrefix : 's3/',
+                bucket: 'lostpetpictures',
+                region: 'us-west-2',
+                accessKey: 'AKIAJ5OYQDSWAJXXAVFQ',
+                secretKey: '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',
+                successActionStatus:201
+              }
+              RNS3.put(file, config)
+              .then((response)=>{
+                console.log(response);
+              })
+              // post a post
               this.setState({
                 avatarSource: source,
               });
