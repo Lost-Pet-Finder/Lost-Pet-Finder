@@ -13,18 +13,30 @@ export default class BrowseScreen extends React.Component {
   }
 
   async getAllPosts() {
+    // {
+    // "message": [{http/sdfsdf} , "http/sdfsdfdsf", "http/sdfsdfdsf"],
+    //  "status":"success"
+    //}
     const url = 'https://dog.ceo/api/breeds/image/random/3';
     const breed = 'bulldog';
+
     const request = {
       // currently a GET request
-      method: 'GET',
+      method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      // body: JSON.stringify(breed),
+      body: JSON.stringify({
+        userid : "sdfsdf",
+        bucket : "lostpet",
+        date : 10,
+        filename: "sdfsdf",
+        location : "sdfsdf",
+      }),
     };
-    const response = await fetch(url, request);
+
+    const response = await fetch(url);
     const data = await response.json();
     this.setState({petArray: data.message, loading: false});
   }
