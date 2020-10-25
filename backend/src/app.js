@@ -37,7 +37,7 @@ app.get('/', (req, res) => {
 
 app.use('/aws', awsRouter);
 app.use('/pets', petsRouter);
-
+app.use('/user', userRouter);
 
 // Shutdown Protocol
 process.on("SIGTERM", shutdown);
