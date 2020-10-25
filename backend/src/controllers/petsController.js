@@ -2,16 +2,11 @@ const awsFunctions = require('../util/awsFunctions');
 const sqlPool = require('../sql/connection');
 
 async function searchLostPets(req, res) {
-    var user_id = req.body.userid;
-    
-    //SQL: search for existing entry in found pets matching user_id
     try {
+        const rows = await sqlPool.query('CALL get_all_lost_pets()', []);
+        const dataPackets = rows[0];
 
-        sqlPool.query("INSERT INTO usr (user_id) VALUES ('?')",[user_id]);
-        console.log("correct message installed");
-        //const dataPackets = rows[0];
-
-        //res.status(200).send(dataPackets);
+        res.status(200).send(dataPackets);
     } catch (err) {
         console.error(err);
         res.status(500).send('Request failed');
@@ -96,8 +91,7 @@ async function postFoundPets(req, res) {
     const location_x  = req.body.location_x;
     const location_y  = req.body.location_y;
     const date = req.body.date;
-
-    console.log(filename);
+     
     var data = {
             "bucketName": req.body.bucketName,
             "fileName": req.body.filename

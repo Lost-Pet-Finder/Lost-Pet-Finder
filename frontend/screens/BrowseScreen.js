@@ -8,44 +8,45 @@ export default class BrowseScreen extends React.Component {
     this.state = {loading: true, petArray: null};
   }
 
-  componentDidMount() {
-    this.timer = setInterval(() => this.getAllPosts(), 3000);
-  }
+  // componentDidMount() {
+  //   this.timer = setInterval(() => this.getAllPosts(), 3000);
+  // }
 
-  async getAllPosts() {
+  async componentDidMount() {
     // {
     // "message": [{http/sdfsdf} , "http/sdfsdfdsf", "http/sdfsdfdsf"],
     //  "status":"success"
     //}
-    const url = 'https://dog.ceo/api/breeds/image/random/3';
-    const breed = 'bulldog';
+    const url = 'http://10.0.2.2:6464/pets/searchLostPets';
+    // const breed = 'bulldog';
 
     const request = {
-      // currently a GET request
-      method: 'POST',
+      method: 'GET',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        userid : "sdfsdf",
-        bucket : "lostpet",
-        date : 10,
-        filename: "sdfsdf",
-        location : "sdfsdf",
-      }),
+      // body: JSON.stringify({
+      //   userid : "sdfsdf",
+      //   bucket : "lostpet",
+      //   date : 10,
+      //   filename: "sdfsdf",
+      //   location : "sdfsdf",
+      // }),
     };
 
-    const response = await fetch(url);
+    const response = await fetch(url, request);
+    console.log(response.status);
     const data = await response.json();
-    this.setState({petArray: data.message, loading: false});
+    console.log(data);
+    this.setState({petArray: data, loading: false});
   }
 
   render() {
     if (this.state.loading) {
       return (
         <View style={styles.container}>
-          <Text>loading.....</Text>
+          <Text>Loading...</Text>
         </View>
       );
     }
@@ -60,9 +61,16 @@ export default class BrowseScreen extends React.Component {
 
     return (
       <View style={styles.container}>
-        {/* <Text>`${this.state.petArray}`</Text> */}
         {this.state.petArray.map((pet) => {
-          return <Image source={{uri: `${pet}`}} style={styles.image}></Image>;
+          // return <Image source={{uri: `${pet}`}} style={styles.image}></Image>;
+          // https://lostpetpictures.s3-us-west-2.amazonaws.com/s3/user1_lost.png
+          const something = [
+            <Text style = {styles.headerText}>basic info:</Text>,
+            <Text style = {styles.textStyle}>{`date reported: ${pet.report_date}`}</Text>,
+            <Text style = {styles.textStyle}>{`location reported: (${pet.location_x},${pet.location_y})`}</Text>,
+            <Image source={{uri:`https://lostpetpictures.s3-us-west-2.amazonaws.com/${pet.file_name}`}} style = {styles.image}></Image>,            
+          ]
+          return something
         })}
       </View>
     );
@@ -90,11 +98,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#BBDEFB',
     alignItems: 'stretch',
     justifyContent: 'center',
-  },
-  photolist: {
-    width: 200,
-    height: 200,
-    padding: 10,
   },
   SearchButton: {
     flex: 1,
@@ -124,6 +127,14 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center',
     color: '#fff',
     fontSize: 16,
+    padding: 2,
+  },
+  headerText: {
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    color: '#fff',
+    fontSize: 20,
+    padding: 2,
   },
   inputText: {
     height: 50,
@@ -158,9 +169,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   image: {
-    marginBottom: 40,
-    width: 160,
-    height: 160,
-    resizeMode: 'stretch',
+    marginBottom: 20,
+    width: 140,
+    height: 140,
   },
 });

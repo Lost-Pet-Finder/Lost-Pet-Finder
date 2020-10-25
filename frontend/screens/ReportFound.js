@@ -36,12 +36,12 @@ class ReportFoundScreen extends React.Component{
     //submit the report
     submit(){
       const url = 'http://10.0.2.2:6464/pets/postFoundPets';
-      var str =  `user${this.state.user_id}_${this.status}.jpg`;
-      this.setState({show:false});
+      this.setState({show:false,
+                    });
 
       let body = JSON.stringify(
-          {userid:this.state.user_id,
-            filename:str,
+          { userid:this.state.user_id,
+            filename:this.state.filename,
             location_x:this.state.loc_x,
             location_y:this.state.loc_y,
             date:this.state.date,
@@ -64,9 +64,11 @@ class ReportFoundScreen extends React.Component{
 
     //get photo from photo gallery
     getPhoto(){
+        var photo_str =  `user${this.state.user_id}_${this.status}.png`;
+        this.setState({filename:photo_str});
         ImagePicker.showImagePicker(options, (response) => {
             //don't need to print out the response for now
-            console.log('Response = ', response);
+            //console.log('Response = ', response);
             if (response.didCancel) {
               console.log('User cancelled image picker');
             } else if (response.error) {
@@ -76,16 +78,15 @@ class ReportFoundScreen extends React.Component{
         
               // You can also display the image using data:
               //const source = { uri: 'data:image/jpeg;base64,' + response.data };
-              
+            
               // send images to S3
               const file = {
                 uri: response.uri,
-                name: response.fileName,
+                name: this.state.filename,
                 type: 'image/png'
               }
-              console.log(file);
+             //console.log(this.state.filename);
               const config = {
-                keyPrefix : 's3/',
                 bucket: 'lostpetpictures',
                 region: 'us-west-2',
                 accessKey: 'AKIAJ5OYQDSWAJXXAVFQ',
@@ -94,9 +95,11 @@ class ReportFoundScreen extends React.Component{
               }
               RNS3.put(file, config)
               .then((response)=>{
-                console.log(response);
+                //console.log(response);
+
               })
               // post a post
+
               this.setState({
                 avatarSource: source,
               });
@@ -111,22 +114,25 @@ class ReportFoundScreen extends React.Component{
             <View style={styles.container}>
                 {/* <CameraRollPicker callBack={this.getSelectedImages}/> */}
                 <View style={styles.upperbox}>
-                  <Image source={this.state.avatarSource} style={styles.photolist}/>
+                  
                 </View>
               
 
                 <View style={styles.lowerbox}>
-                    <TouchableOpacity style={styles.SearchButton} onPress={() => this.getPhoto()} >
+                    {/* <TouchableOpacity style={styles.SearchButton} onPress={() => this.getPhoto()} >
                       <Text style={styles.textStyle}>Upload Photos</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                     <TouchableOpacity style={styles.SearchButton} onPress={()=>
                     this.setState({
                         show:true,
                         user_id:this.props.navigation.state.params.user_id,
-                    })}>
-                      <Modal transparent={true} visible={this.state.show}>
+                        })}>
+                      <Modal style={{flex:1}} transparent={true} visible={this.state.show} flexDirection='column'>
                         <View style={{backgroundColor:"#000000aa", flex:1}}>
                           <View style={{backgroundColor:"#ffffff", margin:50, padding:40, borderRadius:10}}>
+                            
+                            <Image source={this.state.avatarSource} style={styles.photolist}/>
+                          
                             <TextInput 
                             style={{fontSize:30}} 
                             placeholder="Stree address" 
@@ -148,18 +154,25 @@ class ReportFoundScreen extends React.Component{
                             value={this.state.date}
                             ></TextInput>
 
+                            <TouchableOpacity style={styles.SearchButton} onPress={() => this.getPhoto()} >
+                                <Text style={styles.textStyle}>Upload Photos</Text>
+                            </TouchableOpacity>
+
                             <TouchableOpacity style={styles.SearchButton} onPress={()=>this.submit()}>
                               <Text style={styles.textStyle}>Submit</Text>
                             </TouchableOpacity>
                           </View>
                         </View>
                       </Modal>
-                      <Text style={styles.textStyle}>Edit Report</Text>
+                      <Text style={styles.textStyle}>Report Found</Text>
                     </TouchableOpacity>
                     
+                    {/* <TouchableOpacity style={styles.SearchButton} onPress={() => this.getPhoto()} >
+                      <Text style={styles.textStyle}>Upload Photos</Text>
+                    </TouchableOpacity> */}
 
-                    <TouchableOpacity style={styles.SearchButton} onPress={() => this.props.navigation.navigate('BrowsePetPage')} >
-                      <Text style={styles.textStyle}>Go Back</Text>
+                    <TouchableOpacity style={styles.SearchButton} onPress={() => this.props.navigation.navigate('BrowsePetPage', {user_type : "finder"})} >
+                      <Text style={styles.textStyle}>Browse Posts</Text>
                     </TouchableOpacity>
                 </View>
                 
@@ -202,13 +215,15 @@ const styles = StyleSheet.create({
       justifyContent:'center',
     },
     photolist: {
+        flex:1,
+        alignItems:'stretch',
+        justifyContent:'center',
         width:200,
         height:200,
         padding:10,
     }, 
     SearchButton: {
       flex:1,
-      alignSelf: 'center',
       padding: 12,
       backgroundColor: '#2196F3',
       borderRadius: 25,
