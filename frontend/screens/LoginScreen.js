@@ -24,6 +24,16 @@ class LoginScreen extends React.Component{
   //   const [password, setPassword] = useState();
   // }
   
+  parseFinder=()=>{
+    this.props.navigation.navigate('ReportFoundPage',  { 
+      user_id: '1' });
+    
+  }
+
+  parseLoser=()=>{
+    this.props.navigation.navigate('ReportLostPage', {
+      user_id:'2'});
+  }
 
   render(){
     //console.log(JSON.stringify(this.props));
@@ -53,9 +63,15 @@ class LoginScreen extends React.Component{
           />
         </View>
 
-        <TouchableOpacity style={styles.loginButton} onPress={()=>this.props.navigation.navigate('FindPetPage') } >
+        <TouchableOpacity style={styles.loginButton} onPress={()=>this.parseFinder()} >
          
-          <Text style={styles.loginText}>Login</Text>
+          <Text style={styles.loginText}>Sign in as finder</Text>
+  
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.loginButton} onPress={()=>this.parseLoser() } >
+         
+          <Text style={styles.loginText}>Sign in as loser</Text>
   
         </TouchableOpacity>
         <TouchableOpacity>

@@ -13,25 +13,40 @@ const options ={
     chooseFromLibraryButtonTitle:'Photo Gallery',
 }
 
-class FindScreen extends React.Component{
+class ReportFoundScreen extends React.Component{
+
     constructor(props){
         super(props);
+
         this.state={
           avatarSource: null,
           show:false,
+          user_id:null,
           name:null,
+          filename:null,
+          loc_x:null,
+          loc_y:null,
+          date:null,
+          bucket: 'lostpetpictures',
         };
-    }
-    
-    // getSelectedImages(image){
-    //     if(image[0]){
-    //         alert(image[0].uri);
-    //     }
-    // }
 
+        this.status=(this.state.user_id == 1 ? 'found': 'lost');
+    }
+
+    //submit the report
     submit(){
+      const url = 'http://10.0.2.2:6464/pets/postFoundPets';
+      var str =  `user${this.state.user_id}_${this.status}.jpg`;
       this.setState({show:false});
-      const url = 'http://10.0.2.2:8081/pets/searchLostPets';
+
+      let body = JSON.stringify(
+          {userid:this.state.user_id,
+            filename:str,
+            location_x:this.state.loc_x,
+            location_y:this.state.loc_y,
+            date:this.state.date,
+            bucketName: this.state.bucket,   
+           });
 
       return fetch(url, {
         method:'POST',
@@ -39,28 +54,12 @@ class FindScreen extends React.Component{
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(this.state)
+        body: body
         })
         .then((response)=> response.text())
         .then((responseJson)=>{
           return responseJson
         })
-      
-    
-      // const breed = 'bulldog';
-  
-      // const request = {
-      //   // currently a GET request
-      //   method: 'POST',
-      //   headers: {
-          
-      //   },
-      //   body: ,
-      // };
-  
-      // const response = await fetch(url);
-      // const data = await response.json();
-      // this.setState({petArray: data.message, loading: false});
     }
 
     //get photo from photo gallery
@@ -107,6 +106,7 @@ class FindScreen extends React.Component{
 
     render(){
         console.log(JSON.stringify(this.props));
+        
         return (
             <View style={styles.container}>
                 {/* <CameraRollPicker callBack={this.getSelectedImages}/> */}
@@ -119,23 +119,42 @@ class FindScreen extends React.Component{
                     <TouchableOpacity style={styles.SearchButton} onPress={() => this.getPhoto()} >
                       <Text style={styles.textStyle}>Upload Photos</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.SearchButton} onPress={()=>this.setState({show:true})}>
+                    <TouchableOpacity style={styles.SearchButton} onPress={()=>
+                    this.setState({
+                        show:true,
+                        user_id:this.props.navigation.state.params.user_id,
+                    })}>
                       <Modal transparent={true} visible={this.state.show}>
                         <View style={{backgroundColor:"#000000aa", flex:1}}>
                           <View style={{backgroundColor:"#ffffff", margin:50, padding:40, borderRadius:10}}>
                             <TextInput 
                             style={{fontSize:30}} 
-                            placeholder="username" 
-                            onChangeText={(value)=>this.setState({name:value})}
-                            value={this.state.name}
+                            placeholder="Stree address" 
+                            onChangeText={(value)=>this.setState({loc_x:value})}
+                            value={this.state.loc_x}
                             ></TextInput>
+
+                            <TextInput 
+                            style={{fontSize:30}} 
+                            placeholder="City" 
+                            onChangeText={(value)=>this.setState({loc_y:value})}
+                            value={this.state.loc_y}
+                            ></TextInput>
+
+                            <TextInput 
+                            style={{fontSize:30}} 
+                            placeholder="Date" 
+                            onChangeText={(value)=>this.setState({date:value})}
+                            value={this.state.date}
+                            ></TextInput>
+
                             <TouchableOpacity style={styles.SearchButton} onPress={()=>this.submit()}>
-                              <Text style={styles.textStyle}>Submit Data</Text>
+                              <Text style={styles.textStyle}>Submit</Text>
                             </TouchableOpacity>
                           </View>
                         </View>
                       </Modal>
-                      <Text style={styles.textStyle}>test database</Text>
+                      <Text style={styles.textStyle}>Edit Report</Text>
                     </TouchableOpacity>
                     
 
@@ -157,7 +176,7 @@ class FindScreen extends React.Component{
     
 }
 
-export default FindScreen;
+export default ReportFoundScreen;
 
 const styles = StyleSheet.create({
 

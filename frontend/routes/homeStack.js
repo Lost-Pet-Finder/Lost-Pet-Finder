@@ -4,6 +4,8 @@ import {createAppContainer} from 'react-navigation';
 
 import Login from '../screens/LoginScreen';
 import Find from '../screens/FindScreen';
+import RF from '../screens/ReportFound';
+import RL from '../screens/ReportLost';
 import Browse from '../screens/BrowseScreen';
 
 const screens = {
@@ -14,10 +16,24 @@ const screens = {
             headerShown: false
         },
     },
-    FindPetPage: {
+    Find: {
         screen: Find,
         navigationOptions: {
             title: 'FindPage',
+            headerShown: false
+        },
+    },
+    ReportFoundPage: {
+        screen: RF,
+        navigationOptions: {
+            title: 'ReportFoundPage',
+            headerShown: false
+        },
+    },
+    ReportLostPage:{
+        screen: RL,
+        navigationOptions: {
+            title: 'ReportLosePage',
             headerShown: false
         },
     },

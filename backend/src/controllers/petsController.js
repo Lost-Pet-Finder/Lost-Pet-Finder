@@ -2,12 +2,12 @@ const awsFunctions = require('../util/awsFunctions');
 const sqlPool = require('../sql/connection');
 
 async function searchLostPets(req, res) {
-    var userid = req.body.name;
-
+    var user_id = req.body.userid;
+    
     //SQL: search for existing entry in found pets matching user_id
     try {
 
-        sqlPool.query("INSERT INTO usr (user_id) VALUES ('?')",[userid]);
+        sqlPool.query("INSERT INTO usr (user_id) VALUES ('?')",[user_id]);
         console.log("correct message installed");
         //const dataPackets = rows[0];
 
@@ -90,12 +90,14 @@ async function searchFoundPets(req, res) {
 }
 
 async function postFoundPets(req, res) {
+    
     const userid = req.body.userid;
     const filename = req.body.filename;
     const location_x  = req.body.location_x;
     const location_y  = req.body.location_y;
     const date = req.body.date;
 
+    console.log(filename);
     var data = {
             "bucketName": req.body.bucketName,
             "fileName": req.body.filename

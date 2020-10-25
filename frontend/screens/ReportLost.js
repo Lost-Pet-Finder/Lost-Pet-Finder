@@ -13,7 +13,7 @@ const options ={
     chooseFromLibraryButtonTitle:'Photo Gallery',
 }
 
-class FindScreen extends React.Component{
+class ReportLostScreen extends React.Component{
     constructor(props){
         super(props);
         this.state={
@@ -30,16 +30,14 @@ class FindScreen extends React.Component{
     // }
 
     submit(){
-      this.setState({show:false});
-      const url = 'http://10.0.2.2:8081/pets/searchLostPets';
-
+      const url = 'http://10.0.2.2:6464/pets/searchLostPets';
       return fetch(url, {
         method:'POST',
         headers:{
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(this.state)
+        body: JSON.stringify(this.state.name)
         })
         .then((response)=> response.text())
         .then((responseJson)=>{
@@ -157,7 +155,7 @@ class FindScreen extends React.Component{
     
 }
 
-export default FindScreen;
+export default ReportLostScreen;
 
 const styles = StyleSheet.create({
 
