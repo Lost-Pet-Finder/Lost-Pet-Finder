@@ -30,7 +30,9 @@ async function searchLostPets(req, res) {
     // res.send(results);
 }
 
+//create or update entry: only one entry per user
 async function postLostPets(req, res) {
+    //only user_id and filename needed for M6
     const userid = req.body.userid;
     const filename = req.body.filename;
     const location_x  = req.body.location_x;
@@ -48,7 +50,7 @@ async function postLostPets(req, res) {
 
         const tagsString = JSON.stringify(tags);
 
-        const response = await sqlPool.query('CALL create_lost_pet_report(?, ?, POINT(?,?), ?, ?)', [userid, filename, location_x, location_y, date, tagsString]);
+        const response = await sqlPool.query('CALL create_lost_pet_report(?, ?, POINT(?,?), ?, ?)', [userid, filename, location_x, location_y, null, tagsString]);
 
         res.status(200).send(response[0]);
     } catch (err) {
@@ -87,7 +89,9 @@ async function searchFoundPets(req, res) {
     // res.send(results);
 }
 
+//create or update entry: only one entry per user
 async function postFoundPets(req, res) {
+    //only user_id and filename needed for M6
     const userid = req.body.userid;
     const filename = req.body.filename;
     const location_x  = req.body.location_x;
@@ -105,7 +109,7 @@ async function postFoundPets(req, res) {
 
         const tagsString = JSON.stringify(tags);
 
-        const response = await sqlPool.query('CALL create_found_pet_report(?, ?, POINT(?,?), ?, ?)', [userid, filename, location_x, location_y, date, tagsString]);
+        const response = await sqlPool.query('CALL create_found_pet_report(?, ?, POINT(?,?), ?, ?)', [userid, filename, location_x, location_y, null, tagsString]);
 
         res.status(200).send(response[0]);
     } catch (err) {

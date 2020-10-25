@@ -17,6 +17,7 @@ const { response, json } = require('express');
 // Routers
 const awsRouter = require('./routers/awsRouter');
 const petsRouter = require('./routers/petsRouter');
+const userRouter = require('./routers/userRouter');
 
 // Objects
 const PORT = 6464;
