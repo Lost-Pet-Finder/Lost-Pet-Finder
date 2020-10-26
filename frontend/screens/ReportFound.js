@@ -35,7 +35,7 @@ class ReportFoundScreen extends React.Component{
 
     //submit the report
     submit(){
-      const url = 'http://10.0.2.2:6464/pets/postFoundPets';
+      const url = 'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/pets/postFoundPets';
       this.setState({show:false,
                     });
 
@@ -215,22 +215,20 @@ const styles = StyleSheet.create({
       justifyContent:'center',
     },
     photolist: {
-        flex:1,
-        alignItems:'stretch',
-        justifyContent:'center',
-        width:200,
-        height:200,
-        padding:10,
+      width:200,
+      height:200,
+      padding:10,
     }, 
     SearchButton: {
       flex:1,
+      alignSelf: 'center',
       padding: 12,
       backgroundColor: '#2196F3',
       borderRadius: 25,
       height: 45,
       justifyContent: 'center',
       marginHorizontal:20,
-      marginVertical:80,
+      marginVertical:50,
     },
     ReportButton: {
       flex:1,

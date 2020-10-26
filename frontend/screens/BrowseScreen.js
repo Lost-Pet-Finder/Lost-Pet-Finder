@@ -17,7 +17,7 @@ export default class BrowseScreen extends React.Component {
     // "message": [{http/sdfsdf} , "http/sdfsdfdsf", "http/sdfsdfdsf"],
     //  "status":"success"
     //}
-    const url = 'http://10.0.2.2:6464/pets/searchLostPets';
+    const url = 'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/pets/searchLostPets';
     // const breed = 'bulldog';
 
     const request = {
@@ -26,13 +26,6 @@ export default class BrowseScreen extends React.Component {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      // body: JSON.stringify({
-      //   userid : "sdfsdf",
-      //   bucket : "lostpet",
-      //   date : 10,
-      //   filename: "sdfsdf",
-      //   location : "sdfsdf",
-      // }),
     };
 
     const response = await fetch(url, request);

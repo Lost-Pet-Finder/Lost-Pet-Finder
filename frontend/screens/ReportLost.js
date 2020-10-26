@@ -32,7 +32,7 @@ class ReportLostScreen extends React.Component{
     }
 
     submit(){
-      const url = 'http://10.0.2.2:6464/pets/postLostPets';
+      const url = 'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/pets/postLostPets';
       var body = JSON.stringify({
         userid: this.state.user_id,
         filename: this.state.filename,
@@ -41,6 +41,7 @@ class ReportLostScreen extends React.Component{
         date:this.state.date,
         bucketName: this.state.bucket,
       })
+      this.setState({show:false});
       return fetch(url, {
         method:'POST',
         headers:{
@@ -106,7 +107,7 @@ class ReportLostScreen extends React.Component{
             <View style={styles.container}>
                 {/* <CameraRollPicker callBack={this.getSelectedImages}/> */}
                 <View style={styles.upperbox}>
-                  <Image source={this.state.avatarSource} style={styles.photolist}/>
+                  {/* <Image source={this.state.avatarSource} style={styles.photolist}/> */}
                 </View>
               
 
@@ -127,14 +128,14 @@ class ReportLostScreen extends React.Component{
                           
                             <TextInput 
                             style={{fontSize:30}} 
-                            placeholder="location_x" 
+                            placeholder="Street address" 
                             onChangeText={(value)=>this.setState({loc_x:value})}
                             value={this.state.loc_x}
                             ></TextInput>
 
                             <TextInput 
                             style={{fontSize:30}} 
-                            placeholder="location_y" 
+                            placeholder="City" 
                             onChangeText={(value)=>this.setState({loc_y:value})}
                             value={this.state.loc_y}
                             ></TextInput>
