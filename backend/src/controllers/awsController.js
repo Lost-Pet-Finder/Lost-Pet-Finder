@@ -94,12 +94,16 @@ async function sendRekognitionRequest(req, res) {
         // - pixels.filter(v => v===b).length).pop());
 
 
-        percentBias = 0.1;
+        percentBias = 0.5;
 
         percentArea = 1 - boxWidth * boxHeight / totalWidth / totalHeight;
         rDiff = Math.max(Math.abs((mode[0]- modeTotal[0])), 0);
         gDiff = Math.max(Math.abs((mode[1] - modeTotal[1])),0);
         bDiff = Math.max(Math.abs((mode[2] - modeTotal[2])),0);
+
+        rDiffSign = Math.sign(Math.abs((mode[0]- modeTotal[0])));
+        gDiffSign = Math.sign(Math.abs((mode[1]- modeTotal[1])));
+        bDiffSign = Math.sign(Math.abs((mode[2]- modeTotal[2])));
         dis = Math.sqrt(Math.pow(rDiff, 2) + Math.pow(gDiff, 2) + Math.pow(bDiff, 2));
 
         percentDistance = 1 - Math.min((1 / dis), 1);
@@ -109,7 +113,7 @@ async function sendRekognitionRequest(req, res) {
 
         console.log(percentArea);
         console.log(percentDistance);
-        modeCorrected = [mode[0] - percentBias * percentArea * percentDistance * modeTotal[0], mode[1] - percentBias * percentArea * percentDistance * modeTotal[1], mode[2] - percentBias * percentArea * percentDistance * modeTotal[2]];
+        modeCorrected = [mode[0] + percentBias * rDiffSign * percentArea * percentDistance * modeTotal[0], mode[1] + percentBias * gDiffSign * percentArea * percentDistance * modeTotal[1], mode[2] + percentBias * bDiffSign * percentArea * percentDistance * modeTotal[2]];
 
         console.log(modeCorrected);
 
