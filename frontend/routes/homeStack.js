@@ -7,7 +7,7 @@ import Find from '../screens/FindScreen';
 import Browse from '../screens/BrowseScreen';
 
 const screens = {
-    FirstPage: {
+    LoginPage: {
         screen: Login,
         navigationOptions: {
             title: 'FirstPage',
