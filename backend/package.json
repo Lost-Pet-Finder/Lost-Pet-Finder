@@ -15,5 +15,14 @@
     "eslint": "^7.11.0",
     "express": "^4.17.1",
     "mysql": "^2.18.1"
+  },
+  "dependencies": {
+    "buffer-image-size": "^0.6.4",
+    "color-thief": "^2.2.5",
+    "dominant-color": "0.0.1",
+    "gm": "^1.23.1",
+    "image-clipper": "^0.4.4",
+    "jimp": "^0.16.1",
+    "probe-image-size": "^5.0.0"
   }
 }
