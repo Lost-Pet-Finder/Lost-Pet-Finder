@@ -13,80 +13,76 @@ const options ={
     chooseFromLibraryButtonTitle:'Photo Gallery',
 }
 
-class FindScreen extends React.Component{
+class ReportLostScreen extends React.Component{
     constructor(props){
         super(props);
         this.state={
           avatarSource: null,
           show:false,
+          filename:null,
           name:null,
+          user_id:null,
+          loc_x:null,
+          loc_y:null,
+          date:null,
+          bucket: 'lostpetpictures',
         };
+
+        this.status=(this.state.user_id == 1 ? 'found': 'lost');
     }
-    
-    // getSelectedImages(image){
-    //     if(image[0]){
-    //         alert(image[0].uri);
-    //     }
-    // }
 
     submit(){
+      const url = 'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/pets/postLostPets';
+      var body = JSON.stringify({
+        userid: this.state.user_id,
+        filename: this.state.filename,
+        location_x:this.state.loc_x,
+        location_y:this.state.loc_y,
+        date:this.state.date,
+        bucketName: this.state.bucket,
+      })
       this.setState({show:false});
-      const url = 'http://10.0.2.2:8081/pets/searchLostPets';
-
       return fetch(url, {
         method:'POST',
         headers:{
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(this.state)
+        body: body
         })
         .then((response)=> response.text())
         .then((responseJson)=>{
+          console.log(responseJson)
           return responseJson
         })
       
-    
-      // const breed = 'bulldog';
-  
-      // const request = {
-      //   // currently a GET request
-      //   method: 'POST',
-      //   headers: {
-          
-      //   },
-      //   body: ,
-      // };
-  
-      // const response = await fetch(url);
-      // const data = await response.json();
-      // this.setState({petArray: data.message, loading: false});
     }
 
     //get photo from photo gallery
     getPhoto(){
         ImagePicker.showImagePicker(options, (response) => {
-            //don't need to print out the response for now
-            console.log('Response = ', response);
+            // console.log('Response = ', response);
             if (response.didCancel) {
               console.log('User cancelled image picker');
             } else if (response.error) {
               console.log('ImagePicker Error: ', response.error);
             } else {
               const source = { uri: response.uri };
-        
+              var photo_str =  `${response.fileName}`;
+              this.setState({filename:photo_str});
+
               // You can also display the image using data:
               //const source = { uri: 'data:image/jpeg;base64,' + response.data };
               
               // send images to S3
               const file = {
                 uri: response.uri,
-                name: response.fileName,
+                name: this.state.filename,
                 type: 'image/png'
               }
-              console.log(file);
+              //console.log(file);
               const config = {
-                keyPrefix : 's3/',
+                // keyPrefix : 's3/',
                 bucket: 'lostpetpictures',
                 region: 'us-west-2',
                 accessKey: 'AKIAJ5OYQDSWAJXXAVFQ',
@@ -95,7 +91,7 @@ class FindScreen extends React.Component{
               }
               RNS3.put(file, config)
               .then((response)=>{
-                console.log(response);
+                //console.log(response);
               })
               // post a post
               this.setState({
@@ -111,36 +107,65 @@ class FindScreen extends React.Component{
             <View style={styles.container}>
                 {/* <CameraRollPicker callBack={this.getSelectedImages}/> */}
                 <View style={styles.upperbox}>
-                  <Image source={this.state.avatarSource} style={styles.photolist}/>
+                  {/* <Image source={this.state.avatarSource} style={styles.photolist}/> */}
                 </View>
               
 
                 <View style={styles.lowerbox}>
-                    <TouchableOpacity style={styles.SearchButton} onPress={() => this.getPhoto()} >
+                    {/* <TouchableOpacity style={styles.SearchButton} onPress={() => this.getPhoto()} >
                       <Text style={styles.textStyle}>Upload Photos</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.SearchButton} onPress={()=>this.setState({show:true})}>
-                      <Modal transparent={true} visible={this.state.show}>
+                    </TouchableOpacity> */}
+                    <TouchableOpacity style={styles.SearchButton} onPress={()=>
+                    this.setState({
+                        show:true,
+                        user_id:this.props.navigation.state.params.user_id,
+                        })}>
+                      <Modal style={{flex:1}} transparent={true} visible={this.state.show} flexDirection='column'>
                         <View style={{backgroundColor:"#000000aa", flex:1}}>
                           <View style={{backgroundColor:"#ffffff", margin:50, padding:40, borderRadius:10}}>
+                            
+                            <Image source={this.state.avatarSource} style={styles.photolist}/>
+                          
                             <TextInput 
                             style={{fontSize:30}} 
-                            placeholder="username" 
-                            onChangeText={(value)=>this.setState({name:value})}
-                            value={this.state.name}
+                            placeholder="Street address" 
+                            onChangeText={(value)=>this.setState({loc_x:value})}
+                            value={this.state.loc_x}
                             ></TextInput>
+
+                            <TextInput 
+                            style={{fontSize:30}} 
+                            placeholder="City" 
+                            onChangeText={(value)=>this.setState({loc_y:value})}
+                            value={this.state.loc_y}
+                            ></TextInput>
+
+                            <TextInput 
+                            style={{fontSize:30}} 
+                            placeholder="Date" 
+                            onChangeText={(value)=>this.setState({date:value})}
+                            value={this.state.date}
+                            ></TextInput>
+
+                            <TouchableOpacity style={styles.SearchButton} onPress={() => this.getPhoto()} >
+                                <Text style={styles.textStyle}>Upload Photos</Text>
+                            </TouchableOpacity>
+
                             <TouchableOpacity style={styles.SearchButton} onPress={()=>this.submit()}>
-                              <Text style={styles.textStyle}>Submit Data</Text>
+                              <Text style={styles.textStyle}>Submit</Text>
                             </TouchableOpacity>
                           </View>
                         </View>
                       </Modal>
-                      <Text style={styles.textStyle}>test database</Text>
+                      <Text style={styles.textStyle}>Report Lost</Text>
                     </TouchableOpacity>
                     
+                    {/* <TouchableOpacity style={styles.SearchButton} onPress={() => this.getPhoto()} >
+                      <Text style={styles.textStyle}>Upload Photos</Text>
+                    </TouchableOpacity> */}
 
-                    <TouchableOpacity style={styles.SearchButton} onPress={() => this.props.navigation.navigate('BrowsePetPage')} >
-                      <Text style={styles.textStyle}>Go Back</Text>
+                    <TouchableOpacity style={styles.SearchButton} onPress={() => this.props.navigation.navigate('BrowsePetPage', {user_type : "find"})} >
+                      <Text style={styles.textStyle}>Browse Posts</Text>
                     </TouchableOpacity>
                 </View>
                 
@@ -157,7 +182,7 @@ class FindScreen extends React.Component{
     
 }
 
-export default FindScreen;
+export default ReportLostScreen;
 
 const styles = StyleSheet.create({
 
@@ -196,7 +221,7 @@ const styles = StyleSheet.create({
       height: 45,
       justifyContent: 'center',
       marginHorizontal:20,
-      marginVertical:80,
+      marginVertical:50,
     },
     ReportButton: {
       flex:1,

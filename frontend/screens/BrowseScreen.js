@@ -1,6 +1,6 @@
 import React from 'react';
 import 'react-native-gesture-handler';
-import {StyleSheet, Button, View, Text, Image, FlatList} from 'react-native';
+import {StyleSheet, Button, View, SafeAreaView, Text, Image, FlatList, ScrollView} from 'react-native';
 
 export default class BrowseScreen extends React.Component {
   constructor(props) {
@@ -8,44 +8,47 @@ export default class BrowseScreen extends React.Component {
     this.state = {loading: true, petArray: null};
   }
 
-  componentDidMount() {
-    this.timer = setInterval(() => this.getAllPosts(), 3000);
-  }
+  // componentDidMount() {
+  //   this.timer = setInterval(() => this.getAllPosts(), 3000);
+  // }
 
-  async getAllPosts() {
+  async componentDidMount() {
     // {
     // "message": [{http/sdfsdf} , "http/sdfsdfdsf", "http/sdfsdfdsf"],
     //  "status":"success"
     //}
-    const url = 'https://dog.ceo/api/breeds/image/random/3';
-    const breed = 'bulldog';
+    let url = ''
+    console.log(this.props.navigation.state.params.user_type);
+    if(this.props.navigation.state.params.user_type == "find"){
+      url = 'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/pets/searchFoundPets';
+    }
+    if(this.props.navigation.state.params.user_type == "lost"){
+      url = 'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/pets/searchLostPets';
+    }
+    
+    console.log(url)
+    // const breed = 'bulldog';
 
     const request = {
-      // currently a GET request
-      method: 'POST',
+      method: 'GET',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        userid : "sdfsdf",
-        bucket : "lostpet",
-        date : 10,
-        filename: "sdfsdf",
-        location : "sdfsdf",
-      }),
     };
 
-    const response = await fetch(url);
+    const response = await fetch(url, request);
+    console.log(response.status);
     const data = await response.json();
-    this.setState({petArray: data.message, loading: false});
+    console.log(data);
+    this.setState({petArray: data, loading: false});
   }
 
   render() {
     if (this.state.loading) {
       return (
         <View style={styles.container}>
-          <Text>loading.....</Text>
+          <Text>Loading...</Text>
         </View>
       );
     }
@@ -59,12 +62,22 @@ export default class BrowseScreen extends React.Component {
     }
 
     return (
-      <View style={styles.container}>
-        {/* <Text>`${this.state.petArray}`</Text> */}
-        {this.state.petArray.map((pet) => {
-          return <Image source={{uri: `${pet}`}} style={styles.image}></Image>;
-        })}
-      </View>
+      <SafeAreaView style={styles.container}>
+        <ScrollView contentContainerStyle={styles.scrollView}>
+          {this.state.petArray.map((pet) => {
+            // return <Image source={{uri: `${pet}`}} style={styles.image}></Image>;
+            // https://lostpetpictures.s3-us-west-2.amazonaws.com/s3/user1_lost.png
+            const something = [
+              // <Text style = {styles.headerText}>basic info:</Text>,
+              // <Text style = {styles.textStyle}>{`date reported: ${pet.report_date}`}</Text>,
+              // <Text style = {styles.textStyle}>{`location reported: (${pet.location_x},${pet.location_y})`}</Text>,
+              <Image source={{uri:`https://lostpetpictures.s3-us-west-2.amazonaws.com/${pet.file_name}`}} style = {styles.image}></Image>,
+              <Button title = "View info" onPress={() => this.props.navigation.navigate('PostInfo')}></Button>,
+            ]
+            return something
+          })}
+        </ScrollView>
+      </SafeAreaView>
     );
   }
 }
@@ -84,17 +97,18 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
     justifyContent: 'center',
   },
+  scrollView: {
+    backgroundColor: '#FFFFE0',
+    marginHorizontal: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   lowerbox: {
     flex: 2,
     flexDirection: 'row',
     backgroundColor: '#BBDEFB',
     alignItems: 'stretch',
     justifyContent: 'center',
-  },
-  photolist: {
-    width: 200,
-    height: 200,
-    padding: 10,
   },
   SearchButton: {
     flex: 1,
@@ -122,8 +136,17 @@ const styles = StyleSheet.create({
   textStyle: {
     textAlign: 'center',
     textAlignVertical: 'center',
-    color: '#fff',
+    color: '#2196F3',
     fontSize: 16,
+    padding: 2,
+    marginHorizontal: 20,
+  },
+  headerText: {
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    color: '#2196F3',
+    fontSize: 20,
+    padding: 2,
   },
   inputText: {
     height: 50,
@@ -158,9 +181,9 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   image: {
-    marginBottom: 40,
-    width: 160,
-    height: 160,
-    resizeMode: 'stretch',
+    width: 140,
+    height: 140,
+    marginHorizontal: 20,
+    marginVertical: 20,
   },
 });

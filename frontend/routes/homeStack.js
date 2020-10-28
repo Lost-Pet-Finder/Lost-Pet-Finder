@@ -4,7 +4,10 @@ import {createAppContainer} from 'react-navigation';
 
 import Login from '../screens/LoginScreen';
 import Find from '../screens/FindScreen';
+import RF from '../screens/ReportFound';
+import RL from '../screens/ReportLost';
 import Browse from '../screens/BrowseScreen';
+import PostInfo from '../screens/PostInfo';
 
 const screens = {
     LoginPage: {
@@ -14,10 +17,24 @@ const screens = {
             headerShown: false
         },
     },
-    FindPetPage: {
+    Find: {
         screen: Find,
         navigationOptions: {
             title: 'FindPage',
+            headerShown: false
+        },
+    },
+    ReportFoundPage: {
+        screen: RF,
+        navigationOptions: {
+            title: 'ReportFoundPage',
+            headerShown: false
+        },
+    },
+    ReportLostPage:{
+        screen: RL,
+        navigationOptions: {
+            title: 'ReportLosePage',
             headerShown: false
         },
     },
@@ -28,6 +45,13 @@ const screens = {
             headerShown: false
         }
     },
+    PostInfo:{
+        screen: PostInfo,
+        navigationOptions: {
+            title: 'PostInfo',
+            headerShown: false
+        }
+    }
 }
 
 //create new stack navigator, pass the screens you want to navigate in the app
