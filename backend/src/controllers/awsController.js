@@ -3,9 +3,9 @@
 const rekognition = require('../aws/rekognitionClient');
 const colorThief = require('color-thief');
 const sizeOf = require('buffer-image-size');
-// const Jimp = require('jimp');
-// var Clipper = require('image-clipper');
-const gm = require('gm')
+const Jimp = require('jimp');
+// const Clipper = require('image-clipper');
+// const gm = require('gm')
 // var fs = require('fs')
 
 var AWS = require('aws-sdk');
@@ -68,14 +68,32 @@ async function sendRekognitionRequest(req, res) {
         boxWidth = box.Width * totalWidth;
         boxHeight = box.Height * totalHeight;
 
-        img = gm(image.Body).crop(boxWidth, boxHeight, topLeft[0], topLeft[1]).toBuffer(function(err, buffer) {
-            if(err)
-            console.log("oh no!")
-        })
+        // img = gm(image.Body).crop(boxWidth, boxHeight, topLeft[0], topLeft[1]).toBuffer(function(err, buffer) {
+        //     if(err)
+        //     console.log("oh no!")
+        // })
+        ugh = []
+        xd = await Jimp.read(image.Body).then(img => {
+            img.crop(topLeft[0], topLeft[1], boxWidth, boxHeight);
+            img.getBuffer(Jimp.MIME_JPEG, (err, buf) => {
+                if(err) throw err;
+                ugh = buf;
+            });
+            img.write("owo.jpg");
+            console.log('1');
+        });
+
+        
+
+
+
+        console.log(ugh);
+
 
         
         console.log(boxWidth , boxHeight);
-        var dim = sizeOf(img)
+        console.log("2");
+        var dim = sizeOf(ugh);
         x = dim.width
         y = dim.height
         console.log(x, y);
@@ -86,14 +104,14 @@ async function sendRekognitionRequest(req, res) {
 
         var color =  new ColorThief();
 
-        // mode = color.getColor(image.Body);
+        mode = color.getColor(ugh);
 
-        // pixels = color.getPalette(image.Body, 8);
+        // pixels = color.getPalette(ugh, 8);
         // mode = (pixels.sort((a,b) =>
         //   pixels.filter(v => v===a).length
         // - pixels.filter(v => v===b).length).pop());
 
-        // console.log(mode);
+        console.log(mode);
 
 
 
