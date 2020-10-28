@@ -137,8 +137,6 @@ class FindScreen extends React.Component{
                       </Modal>
                       <Text style={styles.textStyle}>test database</Text>
                     </TouchableOpacity>
-                    
-
                     <TouchableOpacity style={styles.SearchButton} onPress={() => this.props.navigation.navigate('BrowsePetPage')} >
                       <Text style={styles.textStyle}>Go Back</Text>
                     </TouchableOpacity>
