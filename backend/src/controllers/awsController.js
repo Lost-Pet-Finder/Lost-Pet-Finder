@@ -11,6 +11,7 @@ const Jimp = require('jimp');
 var AWS = require('aws-sdk');
 const ColorThief = require('color-thief');
 const { head } = require('../routers/awsRouter');
+const { distance } = require('jimp');
 
 const config = new AWS.Config({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -41,6 +42,17 @@ async function sendRekognitionRequest(req, res) {
 
     try {
         const image = await s3.getObject({Bucket: bucketName,Key: fileName}).promise();
+        var color =  new ColorThief();
+
+        modeTotal = color.getColor(image.Body);
+        // pixels = color.getPalette(image.Body, 8);
+        // modeTotal2 = (pixels.sort((a,b) =>
+        //   pixels.filter(v => v===a).length
+        // - pixels.filter(v => v===b).length).pop());
+
+        var totalDimensions = sizeOf(image.Body);
+        totalWidth = totalDimensions.width;
+        totalHeight = totalDimensions.height;
         // image = fs.createReadStream(image.Body)
 
         const response = await rekognition.detectLabels(params).promise();
@@ -51,6 +63,7 @@ async function sendRekognitionRequest(req, res) {
             returnedLabels.push(label);
         });
 
+
         var box;
         response.Labels.forEach(label => {
             console.log("Instances:")
@@ -59,61 +72,46 @@ async function sendRekognitionRequest(req, res) {
             })
         })
 
-        var totalDimensions = sizeOf(image.Body);
-        totalWidth = totalDimensions.width;
-        totalHeight = totalDimensions.height;
-
         topLeft = [box.Left * totalWidth, box.Top * totalHeight];
 
         boxWidth = box.Width * totalWidth;
         boxHeight = box.Height * totalHeight;
 
-        // img = gm(image.Body).crop(boxWidth, boxHeight, topLeft[0], topLeft[1]).toBuffer(function(err, buffer) {
-        //     if(err)
-        //     console.log("oh no!")
-        // })
-        ugh = []
-        xd = await Jimp.read(image.Body).then(img => {
+        buffer = []
+        x = await Jimp.read(image.Body).then(img => {
             img.crop(topLeft[0], topLeft[1], boxWidth, boxHeight);
             img.getBuffer(Jimp.MIME_JPEG, (err, buf) => {
                 if(err) throw err;
-                ugh = buf;
+                buffer = buf;
             });
             img.write("owo.jpg");
-            console.log('1');
         });
 
-        
-
-
-
-        console.log(ugh);
-
-
-        
-        console.log(boxWidth , boxHeight);
-        console.log("2");
-        var dim = sizeOf(ugh);
-        x = dim.width
-        y = dim.height
-        console.log(x, y);
-
-        // console.log(returnedLabels)
-
-
-
-        var color =  new ColorThief();
-
-        mode = color.getColor(ugh);
-
-        // pixels = color.getPalette(ugh, 8);
-        // mode = (pixels.sort((a,b) =>
+        mode = color.getColor(buffer);
+        pixels = color.getPalette(buffer, 8);
+        // mode2 = (pixels.sort((a,b) =>
         //   pixels.filter(v => v===a).length
         // - pixels.filter(v => v===b).length).pop());
 
+
+        percentBias = 0.1;
+
+        percentArea = 1 - boxWidth * boxHeight / totalWidth / totalHeight;
+        rDiff = Math.max(Math.abs((mode[0]- modeTotal[0])), 0);
+        gDiff = Math.max(Math.abs((mode[1] - modeTotal[1])),0);
+        bDiff = Math.max(Math.abs((mode[2] - modeTotal[2])),0);
+        dis = Math.sqrt(Math.pow(rDiff, 2) + Math.pow(gDiff, 2) + Math.pow(bDiff, 2));
+
+        percentDistance = 1 - Math.min((1 / dis), 1);
+
         console.log(mode);
+        console.log(modeTotal);
 
+        console.log(percentArea);
+        console.log(percentDistance);
+        modeCorrected = [mode[0] - percentBias * percentArea * percentDistance * modeTotal[0], mode[1] - percentBias * percentArea * percentDistance * modeTotal[1], mode[2] - percentBias * percentArea * percentDistance * modeTotal[2]];
 
+        console.log(modeCorrected);
 
         res.status(200).json({
             labels: returnedLabels
