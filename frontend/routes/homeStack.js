@@ -10,7 +10,7 @@ import Browse from '../screens/BrowseScreen';
 import PostInfo from '../screens/PostInfo';
 
 const screens = {
-    FirstPage: {
+    LoginPage: {
         screen: Login,
         navigationOptions: {
             title: 'FirstPage',

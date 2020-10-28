@@ -2,6 +2,10 @@ const awsFunctions = require('../util/awsFunctions');
 const sqlPool = require('../sql/connection');
 
 async function searchLostPets(req, res) {
+
+    // var userid = req.body.userid;
+
+    //SQL: search for existing entry in found pets matching user_id
     try {
         const rows = await sqlPool.query('CALL get_all_lost_pets()', []);
         const dataPackets = rows[0];
@@ -27,7 +31,9 @@ async function searchLostPets(req, res) {
     // res.send(results);
 }
 
+//create or update entry: only one entry per user
 async function postLostPets(req, res) {
+    //only user_id and filename needed for M6
     const userid = req.body.userid;
     const filename = req.body.filename;
     const location_x  = req.body.location_x;
@@ -35,15 +41,19 @@ async function postLostPets(req, res) {
     const date = req.body.date;
 
     var data = {
-            "bucketName": req.body.bucketName,
+            "bucketName": 'lostpetpictures',
             "fileName": req.body.filename
     };
 
-    console.log(data);
     try {
         const tags = await awsFunctions.getAWSTags(data);
 
-        const tagsString = JSON.stringify(tags);
+        var tagNames = []
+        tags.forEach(label => {
+            tagNames.push(label.Name);
+        });
+
+        const tagsString = JSON.stringify(tagNames);
 
         const response = await sqlPool.query('CALL create_lost_pet_report(?, ?, POINT(?,?), ?, ?)', [userid, filename, location_x, location_y, date, tagsString]);
 
@@ -56,7 +66,7 @@ async function postLostPets(req, res) {
 
 
 async function searchFoundPets(req, res) {
-    var userid = req.body.userid;
+    // var userid = req.body.userid;
 
     //SQL: search for existing entry in found pets matching user_id
     try {
@@ -84,8 +94,10 @@ async function searchFoundPets(req, res) {
     // res.send(results);
 }
 
+//create or update entry: only one entry per user
 async function postFoundPets(req, res) {
-    
+    //only user_id and filename needed for M6
+
     const userid = req.body.userid;
     const filename = req.body.filename;
     const location_x  = req.body.location_x;
@@ -93,15 +105,19 @@ async function postFoundPets(req, res) {
     const date = req.body.date;
      
     var data = {
-            "bucketName": req.body.bucketName,
+            "bucketName": 'lostpetpictures',
             "fileName": req.body.filename
     };
 
-    console.log(data);
     try {
         const tags = await awsFunctions.getAWSTags(data);
 
-        const tagsString = JSON.stringify(tags);
+        var tagNames = []
+        tags.forEach(label => {
+            tagNames.push(label.Name);
+        });
+
+        const tagsString = JSON.stringify(tagNames);
 
         const response = await sqlPool.query('CALL create_found_pet_report(?, ?, POINT(?,?), ?, ?)', [userid, filename, location_x, location_y, date, tagsString]);
 
