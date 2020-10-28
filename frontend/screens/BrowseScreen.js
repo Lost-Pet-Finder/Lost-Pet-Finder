@@ -1,6 +1,6 @@
 import React from 'react';
 import 'react-native-gesture-handler';
-import {StyleSheet, Button, View, Text, Image, FlatList} from 'react-native';
+import {StyleSheet, Button, View, SafeAreaView, Text, Image, FlatList, ScrollView} from 'react-native';
 
 export default class BrowseScreen extends React.Component {
   constructor(props) {
@@ -17,7 +17,16 @@ export default class BrowseScreen extends React.Component {
     // "message": [{http/sdfsdf} , "http/sdfsdfdsf", "http/sdfsdfdsf"],
     //  "status":"success"
     //}
-    const url = 'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/pets/searchLostPets';
+    let url = ''
+    console.log(this.props.navigation.state.params.user_type);
+    if(this.props.navigation.state.params.user_type == "find"){
+      url = 'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/pets/searchFoundPets';
+    }
+    if(this.props.navigation.state.params.user_type == "lost"){
+      url = 'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/pets/searchLostPets';
+    }
+    
+    console.log(url)
     // const breed = 'bulldog';
 
     const request = {
@@ -53,19 +62,22 @@ export default class BrowseScreen extends React.Component {
     }
 
     return (
-      <View style={styles.container}>
-        {this.state.petArray.map((pet) => {
-          // return <Image source={{uri: `${pet}`}} style={styles.image}></Image>;
-          // https://lostpetpictures.s3-us-west-2.amazonaws.com/s3/user1_lost.png
-          const something = [
-            <Text style = {styles.headerText}>basic info:</Text>,
-            <Text style = {styles.textStyle}>{`date reported: ${pet.report_date}`}</Text>,
-            <Text style = {styles.textStyle}>{`location reported: (${pet.location_x},${pet.location_y})`}</Text>,
-            <Image source={{uri:`https://lostpetpictures.s3-us-west-2.amazonaws.com/${pet.file_name}`}} style = {styles.image}></Image>,            
-          ]
-          return something
-        })}
-      </View>
+      <SafeAreaView style={styles.container}>
+        <ScrollView contentContainerStyle={styles.scrollView}>
+          {this.state.petArray.map((pet) => {
+            // return <Image source={{uri: `${pet}`}} style={styles.image}></Image>;
+            // https://lostpetpictures.s3-us-west-2.amazonaws.com/s3/user1_lost.png
+            const something = [
+              // <Text style = {styles.headerText}>basic info:</Text>,
+              // <Text style = {styles.textStyle}>{`date reported: ${pet.report_date}`}</Text>,
+              // <Text style = {styles.textStyle}>{`location reported: (${pet.location_x},${pet.location_y})`}</Text>,
+              <Image source={{uri:`https://lostpetpictures.s3-us-west-2.amazonaws.com/${pet.file_name}`}} style = {styles.image}></Image>,
+              <Button title = "View info" onPress={() => this.props.navigation.navigate('PostInfo')}></Button>,
+            ]
+            return something
+          })}
+        </ScrollView>
+      </SafeAreaView>
     );
   }
 }
@@ -83,6 +95,12 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     backgroundColor: '#BBDEFB',
     alignItems: 'stretch',
+    justifyContent: 'center',
+  },
+  scrollView: {
+    backgroundColor: '#FFFFE0',
+    marginHorizontal: 40,
+    alignItems: 'center',
     justifyContent: 'center',
   },
   lowerbox: {
@@ -118,14 +136,15 @@ const styles = StyleSheet.create({
   textStyle: {
     textAlign: 'center',
     textAlignVertical: 'center',
-    color: '#fff',
+    color: '#2196F3',
     fontSize: 16,
     padding: 2,
+    marginHorizontal: 20,
   },
   headerText: {
     textAlign: 'center',
     textAlignVertical: 'center',
-    color: '#fff',
+    color: '#2196F3',
     fontSize: 20,
     padding: 2,
   },
@@ -162,8 +181,9 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   image: {
-    marginBottom: 20,
     width: 140,
     height: 140,
+    marginHorizontal: 20,
+    marginVertical: 20,
   },
 });

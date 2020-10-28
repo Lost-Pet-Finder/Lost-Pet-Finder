@@ -52,6 +52,7 @@ class ReportLostScreen extends React.Component{
         })
         .then((response)=> response.text())
         .then((responseJson)=>{
+          console.log(responseJson)
           return responseJson
         })
       
@@ -59,18 +60,17 @@ class ReportLostScreen extends React.Component{
 
     //get photo from photo gallery
     getPhoto(){
-      var photo_str =  `user${this.state.user_id}_${this.status}.png`;
-      this.setState({filename:photo_str});
         ImagePicker.showImagePicker(options, (response) => {
-            //don't need to print out the response for now
-            //console.log('Response = ', response);
+            // console.log('Response = ', response);
             if (response.didCancel) {
               console.log('User cancelled image picker');
             } else if (response.error) {
               console.log('ImagePicker Error: ', response.error);
             } else {
               const source = { uri: response.uri };
-        
+              var photo_str =  `${response.fileName}`;
+              this.setState({filename:photo_str});
+
               // You can also display the image using data:
               //const source = { uri: 'data:image/jpeg;base64,' + response.data };
               
@@ -164,7 +164,7 @@ class ReportLostScreen extends React.Component{
                       <Text style={styles.textStyle}>Upload Photos</Text>
                     </TouchableOpacity> */}
 
-                    <TouchableOpacity style={styles.SearchButton} onPress={() => this.props.navigation.navigate('BrowsePetPage', {user_type : "finder"})} >
+                    <TouchableOpacity style={styles.SearchButton} onPress={() => this.props.navigation.navigate('BrowsePetPage', {user_type : "find"})} >
                       <Text style={styles.textStyle}>Browse Posts</Text>
                     </TouchableOpacity>
                 </View>

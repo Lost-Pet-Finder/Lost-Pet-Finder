@@ -7,6 +7,7 @@ import Find from '../screens/FindScreen';
 import RF from '../screens/ReportFound';
 import RL from '../screens/ReportLost';
 import Browse from '../screens/BrowseScreen';
+import PostInfo from '../screens/PostInfo';
 
 const screens = {
     FirstPage: {
@@ -44,6 +45,13 @@ const screens = {
             headerShown: false
         }
     },
+    PostInfo:{
+        screen: PostInfo,
+        navigationOptions: {
+            title: 'PostInfo',
+            headerShown: false
+        }
+    }
 }
 
 //create new stack navigator, pass the screens you want to navigate in the app
