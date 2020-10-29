@@ -94,26 +94,29 @@ async function sendRekognitionRequest(req, res) {
         // - pixels.filter(v => v===b).length).pop());
 
 
-        percentBias = 0.5;
+        percentBias = 1;
 
-        percentArea = 1 - boxWidth * boxHeight / totalWidth / totalHeight;
-        rDiff = Math.max(Math.abs((mode[0]- modeTotal[0])), 0);
-        gDiff = Math.max(Math.abs((mode[1] - modeTotal[1])),0);
-        bDiff = Math.max(Math.abs((mode[2] - modeTotal[2])),0);
+        percentArea = 1 - boxWidth * boxHeight / (totalWidth * totalHeight);
+        rDiff = (mode[0] - modeTotal[0]);
+        gDiff = (mode[1] - modeTotal[1]);
+        bDiff = (mode[2] - modeTotal[2]);
 
-        rDiffSign = Math.sign(Math.abs((mode[0]- modeTotal[0])));
-        gDiffSign = Math.sign(Math.abs((mode[1]- modeTotal[1])));
-        bDiffSign = Math.sign(Math.abs((mode[2]- modeTotal[2])));
-        dis = Math.sqrt(Math.pow(rDiff, 2) + Math.pow(gDiff, 2) + Math.pow(bDiff, 2));
+        rDiff = Math.sign(rDiff) * (1-Math.abs(rDiff / (mode[0] + rDiff)));
+        gDiff = Math.sign(gDiff) * (1-Math.abs(gDiff / (mode[1] + gDiff)));
+        bDiff = Math.sign(bDiff) * (1-Math.abs(bDiff / (mode[2] + bDiff)));
 
-        percentDistance = 1 - Math.min((1 / dis), 1);
+        // rDiffSign = Math.sign(Math.abs((mode[0]- modeTotal[0])));
+        // gDiffSign = Math.sign(Math.abs((mode[1]- modeTotal[1])));
+        // bDiffSign = Math.sign(Math.abs((mode[2]- modeTotal[2])));
+        // dis = Math.sqrt(Math.pow(rDiff, 2) + Math.pow(gDiff, 2) + Math.pow(bDiff, 2));
+
+        // percentDistance = 1 - Math.min((1 / dis), 1);
 
         console.log(mode);
         console.log(modeTotal);
 
         console.log(percentArea);
-        console.log(percentDistance);
-        modeCorrected = [mode[0] + percentBias * rDiffSign * percentArea * percentDistance * modeTotal[0], mode[1] + percentBias * gDiffSign * percentArea * percentDistance * modeTotal[1], mode[2] + percentBias * bDiffSign * percentArea * percentDistance * modeTotal[2]];
+        modeCorrected = [mode[0] + percentBias * percentArea * rDiff * modeTotal[0], mode[1] + percentBias * percentArea * gDiff * modeTotal[1], mode[2] + percentBias * percentArea * bDiff * modeTotal[2]];
 
         console.log(modeCorrected);
 
