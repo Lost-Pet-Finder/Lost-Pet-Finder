@@ -8,6 +8,7 @@ import RF from '../screens/ReportFound';
 import RL from '../screens/ReportLost';
 import Browse from '../screens/BrowseScreen';
 import PostInfo from '../screens/PostInfo';
+import HomePage from '../screens/HomePage';
 
 const screens = {
     LoginPage: {
@@ -49,6 +50,14 @@ const screens = {
         screen: PostInfo,
         navigationOptions: {
             title: 'PostInfo',
+            headerShown: false
+        }
+    },
+
+    HomePage: {
+        screen: HomePage,
+        navigationOptions: {
+            title: 'HomePage',
             headerShown: false
         }
     }

@@ -107,6 +107,10 @@ class ReportFoundScreen extends React.Component{
           });
     }
 
+    firebaseTest() {
+      console.log('Button pressed')
+    }
+
     render(){
         console.log(JSON.stringify(this.props));
         
@@ -116,6 +120,13 @@ class ReportFoundScreen extends React.Component{
                 <View style={styles.upperbox}>
                   
                 </View>
+
+                <Button 
+                  onPress={() => {
+                    this.firebaseTest()
+                  }}
+                  title="Firebase Test"
+                />
               
 
                 <View style={styles.lowerbox}>

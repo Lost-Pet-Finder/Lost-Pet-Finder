@@ -11,28 +11,29 @@ import {
   Button
 } from 'react-native';
 
-class LoginScreen extends React.Component{
+// FCM
+import messaging from '@react-native-firebase/messaging';
+
+class LoginScreen extends React.Component {
   constructor(props){
     super(props);
   }
 
-  // setEmail(email){
-  //   const [email, setEmail] = useState();
-  // }
-  
-  // setpwd(password){
-  //   const [password, setPassword] = useState();
-  // }
-  
-  parseFinder=()=>{
-    this.props.navigation.navigate('ReportFoundPage',  { 
-      user_id: '1' });
-    
+  async updateFCMDeviceToken() {
+    const deviceToken = await messaging().getToken();
+    console.log(`Device Token: ${deviceToken}`);
+
+    // TODO: SEND TO NODE SERVER
   }
 
-  parseLoser=()=>{
-    this.props.navigation.navigate('ReportLostPage', {
-      user_id:'2'});
+  signedInAsFinder() {
+    this.updateFCMDeviceToken();
+    this.props.navigation.navigate('HomePage', {user_id: '1', isFinder: 1});
+  }
+
+  signedInAsLoser() {
+    this.updateFCMDeviceToken();
+    this.props.navigation.navigate('HomePage', {user_id: '2', isFinder: 0});
   }
 
   render(){
@@ -63,17 +64,18 @@ class LoginScreen extends React.Component{
           />
         </View>
 
-        <TouchableOpacity style={styles.loginButton} onPress={()=>this.parseFinder()} >
+        <TouchableOpacity style={styles.loginButton} onPress={()=>this.signedInAsFinder()} >
          
-          <Text style={styles.loginText}>Sign in as finder</Text>
+          <Text style={styles.loginText}>Sign In: Found</Text>
   
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.loginButton} onPress={()=>this.parseLoser() } >
+        <TouchableOpacity style={styles.loginButton} onPress={()=>this.signedInAsLoser() } >
          
-          <Text style={styles.loginText}>Sign in as loser</Text>
+          <Text style={styles.loginText}>Sign In: Lost</Text>
   
         </TouchableOpacity>
+
         <TouchableOpacity>
           <Text style={styles.signup}>Don't have an account? Sign up</Text>
         </TouchableOpacity>
@@ -123,7 +125,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   loginButton: {
-    width: '30%',
+    width: '40%',
     backgroundColor: '#2196F3',
     borderRadius: 25,
     height: 45,
