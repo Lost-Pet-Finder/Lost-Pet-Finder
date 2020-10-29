@@ -101,9 +101,9 @@ async function sendRekognitionRequest(req, res) {
         gDiff = (mode[1] - modeTotal[1]);
         bDiff = (mode[2] - modeTotal[2]);
 
-        rDiff = Math.sign(rDiff) * (1-Math.abs(rDiff / (mode[0] + rDiff)));
-        gDiff = Math.sign(gDiff) * (1-Math.abs(gDiff / (mode[1] + gDiff)));
-        bDiff = Math.sign(bDiff) * (1-Math.abs(bDiff / (mode[2] + bDiff)));
+        rDiff = Math.sign(rDiff) * (Math.abs(rDiff / (mode[0] + rDiff)));
+        gDiff = Math.sign(gDiff) * (Math.abs(gDiff / (mode[1] + gDiff)));
+        bDiff = Math.sign(bDiff) * (Math.abs(bDiff / (mode[2] + bDiff)));
 
         // rDiffSign = Math.sign(Math.abs((mode[0]- modeTotal[0])));
         // gDiffSign = Math.sign(Math.abs((mode[1]- modeTotal[1])));
