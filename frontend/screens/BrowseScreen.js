@@ -1,24 +1,25 @@
 import React from 'react';
 import 'react-native-gesture-handler';
-import {StyleSheet, Button, View, Text, Image, FlatList} from 'react-native';
+import {StyleSheet, Button, View, SafeAreaView, Text, Image, FlatList, ScrollView} from 'react-native';
 
 export default class BrowseScreen extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {loading: true, petArray: null};
+    this.state = {
+      loading: true,
+      petArray: null,
+      user_id: this.props.navigation.state.params.user_id,
+      isFinder: this.props.navigation.state.params.isFinder
+    };
   }
 
-  // componentDidMount() {
-  //   this.timer = setInterval(() => this.getAllPosts(), 3000);
-  // }
-
   async componentDidMount() {
-    // {
-    // "message": [{http/sdfsdf} , "http/sdfsdfdsf", "http/sdfsdfdsf"],
-    //  "status":"success"
-    //}
-    const url = 'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/pets/searchLostPets';
-    // const breed = 'bulldog';
+    const url = this.state.isFinder == 0 ? 
+    'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/pets/searchFoundPets' : 
+    'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/pets/searchLostPets';
+
+    
+    console.log(url)
 
     const request = {
       method: 'GET',
@@ -53,19 +54,27 @@ export default class BrowseScreen extends React.Component {
     }
 
     return (
-      <View style={styles.container}>
-        {this.state.petArray.map((pet) => {
-          // return <Image source={{uri: `${pet}`}} style={styles.image}></Image>;
-          // https://lostpetpictures.s3-us-west-2.amazonaws.com/s3/user1_lost.png
-          const something = [
-            <Text style = {styles.headerText}>basic info:</Text>,
-            <Text style = {styles.textStyle}>{`date reported: ${pet.report_date}`}</Text>,
-            <Text style = {styles.textStyle}>{`location reported: (${pet.location_x},${pet.location_y})`}</Text>,
-            <Image source={{uri:`https://lostpetpictures.s3-us-west-2.amazonaws.com/${pet.file_name}`}} style = {styles.image}></Image>,            
-          ]
-          return something
-        })}
-      </View>
+      <SafeAreaView style={styles.container}>
+        <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollViewCellContainer}>
+          {this.state.petArray.map((pet) => {
+            
+            return (        
+                <View style={styles.scrollViewCell}>
+                  <Text style={styles.titleText}> Pet's Name: </Text>
+                  <View style={styles.imageAndTextContainer}>
+                    <Image source={{uri:`https://lostpetpictures.s3-us-west-2.amazonaws.com/${pet.file_name}`}} style = {styles.imageView}></Image>
+                    <View style={styles.detailsView}>
+                      <Text>{`Similarity Score: `}</Text>
+                      <Text>{`Location: (${pet.location_x}, ${pet.location_y})`}</Text>
+                      <Text>{`Report Date: \n${pet.report_date}`}</Text>
+                      <Button title = "Contact Owner" onPress={() => this.props.navigation.navigate('ContactOwnerScreen')}></Button>
+                    </View>
+                  </View>
+                </View>
+            );
+          })}
+        </ScrollView>
+      </SafeAreaView>
     );
   }
 }
@@ -74,96 +83,38 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: '#BBDEFB',
+    backgroundColor: '#FFFFFF',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  upperbox: {
-    flex: 8,
-    flexWrap: 'wrap',
+  scrollView: {
+    width: "100%"
+  },
+  scrollViewCellContainer: {
+  },
+  scrollViewCell: {
     backgroundColor: '#BBDEFB',
-    alignItems: 'stretch',
-    justifyContent: 'center',
-  },
-  lowerbox: {
-    flex: 2,
-    flexDirection: 'row',
-    backgroundColor: '#BBDEFB',
-    alignItems: 'stretch',
-    justifyContent: 'center',
-  },
-  SearchButton: {
-    flex: 1,
-    alignSelf: 'center',
-    padding: 12,
-    backgroundColor: '#2196F3',
-    borderRadius: 25,
-    height: 45,
-    justifyContent: 'center',
-    marginHorizontal: 20,
-    marginVertical: 80,
-  },
-  ReportButton: {
-    flex: 1,
-    alignSelf: 'center',
-    padding: 12,
-    backgroundColor: '#2196F3',
-    borderRadius: 25,
-    height: 45,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 20,
     marginBottom: 10,
+    borderRadius: 15
   },
-  textStyle: {
-    textAlign: 'center',
-    textAlignVertical: 'center',
-    color: '#fff',
-    fontSize: 16,
-    padding: 2,
-  },
-  headerText: {
-    textAlign: 'center',
-    textAlignVertical: 'center',
-    color: '#fff',
+  titleText: {
+    marginLeft: 20,
     fontSize: 20,
-    padding: 2,
+    textAlign: "left"
   },
-  inputText: {
-    height: 50,
-    color: '#fff',
-    fontSize: 16,
+  imageAndTextContainer: {
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignItems: "center"
   },
-  inputView: {
-    width: '80%',
-    backgroundColor: '#465881',
-    borderRadius: 25,
-    height: 50,
-    marginBottom: 20,
-    justifyContent: 'center',
-    padding: 20,
-  },
-  forgotPassword: {
-    color: '#fff',
-    marginTop: 50,
-  },
-  signup: {
-    color: '#fff',
-    marginTop: 15,
-  },
-  loginButton: {
-    width: '30%',
-    backgroundColor: '#2196F3',
-    borderRadius: 25,
-    height: 45,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 20,
-    marginBottom: 10,
-  },
-  image: {
-    marginBottom: 20,
+  imageView: {
     width: 140,
     height: 140,
+    marginHorizontal: 20,
+    marginBottom: 20
   },
+  detailsView: {
+
+  }
 });

@@ -13,15 +13,17 @@ const options ={
     chooseFromLibraryButtonTitle:'Photo Gallery',
 }
 
-class ReportLostScreen extends React.Component{
+class ReportFoundScreen extends React.Component{
+
     constructor(props){
         super(props);
+
         this.state={
           avatarSource: null,
           show:false,
-          filename:null,
-          name:null,
           user_id:null,
+          name:null,
+          filename:null,
           loc_x:null,
           loc_y:null,
           date:null,
@@ -31,17 +33,21 @@ class ReportLostScreen extends React.Component{
         this.status=(this.state.user_id == 1 ? 'found': 'lost');
     }
 
+    //submit the report
     submit(){
-      const url = 'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/pets/postLostPets';
-      var body = JSON.stringify({
-        userid: this.state.user_id,
-        filename: this.state.filename,
-        location_x:this.state.loc_x,
-        location_y:this.state.loc_y,
-        date:this.state.date,
-        bucketName: this.state.bucket,
-      })
-      this.setState({show:false});
+      const url = 'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/pets/postFoundPets';
+      this.setState({show:false,
+                    });
+
+      let body = JSON.stringify(
+          { userid:this.state.user_id,
+            filename:this.state.filename,
+            location_x:this.state.loc_x,
+            location_y:this.state.loc_y,
+            date:this.state.date,
+            bucketName: this.state.bucket,   
+           });
+
       return fetch(url, {
         method:'POST',
         headers:{
@@ -52,17 +58,14 @@ class ReportLostScreen extends React.Component{
         })
         .then((response)=> response.text())
         .then((responseJson)=>{
+          console.log(responseJson)
           return responseJson
         })
-      
     }
 
     //get photo from photo gallery
     getPhoto(){
-      var photo_str =  `user${this.state.user_id}_${this.status}.png`;
-      this.setState({filename:photo_str});
         ImagePicker.showImagePicker(options, (response) => {
-            //don't need to print out the response for now
             //console.log('Response = ', response);
             if (response.didCancel) {
               console.log('User cancelled image picker');
@@ -70,19 +73,20 @@ class ReportLostScreen extends React.Component{
               console.log('ImagePicker Error: ', response.error);
             } else {
               const source = { uri: response.uri };
-        
+              var photo_str =  `${response.fileName}`;
+              this.setState({filename:photo_str});
+
               // You can also display the image using data:
               //const source = { uri: 'data:image/jpeg;base64,' + response.data };
-              
+            
               // send images to S3
               const file = {
                 uri: response.uri,
                 name: this.state.filename,
                 type: 'image/png'
               }
-              //console.log(file);
+             //console.log(this.state.filename);
               const config = {
-                // keyPrefix : 's3/',
                 bucket: 'lostpetpictures',
                 region: 'us-west-2',
                 accessKey: 'AKIAJ5OYQDSWAJXXAVFQ',
@@ -92,8 +96,10 @@ class ReportLostScreen extends React.Component{
               RNS3.put(file, config)
               .then((response)=>{
                 //console.log(response);
+
               })
               // post a post
+
               this.setState({
                 avatarSource: source,
               });
@@ -101,14 +107,26 @@ class ReportLostScreen extends React.Component{
           });
     }
 
+    firebaseTest() {
+      console.log('Button pressed')
+    }
+
     render(){
         console.log(JSON.stringify(this.props));
+        
         return (
             <View style={styles.container}>
                 {/* <CameraRollPicker callBack={this.getSelectedImages}/> */}
                 <View style={styles.upperbox}>
-                  {/* <Image source={this.state.avatarSource} style={styles.photolist}/> */}
+                  
                 </View>
+
+                <Button 
+                  onPress={() => {
+                    this.firebaseTest()
+                  }}
+                  title="Firebase Test"
+                />
               
 
                 <View style={styles.lowerbox}>
@@ -128,7 +146,7 @@ class ReportLostScreen extends React.Component{
                           
                             <TextInput 
                             style={{fontSize:30}} 
-                            placeholder="Street address" 
+                            placeholder="Stree address" 
                             onChangeText={(value)=>this.setState({loc_x:value})}
                             value={this.state.loc_x}
                             ></TextInput>
@@ -157,14 +175,14 @@ class ReportLostScreen extends React.Component{
                           </View>
                         </View>
                       </Modal>
-                      <Text style={styles.textStyle}>Report Lost</Text>
+                      <Text style={styles.textStyle}>Report Found</Text>
                     </TouchableOpacity>
                     
                     {/* <TouchableOpacity style={styles.SearchButton} onPress={() => this.getPhoto()} >
                       <Text style={styles.textStyle}>Upload Photos</Text>
                     </TouchableOpacity> */}
 
-                    <TouchableOpacity style={styles.SearchButton} onPress={() => this.props.navigation.navigate('BrowsePetPage', {user_type : "finder"})} >
+                    <TouchableOpacity style={styles.SearchButton} onPress={() => this.props.navigation.navigate('BrowsePetPage', {user_type : "lost"})} >
                       <Text style={styles.textStyle}>Browse Posts</Text>
                     </TouchableOpacity>
                 </View>
@@ -182,7 +200,7 @@ class ReportLostScreen extends React.Component{
     
 }
 
-export default ReportLostScreen;
+export default ReportFoundScreen;
 
 const styles = StyleSheet.create({
 
@@ -208,9 +226,9 @@ const styles = StyleSheet.create({
       justifyContent:'center',
     },
     photolist: {
-        width:200,
-        height:200,
-        padding:10,
+      width:200,
+      height:200,
+      padding:10,
     }, 
     SearchButton: {
       flex:1,
