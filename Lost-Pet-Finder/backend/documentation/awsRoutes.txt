@@ -1,0 +1,10 @@
+GET ${SERVER_HOST}/aws
+root url for aws router
+
+POST ${SERVER_HOST}/aws/rekognitionRequest
+triggers AWS Rekognition job
+
+body = {
+    bucketName: lostpetpictures,
+    fileName: name.extension
+}
