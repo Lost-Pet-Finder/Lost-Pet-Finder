@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "243629045794",
+    "firebase_url": "https://cpen321-lost-pet.firebaseio.com",
+    "project_id": "cpen321-lost-pet",
+    "storage_bucket": "cpen321-lost-pet.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:243629045794:android:181d5c55e5aeee7fe3727b",
+        "android_client_info": {
+          "package_name": "com.project321"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "243629045794-8rc7gqqaq1l8aej97a4o3ooukdvjncpe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkDxluoA73QDQIYfd6Gr2LGRJ0N6XN_7c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "243629045794-8rc7gqqaq1l8aej97a4o3ooukdvjncpe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
