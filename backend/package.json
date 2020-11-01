@@ -13,8 +13,7 @@
     "aws-sdk": "^2.777.0",
     "dotenv": "^8.2.0",
     "eslint": "^7.11.0",
-    "express": "^4.17.1",
-    "mysql": "^2.18.1"
+    "express": "^4.17.1"
   },
   "dependencies": {
     "buffer-image-size": "^0.6.4",
@@ -23,6 +22,8 @@
     "gm": "^1.23.1",
     "image-clipper": "^0.4.4",
     "jimp": "^0.16.1",
-    "probe-image-size": "^5.0.0"
+    "probe-image-size": "^5.0.0",
+    "mysql": "^2.18.1",
+    "firebase-admin": "^9.3.0"
   }
 }

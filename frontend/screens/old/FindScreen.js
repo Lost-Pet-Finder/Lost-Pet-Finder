@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import 'react-native-gesture-handler';
 
-import{StyleSheet, View, Text, Image, Button, TouchableOpacity} from 'react-native';
+import{StyleSheet, View, Text, Modal, Image, TextInput,Button, TouchableOpacity} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import ImagePicker from 'react-native-image-picker';
 import CameraRollPicker from 'react-native-camera-roll-picker';
@@ -16,7 +16,11 @@ const options ={
 class FindScreen extends React.Component{
     constructor(props){
         super(props);
-        this.state={avatarSource: null};
+        this.state={
+          avatarSource: null,
+          show:false,
+          name:null,
+        };
     }
     
     // getSelectedImages(image){
@@ -24,6 +28,40 @@ class FindScreen extends React.Component{
     //         alert(image[0].uri);
     //     }
     // }
+
+    submit(){
+      this.setState({show:false});
+      const url = 'http://10.0.2.2:8081/pets/searchLostPets';
+
+      return fetch(url, {
+        method:'POST',
+        headers:{
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(this.state)
+        })
+        .then((response)=> response.text())
+        .then((responseJson)=>{
+          return responseJson
+        })
+      
+    
+      // const breed = 'bulldog';
+  
+      // const request = {
+      //   // currently a GET request
+      //   method: 'POST',
+      //   headers: {
+          
+      //   },
+      //   body: ,
+      // };
+  
+      // const response = await fetch(url);
+      // const data = await response.json();
+      // this.setState({petArray: data.message, loading: false});
+    }
 
     //get photo from photo gallery
     getPhoto(){
@@ -81,7 +119,24 @@ class FindScreen extends React.Component{
                     <TouchableOpacity style={styles.SearchButton} onPress={() => this.getPhoto()} >
                       <Text style={styles.textStyle}>Upload Photos</Text>
                     </TouchableOpacity>
-
+                    <TouchableOpacity style={styles.SearchButton} onPress={()=>this.setState({show:true})}>
+                      <Modal transparent={true} visible={this.state.show}>
+                        <View style={{backgroundColor:"#000000aa", flex:1}}>
+                          <View style={{backgroundColor:"#ffffff", margin:50, padding:40, borderRadius:10}}>
+                            <TextInput 
+                            style={{fontSize:30}} 
+                            placeholder="username" 
+                            onChangeText={(value)=>this.setState({name:value})}
+                            value={this.state.name}
+                            ></TextInput>
+                            <TouchableOpacity style={styles.SearchButton} onPress={()=>this.submit()}>
+                              <Text style={styles.textStyle}>Submit Data</Text>
+                            </TouchableOpacity>
+                          </View>
+                        </View>
+                      </Modal>
+                      <Text style={styles.textStyle}>test database</Text>
+                    </TouchableOpacity>
                     <TouchableOpacity style={styles.SearchButton} onPress={() => this.props.navigation.navigate('BrowsePetPage')} >
                       <Text style={styles.textStyle}>Go Back</Text>
                     </TouchableOpacity>

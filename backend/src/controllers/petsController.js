@@ -4,6 +4,7 @@ const getColour = colourFunctions.getColour;
 const sqlPool = require('../sql/connection');
 
 async function searchLostPets(req, res) {
+
     // var userid = req.body.userid;
 
     try {
@@ -98,12 +99,13 @@ async function searchFoundPets(req, res) {
 //create or update entry: only one entry per user
 async function postFoundPets(req, res) {
     //only user_id and filename needed for M6
+
     const userid = req.body.userid;
     const filename = req.body.filename;
     const location_x  = req.body.location_x;
     const location_y  = req.body.location_y;
     const date = req.body.date;
-
+     
     var data = {
             "bucketName": 'lostpetpictures',
             "fileName": req.body.filename

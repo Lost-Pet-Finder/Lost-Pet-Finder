@@ -10,6 +10,8 @@ dotenv.config();
 
 // Core
 const awsClient = require('./aws/awsClient');
+const fadmin = require('./util/firebaseAdmin');
+
 const sql = require('./sql/connection');
 const { Redshift } = require('aws-sdk');
 const { response, json } = require('express');
@@ -36,6 +38,37 @@ app.get('/', (req, res) => {
 app.use('/aws', awsRouter);
 app.use('/pets', petsRouter);
 app.use('/user', userRouter);
+
+
+
+app.get('/testFirebase', async (req, res) => {
+
+    try {
+        const userId = 1;
+
+        // get from MySQL
+        const targetDeviceToken = 'eacSV4PETuaKMxuhSddbQE:APA91bHwt4gAjzwCgc6hqWnYJTjZWHdgKO3VWNfSGDwjnE9rMf3mWkhNS1VtrbA1pPNHJEL52n6uszKaPoE0forThY1u5YXzZUb3dvOvWBR3K9oepYQWk4qBgdXWbbtJR-SyMCnBwOzW';
+        const firstName = 'Wren';
+        const lastName = 'Liang'
+
+        const payload = {
+            notification: {
+                title: `Contact Request`,
+                body: `${firstName} ${lastName} wants to contact you!`
+            },
+            data: {
+                type: `contactRequest`,
+                payload: `${userId}`
+            }
+        }
+
+        const response = await fadmin.messaging().sendToDevice(targetDeviceToken, payload);
+        res.send('Done');
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Request failed');
+    }
+});
 
 // Shutdown Protocol
 process.on("SIGTERM", shutdown);
