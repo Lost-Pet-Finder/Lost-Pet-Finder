@@ -20,6 +20,7 @@ const { response, json } = require('express');
 const awsRouter = require('./routers/awsRouter');
 const petsRouter = require('./routers/petsRouter');
 const userRouter = require('./routers/userRouter');
+const notifRouter = require('./routers/notificationRouter');
 
 // Objects
 const PORT = 6464;
@@ -38,6 +39,7 @@ app.get('/', (req, res) => {
 app.use('/aws', awsRouter);
 app.use('/pets', petsRouter);
 app.use('/user', userRouter);
+app.use('/notif', notifRouter);
 
 
 
