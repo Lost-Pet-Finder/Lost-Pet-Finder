@@ -4,7 +4,7 @@
   "description": "nodejs backend for lost pet finder app",
   "main": "src/app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "start": "node src/app.js"
   },
   "author": "",
@@ -14,7 +14,8 @@
     "dotenv": "^8.2.0",
     "eslint": "^7.11.0",
     "express": "^4.17.1",
-    "mysql": "^2.18.1",
-    "firebase-admin": "^9.3.0"
+    "firebase-admin": "^9.3.0",
+    "jest": "^26.6.1",
+    "mysql": "^2.18.1"
   }
 }
