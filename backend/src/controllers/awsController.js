@@ -11,10 +11,26 @@ const Jimp = require('jimp');
 const ColorThief = require('color-thief');
 
 const { head } = require('../routers/awsRouter');
+const { response } = require('express');
 // const { distance } = require('jimp');
 
 const pets = ["Bird", "Bunny", "Cat", "Dog", "Guinea Pig", "Hamster", "Hare", "Kangaroo", "Mouse", "Pig", "Rabbit", "Rat", "Snake", "Wallaby"];
-
+errorBox = {
+    "BoundingBox": {
+        "Width": -1,
+        "Height": -1,
+        "Left": -1,
+        "Top": -1
+    }
+};
+noBox = {
+    "BoundingBox": {
+        "Width": 1,
+        "Height": 1,
+        "Left": 0,
+        "Top": 0
+    }
+};
 async function sendRekognitionRequest(req, res) {
     const bucketName = req.body.bucketName;
     const fileName = req.body.fileName;
@@ -39,8 +55,40 @@ async function sendRekognitionRequest(req, res) {
         });
 
         // const colour = await getColour(req, response);
+        answer = [];
 
-        console.log(validBoxes(response));
+        labels = [];
+
+        response.Labels.forEach( label => {
+            labels.push(label);
+        });
+
+        if(getLength(labels) > 0)
+        labels = filterForPets(labels);
+        console.log(labels);
+        if(getLength(labels) > 0)
+        labels = filterForConfidence(labels);
+
+        if(getLength(labels) > 0)
+        {
+            validBox = validBoxes(labels);
+            if(validBox != errorBox)
+            {
+                colour = await getColour(req.body.bucketName,req.body.fileName, validBox, labels).then(function(value) {
+                    console.log(value);
+                });
+            }
+            else 
+            {
+                console.log("too many animals in picture! :(");
+            }
+        }
+        else 
+        {
+            // console.log(labels);
+            // console.log(labels.array.length);
+            console.log("no animals detected in image! :(");
+        }
 
         res.status(200).json({
             labels: returnedLabels
@@ -52,9 +100,7 @@ async function sendRekognitionRequest(req, res) {
     }
 }
 
-async function getColour(req, response) {
-    const bucketName = req.body.bucketName;
-    const fileName = req.body.fileName;
+async function getColour(bucketName, fileName, validBox, response) {
 
     try {
         const image = await s3.getObject({Bucket: bucketName,Key: fileName}).promise();
@@ -74,17 +120,8 @@ async function getColour(req, response) {
 
 
         
-        var box;
+        var box = validBox;
         count = 0;
-        response.Labels.forEach(label => {
-            label.Instances.forEach(instance => {
-                box = instance.BoundingBox
-                count++;
-            })
-        })
-        if(count != 1) {
-            //throw error
-        }
 
         boxWidth = box.Width * totalWidth;
         boxHeight = box.Height * totalHeight;
@@ -130,16 +167,41 @@ async function getColour(req, response) {
     }
 }
 
-function validatePet(response)
+function filterForPets(response)
+{
+    const animal = {"Name": "Animal"};
+    try {
+        ret = []
+        response.forEach(label => {
+            label.Parents.forEach(parent => {
+                // console.log(label.Name);
+                // console.log(parent);
+                if(parent.Name == "Animal" && ret.indexOf(label) < 0)
+                {
+                    ret.push(label);
+                }
+            });
+        });
+        return ret;
+
+    } catch (err) {
+        console.log(err);
+
+        throw err;
+    }
+}
+
+function filterForConfidence(response)
 {
     try {
-        valid = false;
-        response.Labels.forEach(label => {
-            console.log(label.Name);
-            if(pets.indexOf("Dog") > -1 )
-                valid = true;
+        ret = []
+        response.forEach(label => {
+            if(label.Confidence >= 85)
+            {
+                ret.push(label);
+            }
         });
-        return valid;
+        return ret;
 
     } catch (err) {
         console.log(err);
@@ -150,7 +212,7 @@ function validatePet(response)
 
 function validBoxes(response) {
     var boxes = [];
-    response.Labels.forEach(label => {
+    response.forEach(label => {
         label.Instances.forEach(instance => {
             if(instance.BoundingBox != undefined)
             {
@@ -159,31 +221,38 @@ function validBoxes(response) {
         })
     })
 
-    // for( i = 0; i < boxes.length; i++) {
-    //     for(j = 0; j < i; i++) {
-    //         console.log(boxes[i] + "owo");
-    //         if(Math.abs(boxes[i].Width - boxes[j].Width) > 0.1) {
-    //             return [];
-    //         }
-    //         if(Math.abs(boxes[i].Height - boxes[j].Height) > 0.1) {
-    //             return [];
-    //         }
-    //         if(Math.abs(boxes[i].Left - boxes[j].Left) > 0.1) {
-    //             return [];
-    //         }
-    //         if(Math.abs(boxes[i].Right - boxes[j].Right) > 0.1) {
-    //             return [];
-    //         }
-    //     }
-    // }
+    for( i = 0; i < boxes.length - 1; i++) {
+        for(j = 0; j < i; i++) {
+            console.log(i + j + boxes[i] + "owo");
+            if(Math.abs(boxes[i].Width - boxes[j].Width) > 0.1) {
+                return errorBox;
+            }
+            if(Math.abs(boxes[i].Height - boxes[j].Height) > 0.1) {
+                return errorBox;
+            }
+            if(Math.abs(boxes[i].Left - boxes[j].Left) > 0.1) {
+                return errorBox;
+            }
+            if(Math.abs(boxes[i].Right - boxes[j].Right) > 0.1) {
+                return errorBox;
+            }
+        }
+    }
 
-    boxes.sort();
     if(boxes.length == 0)
     return [];
 
     return boxes[Math.floor(boxes.length / 2)];
 }
 
+function getLength(response)
+{
+    length = 0;
+    response.forEach( label =>{
+        length = length + 1;
+    });
+    return length;
+}
 
 module.exports = {
     sendRekognitionRequest: sendRekognitionRequest
