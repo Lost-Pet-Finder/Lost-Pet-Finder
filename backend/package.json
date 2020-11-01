@@ -16,6 +16,7 @@
     "express": "^4.17.1",
     "firebase-admin": "^9.3.0",
     "jest": "^26.6.1",
-    "mysql": "^2.18.1"
+    "mysql": "^2.18.1",
+    "supertest": "^6.0.0"
   }
 }

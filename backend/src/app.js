@@ -87,3 +87,5 @@ function shutdown() {
         process.exit();
     });
 }
+
+module.exports = app;

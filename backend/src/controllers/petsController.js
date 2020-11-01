@@ -10,11 +10,10 @@ async function searchLostPets(req, res) {
         const rows = await sqlPool.query('CALL get_all_lost_pets()', []);
         const dataPackets = rows[0];
         
-        return dataPackets
-        // res.status(200).send(dataPackets);
+        res.status(200).send(dataPackets);
     } catch (err) {
         console.error(err);
-        // res.status(500).send('Request failed');
+        res.status(500).send('Request failed');
     }
 
     // // *** More advanced searching later
