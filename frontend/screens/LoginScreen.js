@@ -40,7 +40,7 @@ class LoginScreen extends React.Component {
     //console.log(JSON.stringify(this.props));
     return (
       
-      <View style={styles.container}>
+      <View style={styles.container} testID={'LoginScreen_detox'}>
         <Image
           style={styles.image}
           source={require('../assets/logo.png')}></Image>
@@ -64,13 +64,13 @@ class LoginScreen extends React.Component {
           />
         </View>
 
-        <TouchableOpacity style={styles.loginButton} onPress={()=>this.signedInAsFinder()} >
+        <TouchableOpacity style={styles.loginButton} testID={'SignInFinderButton_detox'} onPress={()=>this.signedInAsFinder()} >
          
           <Text style={styles.loginText}>Sign In: Found</Text>
   
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.loginButton} onPress={()=>this.signedInAsLoser() } >
+        <TouchableOpacity style={styles.loginButton} testID={'SignInLoserButton_detox'} onPress={()=>this.signedInAsLoser() } >
          
           <Text style={styles.loginText}>Sign In: Lost</Text>
   
