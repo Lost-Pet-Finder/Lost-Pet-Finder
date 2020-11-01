@@ -31,7 +31,7 @@ export default class HomePage extends React.Component {
 
     render() {
         return (
-            <View style={styles.containerView}>
+            <View style={styles.containerView} testID={'HomePage_detox'}>
                 <TouchableOpacity 
                     style={styles.reportView}
                     onPress={() => {
