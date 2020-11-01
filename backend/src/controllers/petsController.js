@@ -1,33 +1,34 @@
 const awsFunctions = require('../util/awsFunctions');
+const colourFunctions = require('../util/colourFunctions');
+const getColour = colourFunctions.getColour;
 const sqlPool = require('../sql/connection');
 
 async function searchLostPets(req, res) {
     // var userid = req.body.userid;
 
-    //SQL: search for existing entry in found pets matching user_id
     try {
         const rows = await sqlPool.query('CALL get_all_lost_pets()', []);
         const dataPackets = rows[0];
 
-        res.status(200).send(dataPackets);
+        var retArray = []
+
+        for (var i = 0; i < dataPackets.length; i++) {
+            const petEntry = dataPackets[i];
+            const colours = await getColour('lostpetpictures', petEntry.file_name);
+
+            retArray.push({
+                information: petEntry,
+                colours: colours
+            });
+        }
+
+        console.log(retArray);
+
+        res.status(200).send(retArray);
     } catch (err) {
         console.error(err);
         res.status(500).send('Request failed');
     }
-
-    // // *** More advanced searching later
-    // var entry = sqlDummy();
-    // var results = [];
-    // if( entry == null) {
-    //     //SQL: query the most recent lost pets (no further filtering)
-    //     results = sqlDummy();
-    // }
-    // else {
-    //     //SQL: query lost pets with results closest to entry's fields (complex logic later)
-    //     results = sqlDummy();
-    // }
-    // console.log(results);
-    // res.send(results);
 }
 
 //create or update entry: only one entry per user
@@ -72,25 +73,26 @@ async function searchFoundPets(req, res) {
         const rows = await sqlPool.query('CALL get_all_found_pets()', []);
         const dataPackets = rows[0];
 
-        res.status(200).send(dataPackets);
+        var retArray = []
+
+        for (var i = 0; i < dataPackets.length; i++) {
+            const petEntry = dataPackets[i];
+            const colours = await getColour('lostpetpictures', petEntry.file_name);
+
+            retArray.push({
+                information: petEntry,
+                colours: colours
+            });
+        }
+
+        console.log(retArray);
+
+        res.status(200).send(retArray);
     } catch (err) {
         console.error(err);
         res.status(500).send('Request failed');
     }
 
-    // // *** More advanced searching later
-    // var entry = sqlDummy();
-    // var results = [];
-    // if( entry == null) {
-    //     //SQL: query the most recent lost pets (no further filtering)
-    //     results = sqlDummy();
-    // }
-    // else {
-    //     //SQL: query lost pets with results closest to entry's fields (complex logic later)
-    //     results = sqlDummy();
-    // }
-    // console.log(results);
-    // res.send(results);
 }
 
 //create or update entry: only one entry per user

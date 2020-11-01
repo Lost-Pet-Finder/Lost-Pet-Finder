@@ -1,4 +1,5 @@
-const rekognition = require('../aws/rekognitionClient');
+const aws = require('../aws/awsClient');
+const rekognition = aws.rekognition;
 
 async function getAWSTags(data) {
     const bucketName = data.bucketName;

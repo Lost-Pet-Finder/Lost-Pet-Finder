@@ -1,24 +1,17 @@
+/* eslint-disable */
+
 // Imports
 // const sqlPool = require('../sql/connection');
-const rekognition = require('../aws/rekognitionClient');
+const aws = require('../aws/awsClient');
+const rekognition = aws.rekognition;
+const s3 = aws.s3;
+
 const sizeOf = require('buffer-image-size');
 const Jimp = require('jimp');
-
-var AWS = require('aws-sdk');
 const ColorThief = require('color-thief');
+
 const { head } = require('../routers/awsRouter');
 // const { distance } = require('jimp');
-
-const config = new AWS.Config({
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  region: process.env.AWS_REGION
-});
-const s3 = new AWS.S3({
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-    region: process.env.AWS_REGION
-  });
 
 const pets = ["Bird", "Bunny", "Cat", "Dog", "Guinea Pig", "Hamster", "Hare", "Kangaroo", "Mouse", "Pig", "Rabbit", "Rat", "Snake", "Wallaby"];
 

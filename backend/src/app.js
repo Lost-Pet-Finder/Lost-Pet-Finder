@@ -9,7 +9,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 // Core
-const awsRekognition = require('./aws/rekognitionClient');
+const awsClient = require('./aws/awsClient');
 const sql = require('./sql/connection');
 const { Redshift } = require('aws-sdk');
 const { response, json } = require('express');
@@ -24,11 +24,9 @@ const PORT = 6464;
 const app = express();
 app.use(express.json());
 
-// app.listen(PORT, () => {
-//     console.log(`[Server] Listening on PORT ${PORT}`);
-// });
-
-app.listen(3000);
+app.listen(PORT, () => {
+    console.log(`[Server] Listening on PORT ${PORT}`);
+});
 
 //ROUTES
 app.get('/', (req, res) => {
