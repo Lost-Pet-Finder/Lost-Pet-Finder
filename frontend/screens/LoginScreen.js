@@ -19,21 +19,50 @@ class LoginScreen extends React.Component {
     super(props);
   }
 
-  async updateFCMDeviceToken() {
+  async updateFCMDeviceToken(user_id) {
     const deviceToken = await messaging().getToken();
     console.log(`Device Token: ${deviceToken}`);
 
-    // TODO: SEND TO NODE SERVER
+    // TODO: UPDATE TO AWS EC2 URL
+    const url = 'http://127.0.0.1:6464/notif/uploadDeviceToken';
+
+    const body = {
+      userid: user_id,
+      deviceToken: deviceToken
+    }
+
+    try {
+      const response = await fetch(url, 
+        {
+            method:'POST',
+            headers:{
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: body
+        });
+    } catch (err) {
+      console.log(err);
+    }
+
+    return;
   }
 
   signedInAsFinder() {
-    this.updateFCMDeviceToken();
-    this.props.navigation.navigate('HomePage', {user_id: '1', isFinder: 1});
+    // ... get user id from server
+    const user_id = '1';
+
+
+    this.updateFCMDeviceToken(user_id);
+    this.props.navigation.navigate('HomePage', {user_id: user_id, isFinder: 1});
   }
 
   signedInAsLoser() {
-    this.updateFCMDeviceToken();
-    this.props.navigation.navigate('HomePage', {user_id: '2', isFinder: 0});
+    // .. get user id from server
+    const user_id = '2';
+
+    this.updateFCMDeviceToken(user_id);
+    this.props.navigation.navigate('HomePage', {user_id: user_id, isFinder: 0});
   }
 
   render(){
