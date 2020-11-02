@@ -65,7 +65,6 @@ async function sendRekognitionRequest(req, res) {
 
         if(getLength(labels) > 0)
         labels = filterForPets(labels);
-        console.log(labels);
         if(getLength(labels) > 0)
         labels = filterForConfidence(labels);
 
@@ -172,6 +171,10 @@ function filterForPets(response)
     const animal = {"Name": "Animal"};
     try {
         ret = []
+        if(response.length < 1)
+        {
+            return ret;
+        }
         response.forEach(label => {
             label.Parents.forEach(parent => {
                 // console.log(label.Name);
@@ -195,6 +198,10 @@ function filterForConfidence(response)
 {
     try {
         ret = []
+        if(response.length < 1)
+        {
+            return ret;
+        }
         response.forEach(label => {
             if(label.Confidence >= 85)
             {
@@ -212,6 +219,10 @@ function filterForConfidence(response)
 
 function validBoxes(response) {
     var boxes = [];
+    if(response.length < 1)
+    {
+        return noBox;
+    }
     response.forEach(label => {
         label.Instances.forEach(instance => {
             if(instance.BoundingBox != undefined)
@@ -240,7 +251,7 @@ function validBoxes(response) {
     }
 
     if(boxes.length == 0)
-    return [];
+    return noBox;
 
     return boxes[Math.floor(boxes.length / 2)];
 }
