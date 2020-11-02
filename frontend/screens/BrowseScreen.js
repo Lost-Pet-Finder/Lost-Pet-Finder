@@ -56,18 +56,18 @@ export default class BrowseScreen extends React.Component {
     return (
       <SafeAreaView style={styles.container}>
         <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollViewCellContainer}>
-          {this.state.petArray.map((pet) => {
+          {this.state.petArray.map((pet, index) => {
             
             return (        
-                <View style={styles.scrollViewCell}>
-                  <Text style={styles.titleText}> Pet's Name: </Text>
+                <View style={styles.scrollViewCell} key={index}>
+                  <Text style={styles.titleText}> Pet's Name </Text>
                   <View style={styles.imageAndTextContainer}>
-                    <Image source={{uri:`https://lostpetpictures.s3-us-west-2.amazonaws.com/${pet.file_name}`}} style = {styles.imageView}></Image>
+                    <Image source={{uri:`https://lostpetpictures.s3-us-west-2.amazonaws.com/${pet.information.file_name}`}} style = {styles.imageView}></Image>
                     <View style={styles.detailsView}>
-                      <Text>{`Similarity Score: `}</Text>
-                      <Text>{`Location: (${pet.location_x}, ${pet.location_y})`}</Text>
-                      <Text>{`Report Date: \n${pet.report_date}`}</Text>
-                      <Button title = "Contact Owner" onPress={() => this.props.navigation.navigate('ContactOwnerScreen')}></Button>
+                      <Text>{`Reporter ID: ${pet.information.fk_user_id}`}</Text>
+                      <Text>{`Location: (${pet.information.location_x}, ${pet.information.location_y})`}</Text>
+                      <Text>{`Report Date: \n${pet.information.report_date}`}</Text>
+                      <Button title = "Learn More" onPress={() => this.props.navigation.navigate('ContactOwnerScreen', {petInfo: this.state.petArray[index]})}></Button>
                     </View>
                   </View>
                 </View>

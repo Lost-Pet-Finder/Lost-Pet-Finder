@@ -9,8 +9,9 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 // Core
+const awsClient = require('./aws/awsClient');
 const fadmin = require('./util/firebaseAdmin');
-const awsRekognition = require('./aws/rekognitionClient');
+
 const sql = require('./sql/connection');
 const { Redshift } = require('aws-sdk');
 const { response, json } = require('express');
@@ -19,6 +20,7 @@ const { response, json } = require('express');
 const awsRouter = require('./routers/awsRouter');
 const petsRouter = require('./routers/petsRouter');
 const userRouter = require('./routers/userRouter');
+const notifRouter = require('./routers/notificationRouter');
 
 // Objects
 const PORT = 6464;
@@ -29,8 +31,6 @@ app.listen(PORT, () => {
     console.log(`[Server] Listening on PORT ${PORT}`);
 });
 
-// app.listen(3000);
-
 //ROUTES
 app.get('/', (req, res) => {
     res.status(200).send('This is the Lost Pet Finder API');
@@ -39,6 +39,7 @@ app.get('/', (req, res) => {
 app.use('/aws', awsRouter);
 app.use('/pets', petsRouter);
 app.use('/user', userRouter);
+app.use('/notif', notifRouter);
 
 
 

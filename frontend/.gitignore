@@ -29,6 +29,9 @@ build/
 local.properties
 *.iml
 
+# weird java file
+*.hprof
+
 # node.js
 #
 node_modules/
