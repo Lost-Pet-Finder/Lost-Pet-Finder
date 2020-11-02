@@ -4,7 +4,7 @@
   "description": "nodejs backend for lost pet finder app",
   "main": "src/app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "start": "node src/app.js"
   },
   "author": "",
@@ -25,6 +25,9 @@
     "image-clipper": "^0.4.4",
     "jimp": "^0.16.1",
     "mysql": "^2.18.1",
-    "probe-image-size": "^5.0.0"
+    "probe-image-size": "^5.0.0",
+    "express": "^4.17.1",
+    "jest": "^26.6.1",
+    "supertest": "^6.0.0"
   }
 }
