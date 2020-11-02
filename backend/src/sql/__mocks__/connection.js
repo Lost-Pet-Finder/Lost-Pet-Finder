@@ -100,11 +100,11 @@ const query = string => {
 				{
 					report_id: 36,
 					fk_user_id: 1,
-					file_name: "golden_retriever_0.jpg",
-					location_x: 100,
-					location_y: 100,
-					report_date: "2020-10-25T18:30:00.000Z",
-					tags: '["Pet","Canine","Dog","Animal","Mammal","Golden Retriever"]',
+					file_name: "image-5754bcc1-5919-4dee-85f6-8d74f6907345.jpg",
+					location_x: 123,
+					location_y: 123,
+					report_date: "2020-10-10T17:13:00.000Z",
+					tags: "[\"Green\",\"First Aid\",\"Plant\",\"Art\",\"Graphics\"]",
 				},
 			],
 			{

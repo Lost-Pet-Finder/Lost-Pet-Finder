@@ -27,7 +27,7 @@ const PORT = 6464;
 const app = express();
 app.use(express.json());
 
-app.listen(PORT, () => {
+var server = app.listen(PORT, () => {
     console.log(`[Server] Listening on PORT ${PORT}`);
 });
 
@@ -89,4 +89,5 @@ function shutdown() {
     });
 }
 
-module.exports = app;
+module.exports = server;
+// module.exports = app;
