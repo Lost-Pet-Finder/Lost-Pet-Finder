@@ -23,7 +23,7 @@ async function searchLostPets(req, res) {
             });
         }
 
-        console.log(retArray);
+        // console.log(retArray);
 
         res.status(200).send(retArray);
     } catch (err) {
@@ -86,7 +86,7 @@ async function searchFoundPets(req, res) {
             });
         }
 
-        console.log(retArray);
+        // console.log(retArray);
 
         res.status(200).send(retArray);
     } catch (err) {
