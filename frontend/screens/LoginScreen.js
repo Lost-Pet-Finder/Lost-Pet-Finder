@@ -23,8 +23,7 @@ class LoginScreen extends React.Component {
     const deviceToken = await messaging().getToken();
     console.log(`Device Token: ${deviceToken}`);
 
-    // TODO: UPDATE TO AWS EC2 URL
-    const url = 'http://127.0.0.1:6464/notif/uploadDeviceToken';
+    const url = 'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/notif/uploadDeviceToken';
 
     const body = {
       userid: user_id,
@@ -39,7 +38,7 @@ class LoginScreen extends React.Component {
               Accept: 'application/json',
               'Content-Type': 'application/json',
             },
-            body: body
+            body: JSON.stringify(body)
         });
     } catch (err) {
       console.log(err);
