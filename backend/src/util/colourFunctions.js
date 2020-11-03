@@ -82,8 +82,8 @@ async function getColour(bucketName, fileName) {
 
         var modeCorrected = []
         modeCorrected[0] = Math.max(Math.min(mode[0] + percentArea * rDiff * modeTotal[0], 255), 0) ;
-        modeCorrected[1] = Math.max(Math.min(mode[1] + percentArea * rDiff * modeTotal[1], 255), 0) ;
-        modeCorrected[2] = Math.max(Math.min(mode[2] + percentArea * rDiff * modeTotal[2], 255), 0) ;
+        modeCorrected[1] = Math.max(Math.min(mode[1] + percentArea * gDiff * modeTotal[1], 255), 0) ;
+        modeCorrected[2] = Math.max(Math.min(mode[2] + percentArea * bDiff * modeTotal[2], 255), 0) ;
 
         // console.log(modeCorrected);
 

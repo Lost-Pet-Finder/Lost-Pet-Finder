@@ -33,53 +33,76 @@ noBox = {
 };
 async function sendRekognitionRequest(req, res) {
     const bucketName = req.body.bucketName;
-    const fileName = req.body.fileName;
+    const fileName0 = req.body.fileName0;
+    const fileName1 = req.body.fileName1;
 
-    const params = {
+    const params0 = {
         Image: {
             S3Object: {
                 Bucket: bucketName,
-                Name: fileName
+                Name: fileName0
             }
         },
         MaxLabels: 100
-    }
+    };
+
+    const params1 = {
+        Image: {
+            S3Object: {
+                Bucket: bucketName,
+                Name: fileName1
+            }
+        },
+        MaxLabels: 100
+    };
 
     try {
-        const response = await rekognition.detectLabels(params).promise();
+        const response0 = await rekognition.detectLabels(params0).promise();
+        const response1 = await rekognition.detectLabels(params1).promise();
 
-        var returnedLabels = [];
+        labels0 = [];
+        labels1 = [];
 
-        response.Labels.forEach(label => {
-            returnedLabels.push(label);
+        response0.Labels.forEach( label => {
+            labels0.push(label);
         });
 
-        // const colour = await getColour(req, response);
-        answer = [];
-
-        labels = [];
-
-        response.Labels.forEach( label => {
-            labels.push(label);
+        response1.Labels.forEach( label => {
+            labels1.push(label);
         });
 
-        if(getLength(labels) > 0)
-        labels = filterForPets(labels);
-        if(getLength(labels) > 0)
-        labels = filterForConfidence(labels);
+        labels0 = filterForPets(labels0);
+        labels0 = filterForConfidence(labels0);
+        labels1 = filterForPets(labels1);
+        labels1 = filterForConfidence(labels1);
 
-        if(getLength(labels) > 0)
+        if(labels0.length > 0 && labels1.length > 0)
         {
-            validBox = validBoxes(labels);
-            if(validBox != errorBox)
+            intersectionScore = getIntersectionScore(labels0, labels1);
+        
+            validBox0 = validBoxes(labels0);
+            validBox1 = validBoxes(labels1);
+            if(validBox0 != errorBox && validBox1 != errorBox)
             {
-                colour = await getColour(req.body.bucketName,req.body.fileName, validBox, labels).then(function(value) {
-                    console.log(value);
-                });
+                colour0 = [];
+                colour1 = [];
+
+                colour0 = await getColour(bucketName, fileName0, validBox0);
+                // console.log(colour0);
+
+                colour1 = await getColour(bucketName, fileName1, validBox1);
+
+                console.log(colour0);
+                colourScore = getColourScore(colour0, colour1);
+
+                finalScore = intersectionScore/20 / 2 + (441.67 - colourScore) / 441.67 / 2;
+                console.log(finalScore);
+                res.status(200).send("Request succeeded");
             }
             else 
             {
                 console.log("too many animals in picture! :(");
+                res.status(400).send('Request failed');
             }
         }
         else 
@@ -87,11 +110,10 @@ async function sendRekognitionRequest(req, res) {
             // console.log(labels);
             // console.log(labels.array.length);
             console.log("no animals detected in image! :(");
+            res.status(401).send('Request failed');
+            
         }
 
-        res.status(200).json({
-            labels: returnedLabels
-        });
     } catch (err) {
         console.log(err);
 
@@ -99,7 +121,7 @@ async function sendRekognitionRequest(req, res) {
     }
 }
 
-async function getColour(bucketName, fileName, validBox, response) {
+async function getColour(bucketName, fileName, validBox) {
 
     try {
         const image = await s3.getObject({Bucket: bucketName,Key: fileName}).promise();
@@ -234,7 +256,7 @@ function validBoxes(response) {
 
     for( i = 0; i < boxes.length - 1; i++) {
         for(j = 0; j < i; i++) {
-            console.log(i + j + boxes[i] + "owo");
+            // console.log(i + j + boxes[i] + "owo");
             if(Math.abs(boxes[i].Width - boxes[j].Width) > 0.1) {
                 return errorBox;
             }
@@ -259,82 +281,29 @@ function validBoxes(response) {
 function getLength(response)
 {
     length = 0;
-    response.forEach( label =>{
+    response.Labels.forEach( label =>{
         length = length + 1;
     });
     return length;
 }
 
-async function getIntersectionScore(req, res) {
-    const bucketName = req.body.bucketName;
-    const fileName0 = req.body.fileName0;
-    const fileName1 = req.body.fileName1;
+function getIntersectionScore(labels0, labels1) {
+    intersection = getIntersection(labels0, labels1);
 
-    const params0 = {
-        Image: {
-            S3Object: {
-                Bucket: bucketName,
-                Name: fileName0
-            }
-        },
-        MaxLabels: 100
-    };
+    score = 0.0;
 
-    const params1 = {
-        Image: {
-            S3Object: {
-                Bucket: bucketName,
-                Name: fileName1
-            }
-        },
-        MaxLabels: 100
-    };
-
-    try {
-        const response0 = await rekognition.detectLabels(params0).promise();
-        const response1 = await rekognition.detectLabels(params1).promise();
-
-        labels0 = [];
-        labels1 = [];
-
-        response0.Labels.forEach( label => {
-            labels0.push(label);
+    for(i = 0; i < intersection.length; i++)
+    {
+        parentsScore = 0.0;
+        intersection[i].Parents.forEach( parent => {
+            parentsScore += 1;
         });
-
-        response1.Labels.forEach( label => {
-            labels1.push(label);
-        });
-
-        labels0 = filterForPets(labels0);
-        labels0 = filterForConfidence(labels0);
-        labels1 = filterForPets(labels1);
-        labels1 = filterForConfidence(labels1);
-
-        intersection = getIntersection(labels0, labels1);
-
-        score = 0.0;
-
-        for(i = 0; i < intersection.length; i++)
-        {
-            parentsScore = 0.0;
-            intersection[i].Parents.forEach( parent => {
-                parentsScore += 1;
-            });
-            parentsScore = Math.pow(parentsScore, 1.3);
-            score += parentsScore; 
-        }
-        sore = Math.pow(score, 1.2);
-
-        console.log(score);
-
-        res.status(200).json({
-            intersection
-        });
-    } catch (err) {
-        console.log(err);
-
-        res.status(500).send('Request failed');
+        parentsScore = Math.pow(parentsScore, 1.3);
+        score += parentsScore; 
     }
+    sore = Math.pow(score, 1.2);
+
+    return score;
 }
 
 function getIntersection(labels0, labels1) 
@@ -356,6 +325,11 @@ function getIntersection(labels0, labels1)
 
     // console.log(intersection);
     return intersection;
+}
+
+function getColourScore(colour0, colour1)
+{
+    return Math.sqrt (Math.pow((colour0[0]-colour1[0]),2) + Math.pow((colour0[1]-colour1[1]),2) + Math.pow((colour0[2]-colour1[2]),2));
 }
 
 module.exports = {
