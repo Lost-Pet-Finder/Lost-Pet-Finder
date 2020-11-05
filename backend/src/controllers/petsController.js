@@ -14,8 +14,26 @@ async function searchLostPets(req, res) {
         // var retArray = []
 
         // for (var i = 0; i < dataPackets.length; i++) {
+        //     //get each entry from databse
         //     const petEntry = dataPackets[i];
         //     const colours = await getColour('lostpetpictures', petEntry.file_name);
+
+        //     //get colours string array from db 
+        //     //"1,2,3!96,100,3!10,22,4"
+        //     const colour_str = petEntry.colors;
+
+        //     //convert to three string arrays "1,2,3!96,100,3!10,22,4"=>["1,2,3", "96,100,3", "10,22,4"]
+        //     var colour_arr = colour_str.split("!");
+
+        //     //["1,2,3", "96,100,3", "10,22,4"] => [[1, 2, 3], [96, 100, 3], [10, 22, 4]
+        //     var number_arr = [];
+        //     colour_arr.forEach(elem => {
+        //         number_arr.push(elem.split(",").map(Number));
+        //     });
+
+        //     const total_c = number_arr[0];
+        //     const crop_c = number_arr[1];
+        //     const final_c = numer_arr[2];
 
         //     retArray.push({
         //         information: petEntry,
@@ -24,7 +42,7 @@ async function searchLostPets(req, res) {
         // }
 
         // console.log(retArray);
-
+        
         res.status(200).send(dataPackets);
     } catch (err) {
         console.error(err);
@@ -47,6 +65,20 @@ async function postLostPets(req, res) {
     };
 
     try {
+
+        // //get colour associative array
+        // var color_ar = getColor(data["bucketName"], data["fileName"]);
+
+        // //transfer the associative array to string
+        // //[96, 100, 5] => "96, 100, 5"
+        // var t_color = color_ar["totalColor"].toString();
+        // var c_color = color_ar["croppedColor"].toString();
+        // var f_color = color_ar["finalColor"].toString();
+    
+        // //convert to a string
+        // const colorString = [t_color, c_color, f_color].join("!");
+
+        //get the tags
         const tags = await awsFunctions.getAWSTags(data);
 
         var tagNames = []
@@ -57,6 +89,9 @@ async function postLostPets(req, res) {
         const tagsString = JSON.stringify(tagNames);
 
         const response = await sqlPool.query('CALL create_lost_pet_report(?, ?, POINT(?,?), ?, ?)', [userid, filename, location_x, location_y, date, tagsString]);
+
+        //added color to database
+        //const response = await sqlPool.query('CALL create_lost_pet_report(?, ?, POINT(?,?), ?, ?, ?)', [userid, filename, location_x, location_y, date, tagsString, colorString]);
 
         res.status(200).send(response[0]);
     } catch (err) {
