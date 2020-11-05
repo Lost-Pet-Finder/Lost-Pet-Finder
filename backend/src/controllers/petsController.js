@@ -79,6 +79,7 @@ async function postLostPets(req, res) {
         // const colorString = [t_color, c_color, f_color].join("!");
 
         //get the tags
+        
         const tags = await awsFunctions.getAWSTags(data);
 
         var tagNames = []
