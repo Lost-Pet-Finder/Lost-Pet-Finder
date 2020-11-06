@@ -8,16 +8,26 @@ import {
   Text,
   Image,
   TouchableOpacity,
-  Button
+  Button,
+  Alert
 } from 'react-native';
 
 // FCM
 import messaging from '@react-native-firebase/messaging';
+import auth, {firebase} from '@react-native-firebase/auth';
+
 
 class LoginScreen extends React.Component {
   constructor(props){
     super(props);
+    this.state = {
+      email: '',
+      password: '',
+      errorMsg: null
+    }
   }
+
+  identity = {user_id: '', isFinder: null};
 
   async updateFCMDeviceToken(user_id) {
     const deviceToken = await messaging().getToken();
@@ -50,18 +60,48 @@ class LoginScreen extends React.Component {
   signedInAsFinder() {
     // ... get user id from server
     const user_id = '1';
+    let identity = {user_id: '1', isFinder: 1};
 
+    this.updateFCMDeviceToken(identity.user_id);
+    //this.props.navigation.navigate('HomePage', {user_id: user_id, isFinder: 1});
 
-    this.updateFCMDeviceToken(user_id);
-    this.props.navigation.navigate('HomePage', {user_id: user_id, isFinder: 1});
+    //handle firebase authentication
+    this.handleLogin(identity);
   }
 
   signedInAsLoser() {
     // .. get user id from server
     const user_id = '2';
+    let identity = {user_id: '2', isFinder: 0};
 
-    this.updateFCMDeviceToken(user_id);
-    this.props.navigation.navigate('HomePage', {user_id: user_id, isFinder: 0});
+    this.updateFCMDeviceToken(identity.user_id);
+    //this.props.navigation.navigate('HomePage', {user_id: user_id, isFinder: 0});
+
+    //handle firebase authentication
+    this.handleLogin(identity);
+  }
+
+  handleLogin(identity){
+    console.log(identity);
+   
+    firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
+            .then(() => this.props.navigation.navigate('HomePage', identity))
+            .catch(error => {
+              console.log(error.code);
+              switch(error.code){
+                //The provided value for the email user property is invalid. It must be a string email address.
+                //Invalid input example: cpen321321, 091e10
+                
+                case 'auth/invalid-email':
+                  Alert.alert('Invalid email, please check if your account is correct');
+                  break;
+                
+                //The provided value for the password user property is invalid. It must be a string with at least six characters.
+                case 'auth/wrong-password':
+                  Alert.alert('Wrong password, please check if your password is correct');
+                  break;
+              }
+            });
   }
 
   render(){
@@ -78,17 +118,19 @@ class LoginScreen extends React.Component {
             //labelValue={email}
             placeholder="Email"
             placeholderTextColor="#003f5c"
-            //onChangeText={(email) => setEmail(email)}
+            onChangeText={(email) => this.setState({email})}
+            value = {this.state.email}
           />
         </View> 
 
         <View style={styles.inputView}>
           <TextInput
             style={styles.inputText}
-            //labelValue={password}
+            secureTextEntry
             placeholder="Password"
             placeholderTextColor="#003f5c"
-            //onChangeText={(password) => setPassword(password)}
+            onChangeText={(password) => this.setState({password})}
+            value = {this.state.password}
           />
         </View>
 

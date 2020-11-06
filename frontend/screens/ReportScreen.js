@@ -20,12 +20,6 @@ const options = {
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = 0.0922;
 
-// export const getCurrentLocation = function(){
-//   return new Promise((resolve, reject) => {
-//     navigator.geolocation.getCurrentPosition(position => resolve(position), e => reject(e));
-//   });
-// };
-
 export default class ReportScreen extends React.Component {
 
   constructor(props) {
