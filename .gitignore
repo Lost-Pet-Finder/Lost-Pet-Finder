@@ -1,2 +1,4 @@
 # Global .gitignore
 .DS_Store
+node_modules/
+package.json
