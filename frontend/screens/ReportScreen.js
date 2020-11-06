@@ -37,8 +37,8 @@ export default class ReportScreen extends React.Component {
 
       avatarSource: null,
       filename: null,
-      loc_x: null,
-      loc_y: null,
+      lat: null,
+      lon: null,
       date: null,
       bucket: 'lostpetpictures',
 
@@ -71,7 +71,12 @@ export default class ReportScreen extends React.Component {
         longitudeDelta: LONGITUDE_DELTA,
       };
 
-      this.setState({ currentPosition: coordination_info });
+      this.setState(
+        {
+        currentPosition: coordination_info,
+        lat: position["coords"]["latitude"],
+        lon: position["coords"]["longitude"],
+        });
     },
       (error) => alert(JSON.stringify(error)),
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
@@ -97,8 +102,8 @@ export default class ReportScreen extends React.Component {
       {
         userid: this.state.user_id,
         filename: this.state.filename,
-        location_x: this.state.loc_x,
-        location_y: this.state.loc_y,
+        location_x: this.state.lat,
+        location_y: this.state.lon,
         date: this.state.date,
         bucketName: this.state.bucket,
       });
@@ -215,9 +220,6 @@ export default class ReportScreen extends React.Component {
               value={this.state.date}
             ></TextInput>
           
-      
-
-  
           <TouchableOpacity style={styles.SearchButton} onPress={() => this.getPhoto()} >
             <Text style={styles.textStyle}>Upload Photos</Text>
           </TouchableOpacity>
