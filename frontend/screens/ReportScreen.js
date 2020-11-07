@@ -1,26 +1,27 @@
-import React,{Component} from 'react';
+import React from 'react';
 import 'react-native-gesture-handler';
 
 import{
-  StyleSheet, 
-  View, 
+  StyleSheet,
+  View,
   Text,  
   Image, 
   TextInput,
-  TouchableOpacity, 
+  TouchableOpacity,
   Alert} 
   from 'react-native';
 
-import { NavigationContainer } from '@react-navigation/native';
 import ImagePicker from 'react-native-image-picker';
-import CameraRollPicker from 'react-native-camera-roll-picker';
-import { withNavigation } from 'react-navigation';
-import {RNS3} from 'react-native-aws3'
+import {RNS3} from 'react-native-aws3';
+
+//import { NavigationContainer } from '@react-navigation/native';
+//import CameraRollPicker from 'react-native-camera-roll-picker';
+//import { withNavigation } from 'react-navigation';
 
 const options ={
     takePhotoButtonTitle:'Take Photos',
     chooseFromLibraryButtonTitle:'Photo Gallery',
-}
+};
 
 export default class ReportScreen extends React.Component {
 

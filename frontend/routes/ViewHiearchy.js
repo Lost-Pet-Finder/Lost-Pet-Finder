@@ -44,7 +44,7 @@ const screens = {
             headerShown: true
         }
     }
-}
+};
 
 //create new stack navigator, pass the screens you want to navigate in the app
 const ViewHierarchy = createStackNavigator(screens);

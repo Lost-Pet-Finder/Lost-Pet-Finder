@@ -26,7 +26,6 @@ export default class App extends React.Component{
     const enabled =
       authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
       authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-  
     if (enabled) {
       console.log('Authorization status:', authStatus);
     }
@@ -38,4 +37,3 @@ export default class App extends React.Component{
   
 }
 
-const styles = StyleSheet.create({});

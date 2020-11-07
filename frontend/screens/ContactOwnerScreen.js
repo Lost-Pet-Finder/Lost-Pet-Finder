@@ -1,9 +1,14 @@
 import React from 'react';
 import 'react-native-gesture-handler';
-import {StyleSheet, Button, View, SafeAreaView, Text, Image, FlatList, ScrollView} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text, 
+  Image} 
+  from 'react-native';
 
 import {rgbToHex} from '../util/rgbToHex';
-import module from '@react-native-firebase/app';
+
 
 export default class ContactOwnerScreen extends React.Component {
   constructor(props) {
@@ -14,7 +19,7 @@ export default class ContactOwnerScreen extends React.Component {
       totalColor: this.props.navigation.state.params.petInfo.colours.totalColor,
       croppedColor: this.props.navigation.state.params.petInfo.colours.croppedColor,
       finalColor: this.props.navigation.state.params.petInfo.colours.finalColor
-    }
+    };
   }
 
   render(){
@@ -29,8 +34,8 @@ export default class ContactOwnerScreen extends React.Component {
             <Text>{`Report Date: \n${this.state.pet.information.report_date}`}</Text>
           </View>
         </View>
-
-        <View style={{justifyContent: 'center', alignItems: 'center'}}>
+        
+        <View style={styles.viewContainer}>
           <Text style={styles.aiTags}>{`AI Generated Tags:`}</Text>
           <Text style={styles.infoText}>{`${this.state.pet.information.tags}`}</Text>
         </View>
@@ -64,8 +69,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-evenly',
   },
+  viewContainer: {
+    justifyContent: 'center', 
+    alignItems: 'center'
+  },
   horizontalFlexContainer: {
-    width: "100%",
+    width: '100%',
     height: 150,
     flexDirection: 'row',
     alignItems: 'center',
@@ -76,18 +85,18 @@ const styles = StyleSheet.create({
     width: '30%'
   },
   colorBox: {
-    backgroundColor: "#000000",
-    height: "50%",
-    width: "100%"
+    backgroundColor: '#000000',
+    height: '50%',
+    width: '100%',
   },
   colorText: {
     fontSize: 18
   },
   imageAndTextContainer: {
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "flex-start",
-    alignItems: "center"
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center'
   },
   imageView: {
     width: 140,
@@ -100,11 +109,11 @@ const styles = StyleSheet.create({
   },
   titleText: {
     fontSize: 30,
-    fontWeight: "bold"
+    fontWeight: 'bold',
   },
   aiTags: {
     fontSize: 20,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     textAlign: 'center'
   },
   infoText: {

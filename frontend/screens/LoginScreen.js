@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, {useState} from 'react';
+import React from 'react';
 
 import {
   StyleSheet,
@@ -7,8 +7,7 @@ import {
   TextInput,
   Text,
   Image,
-  TouchableOpacity,
-  Button
+  TouchableOpacity
 } from 'react-native';
 
 // FCM
@@ -31,14 +30,14 @@ class LoginScreen extends React.Component {
     };
 
     try {
-      const response = await fetch(url, 
+      const response = await fetch(url,
         {
-            method: 'POST',
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(body)
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(body)
         });
     } catch (err) {
       console.log(err);
@@ -67,8 +66,9 @@ class LoginScreen extends React.Component {
   render(){
     //console.log(JSON.stringify(this.props));
     return (
-      
-      <View style={styles.container} testID={'LoginScreen_detox'}>
+      <View
+      style={styles.container}
+      testID={'LoginScreen_detox'}>
         <Image
           style={styles.image}
           source={require('../assets/logo.png')}></Image>
@@ -80,7 +80,7 @@ class LoginScreen extends React.Component {
             placeholderTextColor="#003f5c"
             //onChangeText={(email) => setEmail(email)}
           />
-        </View> 
+        </View>
 
         <View style={styles.inputView}>
           <TextInput
@@ -92,22 +92,20 @@ class LoginScreen extends React.Component {
           />
         </View>
 
-        <TouchableOpacity 
+        <TouchableOpacity
           style={styles.loginButton} 
-          testID={'SignInFinderButton_detox'} 
+          testID={'SignInFinderButton_detox'}
           onPress={()=>this.signedInAsFinder()} >
          
           <Text style={styles.loginText}>Sign In: Found</Text>
-  
         </TouchableOpacity>
 
-        <TouchableOpacity 
-          style={styles.loginButton} 
-          testID={'SignInLoserButton_detox'} 
+        <TouchableOpacity
+          style={styles.loginButton}
+          testID={'SignInLoserButton_detox'}
           onPress={()=>this.signedInAsLoser()} >
          
           <Text style={styles.loginText}>Sign In: Lost</Text>
-  
         </TouchableOpacity>
 
         <TouchableOpacity>
@@ -117,11 +115,9 @@ class LoginScreen extends React.Component {
           <Text style={styles.forgotPassword}>Forgot password?</Text>
         </TouchableOpacity>
       </View>
-    )
+    );
   }
-
-  
-};
+}
 
 export default LoginScreen;
 

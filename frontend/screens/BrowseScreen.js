@@ -1,14 +1,13 @@
 import React from 'react';
 import 'react-native-gesture-handler';
 import {
-  StyleSheet, 
-  Button, 
-  View, 
-  SafeAreaView, 
-  Text, 
-  Image, 
-  FlatList, 
-  ScrollView} 
+  StyleSheet,
+  Button,
+  View,
+  SafeAreaView,
+  Text,
+  Image,
+  ScrollView}
 from 'react-native';
 
 export default class BrowseScreen extends React.Component {
@@ -25,12 +24,11 @@ export default class BrowseScreen extends React.Component {
   pet_text = "Pet's Name";
 
   async componentDidMount() {
-    const url = this.state.isFinder == 0 ? 
-    'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/pets/searchFoundPets' : 
+    const url = this.state.isFinder == 0 ?
+    'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/pets/searchFoundPets' :
     'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/pets/searchLostPets';
 
-    
-    console.log(url)
+    console.log(url);
 
     const request = {
       method: 'GET',
@@ -68,8 +66,7 @@ export default class BrowseScreen extends React.Component {
       <SafeAreaView style={styles.container}>
         <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollViewCellContainer}>
           {this.state.petArray.map((pet, index) => {
-            
-            return (        
+            return (   
                 <View style={styles.scrollViewCell} key={index}>
                   <Text style={styles.titleText}> `${pet_text}` </Text>
                   <View style={styles.imageAndTextContainer}>
@@ -99,7 +96,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   scrollView: {
-    width: "100%"
+    width: '100%',
   },
   scrollViewCellContainer: {
   },
@@ -111,12 +108,12 @@ const styles = StyleSheet.create({
   titleText: {
     marginLeft: 20,
     fontSize: 20,
-    textAlign: "left"
+    textAlign: 'left',
   },
   imageAndTextContainer: {
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "flex-start",
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
     alignItems: 'center'
   },
   imageView: {
