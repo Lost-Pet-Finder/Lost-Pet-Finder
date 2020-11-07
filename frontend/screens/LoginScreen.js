@@ -15,7 +15,7 @@ import {
 import messaging from '@react-native-firebase/messaging';
 
 class LoginScreen extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
   }
 
@@ -28,13 +28,13 @@ class LoginScreen extends React.Component {
     const body = {
       userid: user_id,
       deviceToken: deviceToken
-    }
+    };
 
     try {
       const response = await fetch(url, 
         {
-            method:'POST',
-            headers:{
+            method: 'POST',
+            headers: {
               Accept: 'application/json',
               'Content-Type': 'application/json',
             },
@@ -92,13 +92,19 @@ class LoginScreen extends React.Component {
           />
         </View>
 
-        <TouchableOpacity style={styles.loginButton} testID={'SignInFinderButton_detox'} onPress={()=>this.signedInAsFinder()} >
+        <TouchableOpacity 
+          style={styles.loginButton} 
+          testID={'SignInFinderButton_detox'} 
+          onPress={()=>this.signedInAsFinder()} >
          
           <Text style={styles.loginText}>Sign In: Found</Text>
   
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.loginButton} testID={'SignInLoserButton_detox'} onPress={()=>this.signedInAsLoser() } >
+        <TouchableOpacity 
+          style={styles.loginButton} 
+          testID={'SignInLoserButton_detox'} 
+          onPress={()=>this.signedInAsLoser()} >
          
           <Text style={styles.loginText}>Sign In: Lost</Text>
   

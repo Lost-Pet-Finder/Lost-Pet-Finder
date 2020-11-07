@@ -23,7 +23,9 @@ export default class HomePage extends React.Component {
     async setupForegroundNotifications() {
         // register foreground handler
         const unsubscribeFore = messaging().onMessage(remoteMessage => {
-            Alert.alert(`${remoteMessage.notification.title}`, `${remoteMessage.notification.body}`);
+            Alert.alert(
+                `${remoteMessage.notification.title}`, 
+                `${remoteMessage.notification.body}`);
         });
 
         return unsubscribeFore;

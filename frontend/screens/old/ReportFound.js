@@ -1,7 +1,16 @@
 import React,{Component} from 'react';
 import 'react-native-gesture-handler';
 
-import{StyleSheet, View, Text, Modal, Image, TextInput,Button, TouchableOpacity} from 'react-native';
+import{
+  StyleSheet, 
+  View, 
+  Text, 
+  Modal, 
+  Image, 
+  TextInput,
+  Button, 
+  TouchableOpacity} 
+  from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import ImagePicker from 'react-native-image-picker';
 import CameraRollPicker from 'react-native-camera-roll-picker';
@@ -9,8 +18,8 @@ import { withNavigation } from 'react-navigation';
 import {RNS3} from 'react-native-aws3'
 
 const options ={
-    takePhotoButtonTitle:'Take Photos',
-    chooseFromLibraryButtonTitle:'Photo Gallery',
+    takePhotoButtonTitle: 'Take Photos',
+    chooseFromLibraryButtonTitle: 'Photo Gallery',
 }
 
 class ReportFoundScreen extends React.Component{
@@ -35,7 +44,8 @@ class ReportFoundScreen extends React.Component{
 
     //submit the report
     submit(){
-      const url = 'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/pets/postFoundPets';
+      const url = 
+      'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/pets/postFoundPets';
       this.setState({show:false,
                     });
 

@@ -1,6 +1,15 @@
 import React from 'react';
 import 'react-native-gesture-handler';
-import {StyleSheet, Button, View, SafeAreaView, Text, Image, FlatList, ScrollView} from 'react-native';
+import {
+  StyleSheet, 
+  Button, 
+  View, 
+  SafeAreaView, 
+  Text, 
+  Image, 
+  FlatList, 
+  ScrollView} 
+from 'react-native';
 
 export default class BrowseScreen extends React.Component {
   constructor(props) {
@@ -12,6 +21,8 @@ export default class BrowseScreen extends React.Component {
       isFinder: this.props.navigation.state.params.isFinder
     };
   }
+
+  pet_text = "Pet's Name";
 
   async componentDidMount() {
     const url = this.state.isFinder == 0 ? 
@@ -60,7 +71,7 @@ export default class BrowseScreen extends React.Component {
             
             return (        
                 <View style={styles.scrollViewCell} key={index}>
-                  <Text style={styles.titleText}> Pet's Name </Text>
+                  <Text style={styles.titleText}> `${pet_text}` </Text>
                   <View style={styles.imageAndTextContainer}>
                     <Image source={{uri:`https://lostpetpictures.s3-us-west-2.amazonaws.com/${pet.information.file_name}`}} style = {styles.imageView}></Image>
                     <View style={styles.detailsView}>
@@ -106,7 +117,7 @@ const styles = StyleSheet.create({
     width: "100%",
     flexDirection: "row",
     justifyContent: "flex-start",
-    alignItems: "center"
+    alignItems: 'center'
   },
   imageView: {
     width: 140,

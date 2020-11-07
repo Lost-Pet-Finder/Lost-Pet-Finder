@@ -18,8 +18,8 @@ class FindScreen extends React.Component{
         super(props);
         this.state={
           avatarSource: null,
-          show:false,
-          name:null,
+          show: false,
+          name: null,
         };
     }
     
@@ -41,7 +41,7 @@ class FindScreen extends React.Component{
         },
         body: JSON.stringify(this.state)
         })
-        .then((response)=> response.text())
+        .then((response) => response.text())
         .then((responseJson)=>{
           return responseJson
         })

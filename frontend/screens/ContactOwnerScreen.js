@@ -34,8 +34,6 @@ export default class ContactOwnerScreen extends React.Component {
           <Text style={styles.aiTags}>{`AI Generated Tags:`}</Text>
           <Text style={styles.infoText}>{`${this.state.pet.information.tags}`}</Text>
         </View>
-
-
         
         <View style={styles.horizontalFlexContainer}>
           <View style={styles.colorUnit}>
@@ -75,7 +73,7 @@ const styles = StyleSheet.create({
   },
   colorUnit: {
     alignItems: 'center',
-    width: "30%"
+    width: '30%'
   },
   colorBox: {
     backgroundColor: "#000000",

@@ -1,7 +1,16 @@
 import React,{Component} from 'react';
 import 'react-native-gesture-handler';
 
-import{StyleSheet, View, Text, Modal, Image, TextInput,Button, TouchableOpacity, Alert} from 'react-native';
+import{
+  StyleSheet, 
+  View, 
+  Text,  
+  Image, 
+  TextInput,
+  TouchableOpacity, 
+  Alert} 
+  from 'react-native';
+
 import { NavigationContainer } from '@react-navigation/native';
 import ImagePicker from 'react-native-image-picker';
 import CameraRollPicker from 'react-native-camera-roll-picker';
@@ -38,15 +47,24 @@ export default class ReportScreen extends React.Component {
 
     //submit the report
     submit() {
-      const url = this.state.isFinder == 0 ? 'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/pets/postLostPets': 'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/pets/postFoundPets';
+      const url = 
+      this.state.isFinder == 0 ? 'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/pets/postLostPets': 'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/pets/postFoundPets';
 
-      if (this.state.didUploadPicture == false) {
-        Alert.alert('Upload Picture First!', 'You need to provide a picture of your pet so we can run AI/ML image recognition');
+      if(this.state.didUploadPicture == false){
+        Alert.alert
+        (
+          'Upload Picture First!', 
+          'You need to provide a picture of your pet so we can run AI/ML image recognition'
+        );
         return;
       }
 
-      if (this.state.user_id == null || this.state.filename == null || this.state.loc_x == null || this.state.loc_y == null || this.state.date == null) {
-        Alert.alert('Incomplete Submission!', 'Please make sure you fill in all the fields and upload a picture');
+      if(this.state.user_id == null || this.state.filename == null || this.state.loc_x == null || this.state.loc_y == null || this.state.date == null) {
+        Alert.alert
+        (
+          'Incomplete Submission!', 
+          'Please make sure you fill in all the fields and upload a picture'
+        );
         console.log(this.state);
         return;
       }

@@ -5,7 +5,7 @@ describe('Example', () => {
 
   it('login screen is visible', async () => {
     await expect(element(by.id('LoginScreen_detox'))).toBeVisible()
-  })
+  });
 
   it('sign in button for finder is visible', async () => {
     await expect(element(by.id('SignInFinderButton_detox'))).toBeVisible()

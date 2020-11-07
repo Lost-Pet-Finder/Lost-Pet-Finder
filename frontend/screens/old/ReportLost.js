@@ -1,7 +1,16 @@
 import React,{Component} from 'react';
 import 'react-native-gesture-handler';
 
-import{StyleSheet, View, Text, Modal, Image, TextInput,Button, TouchableOpacity} from 'react-native';
+import{
+  StyleSheet, 
+  View, 
+  Text, 
+  Modal, 
+  Image, 
+  TextInput,
+  Button, 
+  TouchableOpacity} 
+  from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import ImagePicker from 'react-native-image-picker';
 import CameraRollPicker from 'react-native-camera-roll-picker';
@@ -16,15 +25,15 @@ const options ={
 class ReportLostScreen extends React.Component{
     constructor(props){
         super(props);
-        this.state={
+        this.state = {
           avatarSource: null,
-          show:false,
-          filename:null,
-          name:null,
-          user_id:null,
-          loc_x:null,
-          loc_y:null,
-          date:null,
+          show: false,
+          filename: null,
+          name: null,
+          user_id: null,
+          loc_x: null,
+          loc_y: null,
+          date: null,
           bucket: 'lostpetpictures',
         };
 
@@ -43,15 +52,15 @@ class ReportLostScreen extends React.Component{
       })
       this.setState({show:false});
       return fetch(url, {
-        method:'POST',
-        headers:{
+        method: 'POST',
+        headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
         body: body
         })
-        .then((response)=> response.text())
-        .then((responseJson)=>{
+        .then((response) => response.text())
+        .then((responseJson) => {
           console.log(responseJson)
           return responseJson
         })

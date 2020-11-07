@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React from 'react';
-import {View, Text, Alert, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 
 import messaging from '@react-native-firebase/messaging';
 
@@ -33,7 +33,7 @@ export default class App extends React.Component{
   }
   
   render(){
-    return <ViewHierarchy />
+    return <ViewHierarchy />;
   }
   
 }
