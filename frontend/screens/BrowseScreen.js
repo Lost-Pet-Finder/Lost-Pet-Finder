@@ -7,8 +7,7 @@ import {
   SafeAreaView,
   Text,
   Image,
-  ScrollView}
-from 'react-native';
+  ScrollView} from 'react-native';
 
 export default class BrowseScreen extends React.Component {
   constructor(props) {
@@ -66,7 +65,7 @@ export default class BrowseScreen extends React.Component {
       <SafeAreaView style={styles.container}>
         <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollViewCellContainer}>
           {this.state.petArray.map((pet, index) => {
-            return (   
+            return (
                 <View style={styles.scrollViewCell} key={index}>
                   <Text style={styles.titleText}> `${pet_text}` </Text>
                   <View style={styles.imageAndTextContainer}>

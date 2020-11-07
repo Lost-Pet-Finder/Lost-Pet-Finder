@@ -1,9 +1,9 @@
 import React from 'react';
 import {
-    View, 
-    Text, 
-    Alert, 
-    StyleSheet, 
+    View,
+    Text,
+    Alert,
+    StyleSheet,
     TouchableOpacity} from 'react-native';
 //import { useEffect } from 'react';
 
@@ -13,7 +13,6 @@ import messaging from '@react-native-firebase/messaging';
 export default class HomePage extends React.Component {
     constructor(props) {
         super(props);
-
         this.state = {
             user_id: this.props.navigation.state.params.user_id,
             isFinder: this.props.navigation.state.params.isFinder
@@ -42,29 +41,33 @@ export default class HomePage extends React.Component {
                 <TouchableOpacity
                     style={styles.reportView}
                     onPress={() => {
-                    this.props.navigation.navigate('ReportScreen', {user_id: this.state.user_id, isFinder: this.state.isFinder});}}
+                    this.props.navigation.navigate('ReportScreen',
+                    {user_id: this.state.user_id, 
+                    isFinder: this.state.isFinder});}}
                 >
                     <View>
                         <Text style={styles.viewTitle}>📸 Report 📸</Text>
                     </View>
                 </TouchableOpacity>
 
-                <TouchableOpacity 
+                <TouchableOpacity
                     style={styles.browseView}
                     onPress={() => {
-                    this.props.navigation.navigate('BrowseScreen', {user_id: this.state.user_id, isFinder: this.state.isFinder});}}
+                    this.props.navigation.navigate('BrowseScreen',
+                    {user_id: this.state.user_id,
+                    isFinder: this.state.isFinder});}}
                 >
-                    <View >
+                    <View>
                         <Text style={styles.viewTitle}>🔎 Browse 🔍</Text>
                     </View>
                 </TouchableOpacity>
 
-                <TouchableOpacity 
+                <TouchableOpacity
                     style={styles.contactView}
                     onPress={() => {
                     console.log('go to contact page');}}
                 >
-                    <View >
+                    <View>
                         <Text style={styles.viewTitle}>📱 Contact 📱</Text>
                     </View>
                 </TouchableOpacity>

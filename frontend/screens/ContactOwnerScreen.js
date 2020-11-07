@@ -3,10 +3,8 @@ import 'react-native-gesture-handler';
 import {
   StyleSheet,
   View,
-  Text, 
-  Image} 
-  from 'react-native';
-
+  Text,
+  Image} from 'react-native';
 import {rgbToHex} from '../util/rgbToHex';
 
 
@@ -34,7 +32,7 @@ export default class ContactOwnerScreen extends React.Component {
             <Text>{`Report Date: \n${this.state.pet.information.report_date}`}</Text>
           </View>
         </View>
-        
+
         <View style={styles.viewContainer}>
           <Text style={styles.aiTags}>{`AI Generated Tags:`}</Text>
           <Text style={styles.infoText}>{`${this.state.pet.information.tags}`}</Text>
@@ -71,7 +69,7 @@ const styles = StyleSheet.create({
   },
   viewContainer: {
     justifyContent: 'center', 
-    alignItems: 'center'
+    alignItems: 'center',
   },
   horizontalFlexContainer: {
     width: '100%',
@@ -82,7 +80,7 @@ const styles = StyleSheet.create({
   },
   colorUnit: {
     alignItems: 'center',
-    width: '30%'
+    width: '30%',
   },
   colorBox: {
     backgroundColor: '#000000',
@@ -96,16 +94,13 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   imageView: {
     width: 140,
     height: 140,
     marginHorizontal: 20,
-    marginBottom: 20
-  },
-  detailsView: {
-
+    marginBottom: 20,
   },
   titleText: {
     fontSize: 30,
@@ -114,10 +109,10 @@ const styles = StyleSheet.create({
   aiTags: {
     fontSize: 20,
     fontWeight: 'bold',
-    textAlign: 'center'
+    textAlign: 'center',
   },
   infoText: {
     fontSize: 18,
-    textAlign: 'center'
+    textAlign: 'center',
   }
 })

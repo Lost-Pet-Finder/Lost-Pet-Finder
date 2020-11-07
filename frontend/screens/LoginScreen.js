@@ -7,8 +7,7 @@ import {
   TextInput,
   Text,
   Image,
-  TouchableOpacity
-} from 'react-native';
+  TouchableOpacity} from 'react-native';
 
 // FCM
 import messaging from '@react-native-firebase/messaging';
