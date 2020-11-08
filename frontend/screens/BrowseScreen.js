@@ -126,18 +126,18 @@ const styles = StyleSheet.create({
   titleText: {
     marginLeft: 20,
     fontSize: 20,
-    // textAlign: 'left',
-  },
-  imageAndTextContainer: {
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
+    textAlign: 'left',
   },
   imageView: {
-    width: 140,
     height: 140,
     marginHorizontal: 20,
+    width: 140,
     marginBottom: 20,
+  },
+  imageAndTextContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    width: '100%',
+    alignItems: 'center',
   },
 });

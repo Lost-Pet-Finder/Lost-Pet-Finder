@@ -86,7 +86,8 @@ export default class ContactOwnerScreen extends React.Component {
                     this.state.finalColor[2],
                   ),
                 },
-              ]}></View>
+              ]}
+            />
             <Text style={styles.colorText}>Final Color</Text>
           </View>
         </View>
