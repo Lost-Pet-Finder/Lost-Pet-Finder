@@ -8,7 +8,6 @@
 // const Jimp = require('jimp');
 // const ColorThief = require('color-thief');
 
-
 // async function getColour(bucketName, fileName) {
 //     try {
 //         const rekognitionParams = {
@@ -35,7 +34,7 @@
 //         // modeTotal2 = (pixels.sort((a,b) =>
 //         //   pixels.filter(v => v===a).length
 //         // - pixels.filter(v => v===b).length).pop());
-        
+
 //         var box;
 //         count = 0;
 
@@ -69,8 +68,6 @@
 //         //   pixels.filter(v => v===a).length
 //         // - pixels.filter(v => v===b).length).pop());
 
-
-
 //         var percentArea = 1 - ((boxWidth * boxHeight) / (totalWidth * totalHeight));
 //         var rDiff = (mode[0] - modeTotal[0]);
 //         var gDiff = (mode[1] - modeTotal[1]);
@@ -96,7 +93,7 @@
 //         return calculatedColors
 //     } catch (err) {
 //         console.log(err);
-        
+
 //         return null;
 //     }
 // }

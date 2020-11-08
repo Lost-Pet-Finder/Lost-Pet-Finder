@@ -2,37 +2,36 @@ const aws = require('../aws/awsClient');
 const rekognition = aws.rekognition;
 
 async function getAWSTags(data) {
-    const bucketName = data.bucketName;
-    const fileName = data.fileName;
+	const bucketName = data.bucketName;
+	const fileName = data.fileName;
 
-    const params = {
-        Image: {
-            S3Object: {
-                Bucket: bucketName,
-                Name: fileName
-            }
-        },
-        MaxLabels: 10
-    }
+	const params = {
+		Image: {
+			S3Object: {
+				Bucket: bucketName,
+				Name: fileName,
+			},
+		},
+		MaxLabels: 10,
+	};
 
-    try {
-        const response = await rekognition.detectLabels(params).promise();
+	try {
+		const response = await rekognition.detectLabels(params).promise();
 
-        var returnedLabels = [];
+		var returnedLabels = [];
 
-        response.Labels.forEach(label => {
-            returnedLabels.push(label);
-        });
+		response.Labels.forEach(label => {
+			returnedLabels.push(label);
+		});
 
-        return returnedLabels;
-    } catch (err) {
-        console.log(err);
+		return returnedLabels;
+	} catch (err) {
+		console.log(err);
 
-        return null;
-    }
+		return null;
+	}
 }
-
 
 module.exports = {
-    getAWSTags: getAWSTags
-}
+	getAWSTags: getAWSTags,
+};
