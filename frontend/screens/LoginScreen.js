@@ -39,6 +39,7 @@ class LoginScreen extends React.Component {
         },
         body: JSON.stringify(body),
       });
+      console.log(response);
     } catch (err) {
       console.log(err);
     }

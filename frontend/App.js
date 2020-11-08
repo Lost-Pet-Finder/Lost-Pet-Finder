@@ -16,6 +16,8 @@ export default class App extends React.Component {
         console.log('Got message in background!', remoteMessage);
       },
     );
+    // this line is added to fix codacy bug
+    console.log(unsubscribeBack);
   }
 
   async requestUserPermission() {

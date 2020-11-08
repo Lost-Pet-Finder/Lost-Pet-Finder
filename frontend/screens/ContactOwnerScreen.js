@@ -53,7 +53,8 @@ export default class ContactOwnerScreen extends React.Component {
                     this.state.totalColor[2],
                   ),
                 },
-              ]}></View>
+              ]}
+            />
             <Text style={styles.colorText}>Overall Color</Text>
           </View>
 

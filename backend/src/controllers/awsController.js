@@ -77,12 +77,12 @@
 //                     console.log(value);
 //                 });
 //             }
-//             else 
+//             else
 //             {
 //                 console.log("too many animals in picture! :(");
 //             }
 //         }
-//         else 
+//         else
 //         {
 //             // console.log(labels);
 //             // console.log(labels.array.length);
@@ -105,8 +105,6 @@
 //         const image = await s3.getObject({Bucket: bucketName,Key: fileName}).promise();
 //         var color =  new ColorThief();
 
-
-
 //         var totalDimensions = sizeOf(image.Body);
 //         totalWidth = totalDimensions.width;
 //         totalHeight = totalDimensions.height;
@@ -117,8 +115,6 @@
 //         //   pixels.filter(v => v===a).length
 //         // - pixels.filter(v => v===b).length).pop());
 
-
-        
 //         var box = validBox;
 //         count = 0;
 
@@ -140,8 +136,6 @@
 //         // mode2 = (pixels.sort((a,b) =>
 //         //   pixels.filter(v => v===a).length
 //         // - pixels.filter(v => v===b).length).pop());
-
-
 
 //         percentArea = 1 - ((boxWidth * boxHeight) / (totalWidth * totalHeight));
 //         rDiff = (mode[0] - modeTotal[0]);
@@ -321,7 +315,7 @@
 //                 parentsScore += 1;
 //             });
 //             parentsScore = Math.pow(parentsScore, 1.3);
-//             score += parentsScore; 
+//             score += parentsScore;
 //         }
 //         sore = Math.pow(score, 1.2);
 
@@ -337,7 +331,7 @@
 //     }
 // }
 
-// function getIntersection(labels0, labels1) 
+// function getIntersection(labels0, labels1)
 // {
 //     // console.log(labels0);
 //     // console.log(labels1);
@@ -368,39 +362,38 @@
 const rekognition = require('../aws/awsClient');
 
 async function sendRekognitionRequest(req, res) {
-    const bucketName = req.body.bucketName;
-    const fileName = req.body.fileName;
+	const bucketName = req.body.bucketName;
+	const fileName = req.body.fileName;
 
-    const params = {
-        Image: {
-            S3Object: {
-                Bucket: bucketName,
-                Name: fileName
-            }
-        },
-        MaxLabels: 10
-    }
+	const params = {
+		Image: {
+			S3Object: {
+				Bucket: bucketName,
+				Name: fileName,
+			},
+		},
+		MaxLabels: 10,
+	};
 
-    try {
-        const response = await rekognition.detectLabels(params).promise();
+	try {
+		const response = await rekognition.detectLabels(params).promise();
 
-        var returnedLabels = [];
+		var returnedLabels = [];
 
-        response.Labels.forEach(label => {
-            returnedLabels.push(label);
-        });
+		response.Labels.forEach(label => {
+			returnedLabels.push(label);
+		});
 
-        res.status(200).json({
-            labels: returnedLabels
-        });
-    } catch (err) {
-        console.log(err);
+		res.status(200).json({
+			labels: returnedLabels,
+		});
+	} catch (err) {
+		console.log(err);
 
-        res.status(500).send('Request failed');
-    }
+		res.status(500).send('Request failed');
+	}
 }
-
 
 module.exports = {
-    sendRekognitionRequest: sendRekognitionRequest
-}
+	sendRekognitionRequest: sendRekognitionRequest,
+};

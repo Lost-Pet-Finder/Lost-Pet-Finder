@@ -43,7 +43,7 @@ export default class ReportScreen extends React.Component {
   //submit the report
   submit() {
     const url =
-      this.state.isFinder == 0
+      this.state.isFinder === 0
         ? 'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/pets/postLostPets'
         : 'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/pets/postFoundPets';
 
@@ -142,7 +142,7 @@ export default class ReportScreen extends React.Component {
 
     const response = await RNS3.put(file, config);
 
-    if (response.status == 201 || response.status == 200) {
+    if (response.status === 201 || response.status === 200) {
       this.setState({
         didUploadPicture: true,
       });
@@ -164,19 +164,22 @@ export default class ReportScreen extends React.Component {
           style={styles.textInputField}
           placeholder="Longitude: -180 to 180"
           onChangeText={(value) => this.setState({loc_x: value})}
-          value={this.state.loc_x}></TextInput>
+          value={this.state.loc_x}
+        />
 
         <TextInput
           style={styles.textInputField}
           placeholder="Latitude: -180 to 180"
           onChangeText={(value) => this.setState({loc_y: value})}
-          value={this.state.loc_y}></TextInput>
+          value={this.state.loc_y}
+        />
 
         <TextInput
           style={styles.textInputField}
           placeholder="Date: (yyyy-mm-dd hr-min)"
           onChangeText={(value) => this.setState({date: value})}
-          value={this.state.date}></TextInput>
+          value={this.state.date}
+        />
 
         <TouchableOpacity
           style={styles.SearchButton}
