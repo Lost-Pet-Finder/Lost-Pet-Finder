@@ -1,4 +1,4 @@
-function getAWSTags(data) {
+function getAWSTags() {
 	var returnLabels = ['1', '2', '3', '4'];
 	return returnLabels;
 }

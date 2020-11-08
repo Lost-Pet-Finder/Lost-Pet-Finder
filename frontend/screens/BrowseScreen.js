@@ -57,7 +57,7 @@ export default class BrowseScreen extends React.Component {
 
     if (!this.state.petArray) {
       return (
-        <View style={style.container}>
+        <View style={styles.container}>
           <Text>didn't get a post</Text>
         </View>
       );
@@ -77,7 +77,8 @@ export default class BrowseScreen extends React.Component {
                     source={{
                       uri: `https://lostpetpictures.s3-us-west-2.amazonaws.com/${pet.information.file_name}`,
                     }}
-                    style={styles.imageView}></Image>
+                    style={styles.imageView}
+                  />
                   <View style={styles.detailsView}>
                     <Text>{`Reporter ID: ${pet.information.fk_user_id}`}</Text>
                     <Text>{`Location: (${pet.information.location_x}, ${pet.information.location_y})`}</Text>
@@ -88,7 +89,8 @@ export default class BrowseScreen extends React.Component {
                         this.props.navigation.navigate('ContactOwnerScreen', {
                           petInfo: this.state.petArray[index],
                         })
-                      }></Button>
+                      }
+                    />
                   </View>
                 </View>
               </View>
