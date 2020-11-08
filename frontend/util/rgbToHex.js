@@ -1,5 +1,5 @@
-const { default: module } = require("@react-native-firebase/app");
-const { NativeModules } = require("react-native");
+// const { default: module } = require('@react-native-firebase/app');
+// const { NativeModules } = require('react-native');
 
 function componentToHex(c) {
     var cInt = Math.round(c);

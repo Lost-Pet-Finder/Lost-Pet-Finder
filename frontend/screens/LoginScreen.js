@@ -7,7 +7,7 @@ import {
   TextInput,
   Text,
   Image,
-  TouchableOpacity
+  TouchableOpacity,
 } from 'react-native';
 
 // FCM
@@ -26,7 +26,7 @@ class LoginScreen extends React.Component {
 
     const body = {
       userid: user_id,
-      deviceToken: deviceToken
+      deviceToken: deviceToken,
     };
 
     try {
@@ -37,7 +37,7 @@ class LoginScreen extends React.Component {
             Accept: 'application/json',
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(body)
+          body: JSON.stringify(body),
         });
     } catch (err) {
       console.log(err);
@@ -52,7 +52,7 @@ class LoginScreen extends React.Component {
 
 
     this.updateFCMDeviceToken(user_id);
-    this.props.navigation.navigate('HomePage', { user_id: user_id, isFinder: 1 });
+    this.props.navigation.navigate('HomePage', {user_id: user_id, isFinder: 1});
   }
 
   signedInAsLoser() {
@@ -60,7 +60,7 @@ class LoginScreen extends React.Component {
     const user_id = '2';
 
     this.updateFCMDeviceToken(user_id);
-    this.props.navigation.navigate('HomePage', { user_id: user_id, isFinder: 0 });
+    this.props.navigation.navigate('HomePage', {user_id: user_id, isFinder: 0});
   }
 
   render() {
@@ -78,7 +78,7 @@ class LoginScreen extends React.Component {
             //labelValue={email}
             placeholder="Email"
             placeholderTextColor="#003f5c"
-          //onChangeText={(email) => setEmail(email)}
+            //onChangeText={(email) => setEmail(email)}
           />
         </View>
 
@@ -88,7 +88,7 @@ class LoginScreen extends React.Component {
             //labelValue={password}
             placeholder="Password"
             placeholderTextColor="#003f5c"
-          //onChangeText={(password) => setPassword(password)}
+            //onChangeText={(password) => setPassword(password)}
           />
         </View>
 

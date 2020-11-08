@@ -4,7 +4,7 @@ import {
     Text,
     Alert,
     StyleSheet,
-    TouchableOpacity
+    TouchableOpacity,
 } from 'react-native';
 //import { useEffect } from 'react';
 
@@ -16,7 +16,7 @@ export default class HomePage extends React.Component {
         super(props);
         this.state = {
             user_id: this.props.navigation.state.params.user_id,
-            isFinder: this.props.navigation.state.params.isFinder
+            isFinder: this.props.navigation.state.params.isFinder,
         };
     }
 
@@ -30,9 +30,7 @@ export default class HomePage extends React.Component {
         const unsubscribeFore = messaging().onMessage(remoteMessage => {
             Alert.alert(
                 `${remoteMessage.notification.title}`,
-                `${remoteMessage.notification.body}`);
-        });
-
+                `${remoteMessage.notification.body}`);});
         return unsubscribeFore;
     }
 
@@ -43,12 +41,7 @@ export default class HomePage extends React.Component {
                     style={styles.reportView}
                     onPress={() => {
                         this.props.navigation.navigate('ReportScreen',
-                            {
-                                user_id: this.state.user_id,
-                                isFinder: this.state.isFinder
-                            });
-                    }}
-                >
+                            {user_id: this.state.user_id, isFinder: this.state.isFinder});}}>
                     <View>
                         <Text style={styles.viewTitle}>📸 Report 📸</Text>
                     </View>
@@ -58,12 +51,7 @@ export default class HomePage extends React.Component {
                     style={styles.browseView}
                     onPress={() => {
                         this.props.navigation.navigate('BrowseScreen',
-                            {
-                                user_id: this.state.user_id,
-                                isFinder: this.state.isFinder
-                            });
-                    }}
-                >
+                            {user_id: this.state.user_id, isFinder: this.state.isFinder});}}>
                     <View>
                         <Text style={styles.viewTitle}>🔎 Browse 🔍</Text>
                     </View>
@@ -71,10 +59,7 @@ export default class HomePage extends React.Component {
 
                 <TouchableOpacity
                     style={styles.contactView}
-                    onPress={() => {
-                        console.log('go to contact page');
-                    }}
-                >
+                    onPress={() => {console.log('go to contact page');}}>
                     <View>
                         <Text style={styles.viewTitle}>📱 Contact 📱</Text>
                     </View>
@@ -90,36 +75,36 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         justifyContent: 'space-evenly',
-        alignItems: "center",
-        backgroundColor: "#BBDEFB"
+        alignItems: 'center',
+        backgroundColor: '#BBDEFB',
     },
     reportView: {
         backgroundColor: '#22577A',
-        height: "30%",
-        width: "90%",
+        height: '30%',
+        width: '90%',
         borderRadius: 15,
-        justifyContent: "center",
-        alignItems: "center"
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     browseView: {
         backgroundColor: '#2F8789',
-        height: "30%",
-        width: "90%",
+        height: '30%',
+        width: '90%',
         borderRadius: 15,
-        justifyContent: "center",
-        alignItems: "center"
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     contactView: {
         backgroundColor: '#2E8B57',
-        height: "30%",
-        width: "90%",
+        height: '30%',
+        width: '90%',
         borderRadius: 15,
-        justifyContent: "center",
-        alignItems: "center"
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     viewTitle: {
         fontSize: 30,
-        fontWeight: "bold",
-        color: "white"
-    }
+        fontWeight: 'bold',
+        color: 'white',
+    },
 });

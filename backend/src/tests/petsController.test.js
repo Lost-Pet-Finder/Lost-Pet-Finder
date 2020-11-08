@@ -1,8 +1,8 @@
 jest.mock('../util/colourFunctions.js');
 jest.mock('../sql/connection');
 const request = require('supertest');
-const express = require('express');
 const server = require('../app');
+//const express = require('express');
 
 const allLostPets = [
     {

@@ -7,12 +7,12 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
-  Alert
+  Alert,
 }
   from 'react-native';
 
 import ImagePicker from 'react-native-image-picker';
-import { RNS3 } from 'react-native-aws3';
+import {RNS3} from 'react-native-aws3';
 
 //import { NavigationContainer } from '@react-navigation/native';
 //import CameraRollPicker from 'react-native-camera-roll-picker';
@@ -30,15 +30,13 @@ export default class ReportScreen extends React.Component {
     this.state = {
       user_id: this.props.navigation.state.params.user_id,
       isFinder: this.props.navigation.state.isFinder,
-
       avatarSource: null,
       filename: null,
       loc_x: null,
       loc_y: null,
       date: null,
       bucket: 'lostpetpictures',
-
-      didUploadPicture: false
+      didUploadPicture: false,
     };
   }
 
@@ -50,33 +48,28 @@ export default class ReportScreen extends React.Component {
     const url =
       this.state.isFinder == 0 ? 'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/pets/postLostPets' : 'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/pets/postFoundPets';
 
-    if (this.state.didUploadPicture == false) {
-      Alert.alert
-        (
-          'Upload Picture First!',
-          'You need to provide a picture of your pet so we can run AI/ML image recognition'
-        );
+    if (this.state.didUploadPicture === false) {
+      Alert.alert('Upload Picture First!',
+      'You need to provide a picture of your pet so we can run AI/ML image recognition');
       return;
     }
 
-    if (this.state.user_id == null || this.state.filename == null || this.state.loc_x == null || this.state.loc_y == null || this.state.date == null) {
+    if (this.state.user_id === null || this.state.filename === null || this.state.loc_x === null || this.state.loc_y === null || this.state.date === null) {
       Alert.alert
-        (
-          'Incomplete Submission!',
-          'Please make sure you fill in all the fields and upload a picture'
-        );
+        ('Incomplete Submission!',
+         'Please make sure you fill in all the fields and upload a picture');
       console.log(this.state);
       return;
     }
 
     let body = JSON.stringify(
       {
-        userid: this.state.user_id,
-        filename: this.state.filename,
-        location_x: this.state.loc_x,
-        location_y: this.state.loc_y,
-        date: this.state.date,
-        bucketName: this.state.bucket,
+      userid: this.state.user_id,
+      filename: this.state.filename,
+      location_x: this.state.loc_x,
+      location_y: this.state.loc_y,
+      date: this.state.date,
+      bucketName: this.state.bucket,
       });
 
     this.postToNodeServer(body, url);
@@ -89,21 +82,21 @@ export default class ReportScreen extends React.Component {
 
     const response = await fetch(url,
       {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: body
-      })
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: body,
+    });
 
-    if (response.status == 201 || response.status == 200) {
+    if (response.status === 201 || response.status === 200) {
       const json = await response.json();
 
       console.log(json);
 
       Alert.alert('Report Submitted!', `Tags Generated: ${json[0].tags}`, [
-        { text: "OK", onPress: () => this.props.navigation.navigate("HomePage") }
+        {text: 'OK', onPress: () => this.props.navigation.navigate("HomePage"),}
       ]);
     }
   }
@@ -124,29 +117,30 @@ export default class ReportScreen extends React.Component {
   }
 
   async uploadPhotoToS3(imagePickerResponse) {
-    const source = { uri: imagePickerResponse.uri };
+    const source = {uri: imagePickerResponse.uri};
     var photo_str = `${imagePickerResponse.fileName}`;
-    this.setState({ filename: photo_str });
+    this.setState({filename: photo_str});
 
     // send images to S3
     const file = {
       uri: imagePickerResponse.uri,
       name: this.state.filename,
-      type: 'image/png'
-    }
+      type: 'image/png',
+    };
 
     const config = {
       bucket: 'lostpetpictures',
       region: 'us-west-2',
       accessKey: 'AKIAJ5OYQDSWAJXXAVFQ',
       secretKey: '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',
-      successActionStatus: 201
-    }
+      successActionStatus: 201,
+    };
+
     const response = await RNS3.put(file, config);
 
     if (response.status == 201 || response.status == 200) {
       this.setState({
-        didUploadPicture: true
+        didUploadPicture: true,
       });
     }
 
@@ -169,21 +163,21 @@ export default class ReportScreen extends React.Component {
         <TextInput
           style={styles.textInputField}
           placeholder="Longitude: -180 to 180"
-          onChangeText={(value) => this.setState({ loc_x: value })}
+          onChangeText={(value) => this.setState({loc_x: value})}
           value={this.state.loc_x}
         ></TextInput>
 
         <TextInput
           style={styles.textInputField}
           placeholder="Latitude: -180 to 180"
-          onChangeText={(value) => this.setState({ loc_y: value })}
+          onChangeText={(value) => this.setState({loc_y: value})}
           value={this.state.loc_y}
         ></TextInput>
 
         <TextInput
           style={styles.textInputField}
           placeholder="Date: (yyyy-mm-dd hr-min)"
-          onChangeText={(value) => this.setState({ date: value })}
+          onChangeText={(value) => this.setState({date: value})}
           value={this.state.date}
         ></TextInput>
 
@@ -214,11 +208,11 @@ const styles = StyleSheet.create({
     height: 200,
     padding: 10,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   photolist: {
     width: 200,
-    height: 200
+    height: 200,
   },
   SearchButton: {
     flex: 1,

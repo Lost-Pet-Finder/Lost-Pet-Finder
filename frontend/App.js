@@ -1,9 +1,6 @@
 import 'react-native-gesture-handler';
 import React from 'react';
-import { StyleSheet } from 'react-native';
-
 import messaging from '@react-native-firebase/messaging';
-
 import ViewHierarchy from './routes/ViewHiearchy';
 
 

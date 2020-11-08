@@ -7,8 +7,10 @@ import {
   SafeAreaView,
   Text,
   Image,
-  ScrollView
+  ScrollView,
 } from 'react-native';
+
+const pet_text = "Pet's Name";
 
 export default class BrowseScreen extends React.Component {
   constructor(props) {
@@ -21,10 +23,8 @@ export default class BrowseScreen extends React.Component {
     };
   }
 
-  pet_text = "Pet's Name";
-
   async componentDidMount() {
-    const url = this.state.isFinder == 0 ?
+    const url = this.state.isFinder === 0 ?
       'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/pets/searchFoundPets' :
       'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/pets/searchLostPets';
 
@@ -42,7 +42,7 @@ export default class BrowseScreen extends React.Component {
     console.log(response.status);
     const data = await response.json();
     console.log(data);
-    this.setState({ petArray: data, loading: false });
+    //this.setState({petArray: data, loading: false});
   }
 
   render() {
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
   scrollViewCell: {
     backgroundColor: '#BBDEFB',
     marginBottom: 10,
-    borderRadius: 15
+    borderRadius: 15,
   },
   titleText: {
     marginLeft: 20,
@@ -114,15 +114,12 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   imageView: {
     width: 140,
     height: 140,
     marginHorizontal: 20,
-    marginBottom: 20
+    marginBottom: 20,
   },
-  detailsView: {
-
-  }
 });

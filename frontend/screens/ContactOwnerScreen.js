@@ -4,7 +4,7 @@ import {
   StyleSheet,
   View,
   Text,
-  Image
+  Image,
 } from 'react-native';
 import { rgbToHex } from '../util/rgbToHex';
 
@@ -16,7 +16,7 @@ export default class ContactOwnerScreen extends React.Component {
       pet: this.props.navigation.state.params.petInfo,
       totalColor: this.props.navigation.state.params.petInfo.colours.totalColor,
       croppedColor: this.props.navigation.state.params.petInfo.colours.croppedColor,
-      finalColor: this.props.navigation.state.params.petInfo.colours.finalColor
+      finalColor: this.props.navigation.state.params.petInfo.colours.finalColor,
     };
   }
 
@@ -34,7 +34,7 @@ export default class ContactOwnerScreen extends React.Component {
         </View>
 
         <View style={styles.viewContainer}>
-          <Text style={styles.aiTags}>{`AI Generated Tags:`}</Text>
+          <Text style={styles.aiTags}>{'AI Generated Tags:'}</Text>
           <Text style={styles.infoText}>{`${this.state.pet.information.tags}`}</Text>
         </View>
 
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     height: 150,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-evenly'
+    justifyContent: 'space-evenly',
   },
   colorUnit: {
     alignItems: 'center',
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   colorText: {
-    fontSize: 18
+    fontSize: 18,
   },
   imageAndTextContainer: {
     width: '100%',
@@ -114,5 +114,5 @@ const styles = StyleSheet.create({
   infoText: {
     fontSize: 18,
     textAlign: 'center',
-  }
-})
+  },
+});

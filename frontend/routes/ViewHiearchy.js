@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
-import { createStackNavigator } from 'react-navigation-stack';
-import { createAppContainer } from 'react-navigation';
+import {createStackNavigator} from 'react-navigation-stack';
+import {createAppContainer} from 'react-navigation';
 
 import Login from '../screens/LoginScreen';
 import HomePage from '../screens/HomePage';
@@ -13,37 +13,37 @@ const screens = {
         screen: Login,
         navigationOptions: {
             title: 'FirstPage',
-            headerShown: false
+            headerShown: false,
         },
     },
     HomePage: {
         screen: HomePage,
         navigationOptions: {
             title: 'Home Page',
-            headerShown: false
-        }
+            headerShown: false,
+        },
     },
     ReportScreen: {
         screen: ReportScreen,
         navigationOptions: {
             title: 'Report Screen',
-            headerShown: true
-        }
+            headerShown: true,
+        },
     },
     BrowseScreen: {
         screen: BrowseScreen,
         navigationOptions: {
             title: 'Browse Screen',
-            headerShown: true
-        }
+            headerShown: true,
+        },
     },
     ContactOwnerScreen: {
         screen: ContactOwnerScreen,
         navigationOptions: {
             title: 'Contact Owner Screen',
-            headerShown: true
-        }
-    }
+            headerShown: true,
+        },
+    },
 };
 
 //create new stack navigator, pass the screens you want to navigate in the app
