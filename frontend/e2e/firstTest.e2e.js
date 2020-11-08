@@ -26,7 +26,4 @@ describe('Example', () => {
     await element(by.id('SignInLoserButton_detox')).tap();
     await expect(by.id('HomePage_detox')).toBeVisible();
   });
-
-
-
 });

@@ -7,7 +7,8 @@ import {
   TextInput,
   Text,
   Image,
-  TouchableOpacity} from 'react-native';
+  TouchableOpacity
+} from 'react-native';
 
 // FCM
 import messaging from '@react-native-firebase/messaging';
@@ -51,7 +52,7 @@ class LoginScreen extends React.Component {
 
 
     this.updateFCMDeviceToken(user_id);
-    this.props.navigation.navigate('HomePage', {user_id: user_id, isFinder: 1});
+    this.props.navigation.navigate('HomePage', { user_id: user_id, isFinder: 1 });
   }
 
   signedInAsLoser() {
@@ -59,15 +60,15 @@ class LoginScreen extends React.Component {
     const user_id = '2';
 
     this.updateFCMDeviceToken(user_id);
-    this.props.navigation.navigate('HomePage', {user_id: user_id, isFinder: 0});
+    this.props.navigation.navigate('HomePage', { user_id: user_id, isFinder: 0 });
   }
 
-  render(){
+  render() {
     //console.log(JSON.stringify(this.props));
     return (
       <View
-      style={styles.container}
-      testID={'LoginScreen_detox'}>
+        style={styles.container}
+        testID={'LoginScreen_detox'}>
         <Image
           style={styles.image}
           source={require('../assets/logo.png')}></Image>
@@ -77,7 +78,7 @@ class LoginScreen extends React.Component {
             //labelValue={email}
             placeholder="Email"
             placeholderTextColor="#003f5c"
-            //onChangeText={(email) => setEmail(email)}
+          //onChangeText={(email) => setEmail(email)}
           />
         </View>
 
@@ -87,23 +88,23 @@ class LoginScreen extends React.Component {
             //labelValue={password}
             placeholder="Password"
             placeholderTextColor="#003f5c"
-            //onChangeText={(password) => setPassword(password)}
+          //onChangeText={(password) => setPassword(password)}
           />
         </View>
 
         <TouchableOpacity
-          style={styles.loginButton} 
+          style={styles.loginButton}
           testID={'SignInFinderButton_detox'}
-          onPress={()=>this.signedInAsFinder()} >
-         
+          onPress={() => this.signedInAsFinder()} >
+
           <Text style={styles.loginText}>Sign In: Found</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.loginButton}
           testID={'SignInLoserButton_detox'}
-          onPress={()=>this.signedInAsLoser()} >
-         
+          onPress={() => this.signedInAsLoser()} >
+
           <Text style={styles.loginText}>Sign In: Lost</Text>
         </TouchableOpacity>
 

@@ -1,13 +1,13 @@
 import 'react-native-gesture-handler';
 import React from 'react';
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 
 import messaging from '@react-native-firebase/messaging';
 
 import ViewHierarchy from './routes/ViewHiearchy';
 
 
-export default class App extends React.Component{
+export default class App extends React.Component {
 
   componentDidMount() {
     this.requestUserPermission();
@@ -17,11 +17,11 @@ export default class App extends React.Component{
   async setupBackgroundNotifications() {
     // Register background handler
     const unsubscribeBack = messaging().setBackgroundMessageHandler(async remoteMessage => {
-        console.log('Got message in background!', remoteMessage);
+      console.log('Got message in background!', remoteMessage);
     });
   }
 
-  async requestUserPermission(){
+  async requestUserPermission() {
     const authStatus = await messaging().requestPermission();
     const enabled =
       authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
@@ -30,10 +30,10 @@ export default class App extends React.Component{
       console.log('Authorization status:', authStatus);
     }
   }
-  
-  render(){
+
+  render() {
     return <ViewHierarchy />;
   }
-  
+
 }
 

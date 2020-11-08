@@ -4,7 +4,8 @@ import {
     Text,
     Alert,
     StyleSheet,
-    TouchableOpacity} from 'react-native';
+    TouchableOpacity
+} from 'react-native';
 //import { useEffect } from 'react';
 
 // FCM
@@ -23,12 +24,12 @@ export default class HomePage extends React.Component {
         this.setupForegroundNotifications();
         console.log(`State: ${this.state.user_id}`);
     }
-    
+
     async setupForegroundNotifications() {
         // register foreground handler
         const unsubscribeFore = messaging().onMessage(remoteMessage => {
             Alert.alert(
-                `${remoteMessage.notification.title}`, 
+                `${remoteMessage.notification.title}`,
                 `${remoteMessage.notification.body}`);
         });
 
@@ -41,9 +42,12 @@ export default class HomePage extends React.Component {
                 <TouchableOpacity
                     style={styles.reportView}
                     onPress={() => {
-                    this.props.navigation.navigate('ReportScreen',
-                    {user_id: this.state.user_id, 
-                    isFinder: this.state.isFinder});}}
+                        this.props.navigation.navigate('ReportScreen',
+                            {
+                                user_id: this.state.user_id,
+                                isFinder: this.state.isFinder
+                            });
+                    }}
                 >
                     <View>
                         <Text style={styles.viewTitle}>📸 Report 📸</Text>
@@ -53,9 +57,12 @@ export default class HomePage extends React.Component {
                 <TouchableOpacity
                     style={styles.browseView}
                     onPress={() => {
-                    this.props.navigation.navigate('BrowseScreen',
-                    {user_id: this.state.user_id,
-                    isFinder: this.state.isFinder});}}
+                        this.props.navigation.navigate('BrowseScreen',
+                            {
+                                user_id: this.state.user_id,
+                                isFinder: this.state.isFinder
+                            });
+                    }}
                 >
                     <View>
                         <Text style={styles.viewTitle}>🔎 Browse 🔍</Text>
@@ -65,7 +72,8 @@ export default class HomePage extends React.Component {
                 <TouchableOpacity
                     style={styles.contactView}
                     onPress={() => {
-                    console.log('go to contact page');}}
+                        console.log('go to contact page');
+                    }}
                 >
                     <View>
                         <Text style={styles.viewTitle}>📱 Contact 📱</Text>
