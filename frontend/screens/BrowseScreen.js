@@ -43,6 +43,10 @@ export default class BrowseScreen extends React.Component {
     console.log(response.status);
     const data = await response.json();
     console.log(data);
+    this.setStateFunction(data);
+  }
+
+  setStateFunction(data) {
     this.setState({petArray: data, loading: false});
   }
 
@@ -122,7 +126,7 @@ const styles = StyleSheet.create({
   titleText: {
     marginLeft: 20,
     fontSize: 20,
-    textAlign: 'left',
+    // textAlign: 'left',
   },
   imageAndTextContainer: {
     width: '100%',

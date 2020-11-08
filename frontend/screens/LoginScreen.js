@@ -67,9 +67,7 @@ class LoginScreen extends React.Component {
     //console.log(JSON.stringify(this.props));
     return (
       <View style={styles.container} testID={'LoginScreen_detox'}>
-        <Image
-          style={styles.image}
-          source={require('../assets/logo.png')}></Image>
+        <Image style={styles.image} source={require('../assets/logo.png')} />
         <View style={styles.inputView}>
           <TextInput
             style={styles.inputText}

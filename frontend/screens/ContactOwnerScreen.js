@@ -25,7 +25,8 @@ export default class ContactOwnerScreen extends React.Component {
             source={{
               uri: `https://lostpetpictures.s3-us-west-2.amazonaws.com/${this.state.pet.information.file_name}`,
             }}
-            style={styles.imageView}></Image>
+            style={styles.imageView}
+          />
           <View style={styles.detailsView}>
             <Text>{`Reporter ID: ${this.state.pet.information.fk_user_id}`}</Text>
             <Text>{`Location: (${this.state.pet.information.location_x}, ${this.state.pet.information.location_y})`}</Text>
@@ -69,7 +70,8 @@ export default class ContactOwnerScreen extends React.Component {
                     this.state.croppedColor[2],
                   ),
                 },
-              ]}></View>
+              ]}
+            />
             <Text style={styles.colorText}>Cropped Color</Text>
           </View>
 
