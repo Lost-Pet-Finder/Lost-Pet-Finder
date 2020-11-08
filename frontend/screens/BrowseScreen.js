@@ -19,14 +19,15 @@ export default class BrowseScreen extends React.Component {
       loading: true,
       petArray: null,
       user_id: this.props.navigation.state.params.user_id,
-      isFinder: this.props.navigation.state.params.isFinder
+      isFinder: this.props.navigation.state.params.isFinder,
     };
   }
 
   async componentDidMount() {
-    const url = this.state.isFinder === 0 ?
-      'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/pets/searchFoundPets' :
-      'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/pets/searchLostPets';
+    const url =
+      this.state.isFinder === 0
+        ? 'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/pets/searchFoundPets'
+        : 'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/pets/searchLostPets';
 
     console.log(url);
 
@@ -42,7 +43,7 @@ export default class BrowseScreen extends React.Component {
     console.log(response.status);
     const data = await response.json();
     console.log(data);
-    //this.setState({petArray: data, loading: false});
+    this.setState({petArray: data, loading: false});
   }
 
   render() {
@@ -64,18 +65,30 @@ export default class BrowseScreen extends React.Component {
 
     return (
       <SafeAreaView style={styles.container}>
-        <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollViewCellContainer}>
+        <ScrollView
+          style={styles.scrollView}
+          contentContainerStyle={styles.scrollViewCellContainer}>
           {this.state.petArray.map((pet, index) => {
             return (
               <View style={styles.scrollViewCell} key={index}>
                 <Text style={styles.titleText}> `${pet_text}` </Text>
                 <View style={styles.imageAndTextContainer}>
-                  <Image source={{ uri: `https://lostpetpictures.s3-us-west-2.amazonaws.com/${pet.information.file_name}` }} style={styles.imageView}></Image>
+                  <Image
+                    source={{
+                      uri: `https://lostpetpictures.s3-us-west-2.amazonaws.com/${pet.information.file_name}`,
+                    }}
+                    style={styles.imageView}></Image>
                   <View style={styles.detailsView}>
                     <Text>{`Reporter ID: ${pet.information.fk_user_id}`}</Text>
                     <Text>{`Location: (${pet.information.location_x}, ${pet.information.location_y})`}</Text>
                     <Text>{`Report Date: \n${pet.information.report_date}`}</Text>
-                    <Button title="Learn More" onPress={() => this.props.navigation.navigate('ContactOwnerScreen', { petInfo: this.state.petArray[index] })}></Button>
+                    <Button
+                      title="Learn More"
+                      onPress={() =>
+                        this.props.navigation.navigate('ContactOwnerScreen', {
+                          petInfo: this.state.petArray[index],
+                        })
+                      }></Button>
                   </View>
                 </View>
               </View>
@@ -98,8 +111,7 @@ const styles = StyleSheet.create({
   scrollView: {
     width: '100%',
   },
-  scrollViewCellContainer: {
-  },
+  scrollViewCellContainer: {},
   scrollViewCell: {
     backgroundColor: '#BBDEFB',
     marginBottom: 10,

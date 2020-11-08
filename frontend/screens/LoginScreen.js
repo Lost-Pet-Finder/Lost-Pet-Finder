@@ -22,7 +22,8 @@ class LoginScreen extends React.Component {
     const deviceToken = await messaging().getToken();
     console.log(`Device Token: ${deviceToken}`);
 
-    const url = 'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/notif/uploadDeviceToken';
+    const url =
+      'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/notif/uploadDeviceToken';
 
     const body = {
       userid: user_id,
@@ -30,15 +31,14 @@ class LoginScreen extends React.Component {
     };
 
     try {
-      const response = await fetch(url,
-        {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(body),
-        });
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      });
     } catch (err) {
       console.log(err);
     }
@@ -49,7 +49,6 @@ class LoginScreen extends React.Component {
   signedInAsFinder() {
     // ... get user id from server
     const user_id = '1';
-
 
     this.updateFCMDeviceToken(user_id);
     this.props.navigation.navigate('HomePage', {user_id: user_id, isFinder: 1});
@@ -66,9 +65,7 @@ class LoginScreen extends React.Component {
   render() {
     //console.log(JSON.stringify(this.props));
     return (
-      <View
-        style={styles.container}
-        testID={'LoginScreen_detox'}>
+      <View style={styles.container} testID={'LoginScreen_detox'}>
         <Image
           style={styles.image}
           source={require('../assets/logo.png')}></Image>
@@ -95,16 +92,14 @@ class LoginScreen extends React.Component {
         <TouchableOpacity
           style={styles.loginButton}
           testID={'SignInFinderButton_detox'}
-          onPress={() => this.signedInAsFinder()} >
-
+          onPress={() => this.signedInAsFinder()}>
           <Text style={styles.loginText}>Sign In: Found</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.loginButton}
           testID={'SignInLoserButton_detox'}
-          onPress={() => this.signedInAsLoser()} >
-
+          onPress={() => this.signedInAsLoser()}>
           <Text style={styles.loginText}>Sign In: Lost</Text>
         </TouchableOpacity>
 
@@ -171,4 +166,3 @@ const styles = StyleSheet.create({
     resizeMode: 'stretch',
   },
 });
-

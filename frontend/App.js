@@ -3,9 +3,7 @@ import React from 'react';
 import messaging from '@react-native-firebase/messaging';
 import ViewHierarchy from './routes/ViewHiearchy';
 
-
 export default class App extends React.Component {
-
   componentDidMount() {
     this.requestUserPermission();
     this.setupBackgroundNotifications();
@@ -13,9 +11,11 @@ export default class App extends React.Component {
 
   async setupBackgroundNotifications() {
     // Register background handler
-    const unsubscribeBack = messaging().setBackgroundMessageHandler(async remoteMessage => {
-      console.log('Got message in background!', remoteMessage);
-    });
+    const unsubscribeBack = messaging().setBackgroundMessageHandler(
+      async (remoteMessage) => {
+        console.log('Got message in background!', remoteMessage);
+      },
+    );
   }
 
   async requestUserPermission() {
@@ -31,6 +31,4 @@ export default class App extends React.Component {
   render() {
     return <ViewHierarchy />;
   }
-
 }
-

@@ -9,41 +9,41 @@ import BrowseScreen from '../screens/BrowseScreen';
 import ContactOwnerScreen from '../screens/ContactOwnerScreen';
 
 const screens = {
-    LoginPage: {
-        screen: Login,
-        navigationOptions: {
-            title: 'FirstPage',
-            headerShown: false,
-        },
+  LoginPage: {
+    screen: Login,
+    navigationOptions: {
+      title: 'FirstPage',
+      headerShown: false,
     },
-    HomePage: {
-        screen: HomePage,
-        navigationOptions: {
-            title: 'Home Page',
-            headerShown: false,
-        },
+  },
+  HomePage: {
+    screen: HomePage,
+    navigationOptions: {
+      title: 'Home Page',
+      headerShown: false,
     },
-    ReportScreen: {
-        screen: ReportScreen,
-        navigationOptions: {
-            title: 'Report Screen',
-            headerShown: true,
-        },
+  },
+  ReportScreen: {
+    screen: ReportScreen,
+    navigationOptions: {
+      title: 'Report Screen',
+      headerShown: true,
     },
-    BrowseScreen: {
-        screen: BrowseScreen,
-        navigationOptions: {
-            title: 'Browse Screen',
-            headerShown: true,
-        },
+  },
+  BrowseScreen: {
+    screen: BrowseScreen,
+    navigationOptions: {
+      title: 'Browse Screen',
+      headerShown: true,
     },
-    ContactOwnerScreen: {
-        screen: ContactOwnerScreen,
-        navigationOptions: {
-            title: 'Contact Owner Screen',
-            headerShown: true,
-        },
+  },
+  ContactOwnerScreen: {
+    screen: ContactOwnerScreen,
+    navigationOptions: {
+      title: 'Contact Owner Screen',
+      headerShown: true,
     },
+  },
 };
 
 //create new stack navigator, pass the screens you want to navigate in the app

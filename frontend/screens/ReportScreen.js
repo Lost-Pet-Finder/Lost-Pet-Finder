@@ -8,8 +8,7 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
-}
-  from 'react-native';
+} from 'react-native';
 
 import ImagePicker from 'react-native-image-picker';
 import {RNS3} from 'react-native-aws3';
@@ -24,7 +23,6 @@ const options = {
 };
 
 export default class ReportScreen extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -40,37 +38,46 @@ export default class ReportScreen extends React.Component {
     };
   }
 
-  componentDidMount() {
-  }
+  componentDidMount() {}
 
   //submit the report
   submit() {
     const url =
-      this.state.isFinder == 0 ? 'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/pets/postLostPets' : 'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/pets/postFoundPets';
+      this.state.isFinder == 0
+        ? 'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/pets/postLostPets'
+        : 'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/pets/postFoundPets';
 
     if (this.state.didUploadPicture === false) {
-      Alert.alert('Upload Picture First!',
-      'You need to provide a picture of your pet so we can run AI/ML image recognition');
+      Alert.alert(
+        'Upload Picture First!',
+        'You need to provide a picture of your pet so we can run AI/ML image recognition',
+      );
       return;
     }
 
-    if (this.state.user_id === null || this.state.filename === null || this.state.loc_x === null || this.state.loc_y === null || this.state.date === null) {
-      Alert.alert
-        ('Incomplete Submission!',
-         'Please make sure you fill in all the fields and upload a picture');
+    if (
+      this.state.user_id === null ||
+      this.state.filename === null ||
+      this.state.loc_x === null ||
+      this.state.loc_y === null ||
+      this.state.date === null
+    ) {
+      Alert.alert(
+        'Incomplete Submission!',
+        'Please make sure you fill in all the fields and upload a picture',
+      );
       console.log(this.state);
       return;
     }
 
-    let body = JSON.stringify(
-      {
+    let body = JSON.stringify({
       userid: this.state.user_id,
       filename: this.state.filename,
       location_x: this.state.loc_x,
       location_y: this.state.loc_y,
       date: this.state.date,
       bucketName: this.state.bucket,
-      });
+    });
 
     this.postToNodeServer(body, url);
 
@@ -80,8 +87,7 @@ export default class ReportScreen extends React.Component {
   async postToNodeServer(body, url) {
     console.log(`Calling API Endpoint: ${url}`);
 
-    const response = await fetch(url,
-      {
+    const response = await fetch(url, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -96,12 +102,10 @@ export default class ReportScreen extends React.Component {
       console.log(json);
 
       Alert.alert('Report Submitted!', `Tags Generated: ${json[0].tags}`, [
-        {text: 'OK', onPress: () => this.props.navigation.navigate("HomePage"),}
+        {text: 'OK', onPress: () => this.props.navigation.navigate('HomePage')},
       ]);
     }
   }
-
-
 
   // get photo from photo gallery
   getPhoto() {
@@ -113,7 +117,7 @@ export default class ReportScreen extends React.Component {
       } else {
         this.uploadPhotoToS3(response);
       }
-    })
+    });
   }
 
   async uploadPhotoToS3(imagePickerResponse) {
@@ -149,50 +153,45 @@ export default class ReportScreen extends React.Component {
     });
   }
 
-
-
   render() {
     return (
       <View style={styles.container}>
-
         <View style={styles.imageWrapper}>
           <Image source={this.state.avatarSource} style={styles.photolist} />
         </View>
-
 
         <TextInput
           style={styles.textInputField}
           placeholder="Longitude: -180 to 180"
           onChangeText={(value) => this.setState({loc_x: value})}
-          value={this.state.loc_x}
-        ></TextInput>
+          value={this.state.loc_x}></TextInput>
 
         <TextInput
           style={styles.textInputField}
           placeholder="Latitude: -180 to 180"
           onChangeText={(value) => this.setState({loc_y: value})}
-          value={this.state.loc_y}
-        ></TextInput>
+          value={this.state.loc_y}></TextInput>
 
         <TextInput
           style={styles.textInputField}
           placeholder="Date: (yyyy-mm-dd hr-min)"
           onChangeText={(value) => this.setState({date: value})}
-          value={this.state.date}
-        ></TextInput>
+          value={this.state.date}></TextInput>
 
-        <TouchableOpacity style={styles.SearchButton} onPress={() => this.getPhoto()} >
+        <TouchableOpacity
+          style={styles.SearchButton}
+          onPress={() => this.getPhoto()}>
           <Text style={styles.textStyle}>Upload Photos</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.SearchButton} onPress={() => this.submit()}>
+        <TouchableOpacity
+          style={styles.SearchButton}
+          onPress={() => this.submit()}>
           <Text style={styles.textStyle}>Submit</Text>
         </TouchableOpacity>
       </View>
-    )
+    );
   }
-
-
 }
 
 const styles = StyleSheet.create({
@@ -204,7 +203,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   imageWrapper: {
-    width: "100%",
+    width: '100%',
     height: 200,
     padding: 10,
     justifyContent: 'center',
