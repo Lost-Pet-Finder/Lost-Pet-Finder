@@ -139,12 +139,11 @@ async function getColour(bucketName, fileName, validBox) {
         totalWidth = totalDimensions.width;
         totalHeight = totalDimensions.height;
 
-        modeTotal = color.getColor(image.Body);
+        colourTotal = color.getColor(image.Body);
 
 
         //get height width and colour of only box with pet in it
         var box = validBox;
-        count = 0;
 
         boxWidth = box.Width * totalWidth;
         boxHeight = box.Height * totalHeight;
@@ -159,29 +158,29 @@ async function getColour(bucketName, fileName, validBox) {
             });
         });
 
-        mode = color.getColor(cropped);
+        colourBox = color.getColor(cropped);
 
 
         //get % area that crop is of total
         //get % colour diff crop is of total
         percentArea = 1 - ((boxWidth * boxHeight) / (totalWidth * totalHeight));
-        rDiff = (mode[0] - modeTotal[0]);
-        gDiff = (mode[1] - modeTotal[1]);
-        bDiff = (mode[2] - modeTotal[2]);
+        rDiff = (colourBox[0] - colourTotal[0]);
+        gDiff = (colourBox[1] - colourTotal[1]);
+        bDiff = (colourBox[2] - colourTotal[2]);
 
-        rDiff = Math.sign(rDiff) * (Math.abs(rDiff / (mode[0] + rDiff)));
-        gDiff = Math.sign(gDiff) * (Math.abs(gDiff / (mode[1] + gDiff)));
-        bDiff = Math.sign(bDiff) * (Math.abs(bDiff / (mode[2] + bDiff)));
+        rDiff = Math.sign(rDiff) * (Math.abs(rDiff / (colourBox[0] + rDiff)));
+        gDiff = Math.sign(gDiff) * (Math.abs(gDiff / (colourBox[1] + gDiff)));
+        bDiff = Math.sign(bDiff) * (Math.abs(bDiff / (colourBox[2] + bDiff)));
 
         //get colour of pet by subtracting total scaled with %s from the cropped
-        modeCorrected = []
-        modeCorrected[0] = Math.max(Math.min(mode[0] + percentArea * rDiff * modeTotal[0], 255), 0) ;
-        modeCorrected[1] = Math.max(Math.min(mode[1] + percentArea * gDiff * modeTotal[1], 255), 0) ;
-        modeCorrected[2] = Math.max(Math.min(mode[2] + percentArea * bDiff * modeTotal[2], 255), 0) ;
+        colourPet = []
+        colourPet[0] = Math.max(Math.min(colourBox[0] + percentArea * rDiff * colourTotal[0], 255), 0) ;
+        colourPet[1] = Math.max(Math.min(colourBox[1] + percentArea * gDiff * colourTotal[1], 255), 0) ;
+        colourPet[2] = Math.max(Math.min(colourBox[2] + percentArea * bDiff * colourTotal[2], 255), 0) ;
 
-        // console.log(modeCorrected);
+        // console.log(colourPet);
 
-        return Promise.resolve(modeCorrected);
+        return Promise.resolve(colourPet);
     } catch (err) {
         console.log(err);
         throw err;
