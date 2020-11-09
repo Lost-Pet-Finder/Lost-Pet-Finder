@@ -12,9 +12,9 @@ const ColorThief = require('color-thief');
 
 const { head } = require('../routers/awsRouter');
 const { response } = require('express');
-// const { distance } = require('jimp');
 
-const pets = ["Bird", "Bunny", "Cat", "Dog", "Guinea Pig", "Hamster", "Hare", "Kangaroo", "Mouse", "Pig", "Rabbit", "Rat", "Snake", "Wallaby"];
+// const pets = ["Bird", "Bunny", "Cat", "Dog", "Guinea Pig", "Hamster", "Hare", "Kangaroo", "Mouse", "Pig", "Rabbit", "Rat", "Snake", "Wallaby"];
+//This indicates an error with the bounding boxes we get from the tags
 errorBox = {
     "BoundingBox": {
         "Width": -1,
@@ -23,6 +23,7 @@ errorBox = {
         "Top": -1
     }
 };
+//if there is no box, but we still rekognze a pet, we take the whole picture without cropping
 noBox = {
     "BoundingBox": {
         "Width": 1,
@@ -31,6 +32,9 @@ noBox = {
         "Top": 0
     }
 };
+
+//this compares two pictures for similarity based on tags and colour: for the final product these values will
+//be saved in MySQL so we don't have to recalculate them each time.
 async function sendRekognitionRequest(req, res) {
     const bucketName = req.body.bucketName;
     const fileName0 = req.body.fileName0;
@@ -76,10 +80,12 @@ async function sendRekognitionRequest(req, res) {
         labels1 = filterForPets(labels1);
         labels1 = filterForConfidence(labels1);
 
+        //only if rekognition worked on both
         if(labels0.length > 0 && labels1.length > 0)
         {
             intersectionScore = getIntersectionScore(labels0, labels1);
         
+            //only if each has valid box
             validBox0 = validBoxes(labels0);
             validBox1 = validBoxes(labels1);
             if(validBox0 != errorBox && validBox1 != errorBox)
@@ -88,13 +94,12 @@ async function sendRekognitionRequest(req, res) {
                 colour1 = [];
 
                 colour0 = await getColour(bucketName, fileName0, validBox0);
-                // console.log(colour0);
-
                 colour1 = await getColour(bucketName, fileName1, validBox1);
 
                 console.log(colour0);
                 colourScore = getColourScore(colour0, colour1);
 
+                //normalise each score to 1/2 max
                 finalScore = intersectionScore/20 / 2 + (441.67 - colourScore) / 441.67 / 2;
                 console.log(finalScore);
                 res.status(200).send("Request succeeded");
@@ -121,6 +126,7 @@ async function sendRekognitionRequest(req, res) {
     }
 }
 
+//gets dominant colour of pet
 async function getColour(bucketName, fileName, validBox) {
 
     try {
@@ -128,19 +134,15 @@ async function getColour(bucketName, fileName, validBox) {
         var color =  new ColorThief();
 
 
-
+        //get width height and colour of whole image
         var totalDimensions = sizeOf(image.Body);
         totalWidth = totalDimensions.width;
         totalHeight = totalDimensions.height;
 
         modeTotal = color.getColor(image.Body);
-        // pixels = color.getPalette(image.Body, 8);
-        // modeTotal2 = (pixels.sort((a,b) =>
-        //   pixels.filter(v => v===a).length
-        // - pixels.filter(v => v===b).length).pop());
 
 
-        
+        //get height width and colour of only box with pet in it
         var box = validBox;
         count = 0;
 
@@ -158,13 +160,10 @@ async function getColour(bucketName, fileName, validBox) {
         });
 
         mode = color.getColor(cropped);
-        // pixels = color.getPalette(cropped, 8);
-        // mode2 = (pixels.sort((a,b) =>
-        //   pixels.filter(v => v===a).length
-        // - pixels.filter(v => v===b).length).pop());
 
 
-
+        //get % area that crop is of total
+        //get % colour diff crop is of total
         percentArea = 1 - ((boxWidth * boxHeight) / (totalWidth * totalHeight));
         rDiff = (mode[0] - modeTotal[0]);
         gDiff = (mode[1] - modeTotal[1]);
@@ -174,6 +173,7 @@ async function getColour(bucketName, fileName, validBox) {
         gDiff = Math.sign(gDiff) * (Math.abs(gDiff / (mode[1] + gDiff)));
         bDiff = Math.sign(bDiff) * (Math.abs(bDiff / (mode[2] + bDiff)));
 
+        //get colour of pet by subtracting total scaled with %s from the cropped
         modeCorrected = []
         modeCorrected[0] = Math.max(Math.min(mode[0] + percentArea * rDiff * modeTotal[0], 255), 0) ;
         modeCorrected[1] = Math.max(Math.min(mode[1] + percentArea * gDiff * modeTotal[1], 255), 0) ;
@@ -188,6 +188,7 @@ async function getColour(bucketName, fileName, validBox) {
     }
 }
 
+//get rid of tags that are nnot releated to animals
 function filterForPets(response)
 {
     const animal = {"Name": "Animal"};
@@ -216,6 +217,7 @@ function filterForPets(response)
     }
 }
 
+//get rid of tags that arent of certain confidence
 function filterForConfidence(response)
 {
     try {
@@ -239,6 +241,10 @@ function filterForConfidence(response)
     }
 }
 
+//gets a box for the animal in the picture
+//if multiple animals: sen err message
+//if no boxes: return noBox
+//if overlapping boxes for smae animal: choose one box
 function validBoxes(response) {
     var boxes = [];
     if(response.length < 1)
@@ -256,7 +262,6 @@ function validBoxes(response) {
 
     for( i = 0; i < boxes.length - 1; i++) {
         for(j = 0; j < i; i++) {
-            // console.log(i + j + boxes[i] + "owo");
             if(Math.abs(boxes[i].Width - boxes[j].Width) > 0.1) {
                 return errorBox;
             }
@@ -287,6 +292,7 @@ function getLength(response)
     return length;
 }
 
+//gets a score from the similarity of a set of tags to another
 function getIntersectionScore(labels0, labels1) {
     intersection = getIntersection(labels0, labels1);
 
@@ -306,6 +312,7 @@ function getIntersectionScore(labels0, labels1) {
     return score;
 }
 
+//returns the intersection between two sets of JSON tags
 function getIntersection(labels0, labels1) 
 {
     // console.log(labels0);
@@ -327,6 +334,7 @@ function getIntersection(labels0, labels1)
     return intersection;
 }
 
+//gets the colour difference betweeen two different colours
 function getColourScore(colour0, colour1)
 {
     return Math.sqrt (Math.pow((colour0[0]-colour1[0]),2) + Math.pow((colour0[1]-colour1[1]),2) + Math.pow((colour0[2]-colour1[2]),2));
