@@ -56,6 +56,7 @@ export default class HomePage extends React.Component {
 
                 <TouchableOpacity 
                     style={styles.contactView}
+                    testID={'ContactButton_detox'}
                     onPress={() => {
                     console.log('go to contact page')}}
                 >

@@ -104,12 +104,6 @@ class LoginScreen extends React.Component {
           break;
       }
     }
-    // let result = await firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
-    //         .then(() => this.props.navigation.navigate('HomePage', identity))
-    //         .catch(error => {
-    //           console.log(error.code);
-              
-    //         });
   }
 
   render(){

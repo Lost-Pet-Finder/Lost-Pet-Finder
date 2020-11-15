@@ -65,6 +65,7 @@ describe('Testing application', () => {
 
   // Tap login:lost button
   it('signing in as loser takes us to home page', async () => {
+    await device.reloadReactNative();
     await element(by.id('SignInLoserButton_detox')).tap();
     await expect(element(by.id('HomePage_detox'))).toBeNotVisible();
   });
@@ -74,7 +75,7 @@ describe('Testing application', () => {
     await device.reloadReactNative();
     await login_test_one();
     await expect(element(by.id('HomePage_detox'))).toBeNotVisible();
-    await waitFor(element(by.text('OK'))).toBeVisible().withTimeout(4000);
+    await waitFor(element(by.text('Invalid email, please check if your account is correct'))).toBeVisible().withTimeout(4000);
     await element(by.text('OK')).tap();
   });
 
@@ -82,7 +83,7 @@ describe('Testing application', () => {
     await device.reloadReactNative();
     await login_test_two();
     await expect(element(by.id('HomePage_detox'))).toBeNotVisible();
-    await waitFor(element(by.text('OK'))).toBeVisible().withTimeout(4000);
+    await waitFor(element(by.text('Wrong password, please check if your password is correct'))).toBeVisible().withTimeout(4000);
     await element(by.text('OK')).tap();
   });
 
@@ -90,7 +91,7 @@ describe('Testing application', () => {
     await device.reloadReactNative();
     await login_test_three();
     await expect(element(by.id('HomePage_detox'))).toBeNotVisible();
-    await waitFor(element(by.text('OK'))).toBeVisible().withTimeout(4000);
+    await waitFor(element(by.text('Invalid email, please check if your account is correct'))).toBeVisible().withTimeout(4000);
     await element(by.text('OK')).tap();
   });
 
@@ -99,12 +100,6 @@ describe('Testing application', () => {
     await login_test();
     await waitFor(element(by.id('ReportButton_detox'))).toBeVisible().withTimeout(4000);
     await expect(element(by.id('ReportButton_detox'))).toBeVisible();
-  });
-
-  it('Should login as finder with correct email address and password', async () => {
-    await device.reloadReactNative();
-    await waitFor(element(by.id('HomePage_detox'))).toBeVisible().withTimeout(4000);
-    await expect(element(by.id('HomePage_detox'))).toBeVisible();
   });
 
   // Test report page functionality
@@ -135,7 +130,7 @@ describe('Testing application', () => {
   it('Should see pet posts', async () => {
     await device.reloadReactNative();
     await login_test();
-    await waitFor(element(by.id('HomePage_detox'))).toBeVisible().withTimeout(4000);
+    await waitFor(element(by.id('BrowseButton_detox'))).toBeVisible().withTimeout(4000);
     await browse_test();
     await waitFor(element(by.id('BrowseView_detox'))).toBeVisible().withTimeout(4000);
     await expect(element(by.id('BrowseView_detox'))).toBeVisible();
