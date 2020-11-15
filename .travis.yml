@@ -1,16 +1,17 @@
 language: node_js
 node_js:
-- '14'
+  - '14'
 branches:
   only:
-  - master
+    - master
 cache:
   directories:
-  - node_modules
+    - node_modules
 before_install:
-- cd backend
-- npm update
+  - cd backend
+  - choco install -y python2 gtk-runtime microsoft-build-tools libjpeg-turbo
+  - npm update
 install:
-- npm install
+  - npm install
 script:
-- npm test
+  - npm test
