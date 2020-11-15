@@ -1,6 +1,6 @@
 const awsFunctions = require('../util/awsFunctions');
-// const colourFunctions = require('../util/colourFunctions');
-// const getColour = colourFunctions.getColour;
+const colourFunctions = require('../util/colourFunctions');
+const getColour = colourFunctions.getColour;
 const sqlPool = require('../sql/connection');
 
 async function searchLostPets(req, res) {
@@ -10,19 +10,19 @@ async function searchLostPets(req, res) {
 		const rows = await sqlPool.query('CALL get_all_lost_pets()', []);
 		const dataPackets = rows[0];
 
-		// var retArray = []
+		var retArray = [];
 
-		// for (var i = 0; i < dataPackets.length; i++) {
-		//     const petEntry = dataPackets[i];
-		//     const colours = await getColour('lostpetpictures', petEntry.file_name);
+		for (var i = 0; i < dataPackets.length; i++) {
+			const petEntry = dataPackets[i];
+			const colours = await getColour('lostpetpictures', petEntry.file_name);
 
-		//     retArray.push({
-		//         information: petEntry,
-		//         colours: colours
-		//     });
-		// }
+			retArray.push({
+				information: petEntry,
+				colours: colours,
+			});
+		}
 
-		// console.log(retArray);
+		console.log(retArray);
 
 		res.status(200).send(dataPackets);
 	} catch (err) {
@@ -75,19 +75,19 @@ async function searchFoundPets(req, res) {
 		const rows = await sqlPool.query('CALL get_all_found_pets()', []);
 		const dataPackets = rows[0];
 
-		// var retArray = []
+		var retArray = [];
 
-		// for (var i = 0; i < dataPackets.length; i++) {
-		//     const petEntry = dataPackets[i];
-		//     const colours = await getColour('lostpetpictures', petEntry.file_name);
+		for (var i = 0; i < dataPackets.length; i++) {
+			const petEntry = dataPackets[i];
+			const colours = await getColour('lostpetpictures', petEntry.file_name);
 
-		//     retArray.push({
-		//         information: petEntry,
-		//         colours: colours
-		//     });
-		// }
+			retArray.push({
+				information: petEntry,
+				colours: colours,
+			});
+		}
 
-		// console.log(retArray);
+		console.log(retArray);
 
 		res.status(200).send(dataPackets);
 	} catch (err) {

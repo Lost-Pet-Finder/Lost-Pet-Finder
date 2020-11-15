@@ -10,6 +10,6 @@ router.get('/', (req, res) => {
 });
 
 router.post('/rekognitionRequest', awsController.sendRekognitionRequest);
-// router.post('/intersectionRequest', awsController.getIntersectionScore);
+router.post('/intersectionRequest', awsController.getIntersectionScore);
 
 module.exports = router;
