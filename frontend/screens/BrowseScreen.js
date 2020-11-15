@@ -55,11 +55,11 @@ export default class BrowseScreen extends React.Component {
 
     return (
       <SafeAreaView style={styles.container}>
-        <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollViewCellContainer}>
+        <ScrollView style={styles.scrollView} testID={'BrowseView_detox'} contentContainerStyle={styles.scrollViewCellContainer}>
           {this.state.petArray.map((pet, index) => {
             
             return (        
-                <View style={styles.scrollViewCell} testID={'BrowseView_detox'} key={index}>
+                <View style={styles.scrollViewCell} key={index}>
                   <Text style={styles.titleText}> Pet's Name </Text>
                   <View style={styles.imageAndTextContainer}>
                     <Image source={{uri:`https://lostpetpictures.s3-us-west-2.amazonaws.com/${pet.information.file_name}`}} style = {styles.imageView}></Image>

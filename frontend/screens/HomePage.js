@@ -39,7 +39,7 @@ export default class HomePage extends React.Component {
                     this.props.navigation.navigate('ReportScreen', {user_id: this.state.user_id, isFinder: this.state.isFinder})}}
                 >
                     <View >
-                        <Text style={styles.viewTitle}>📸 Report 📸</Text>
+                        <Text style={styles.viewTitle} >📸 Report 📸</Text>
                     </View>
                 </TouchableOpacity>
 
