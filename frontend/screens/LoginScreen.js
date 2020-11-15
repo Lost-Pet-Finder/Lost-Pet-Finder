@@ -63,7 +63,7 @@ class LoginScreen extends React.Component {
     let identity = {user_id: '1', isFinder: 1};
 
     this.updateFCMDeviceToken(identity.user_id);
-    //this.props.navigation.navigate('HomePage', {user_id: user_id, isFinder: 1});
+    this.props.navigation.navigate('HomePage', {user_id: user_id, isFinder: 1});
 
     //handle firebase authentication
     this.handleLogin(identity);
@@ -75,7 +75,7 @@ class LoginScreen extends React.Component {
     let identity = {user_id: '2', isFinder: 0};
 
     this.updateFCMDeviceToken(identity.user_id);
-    //this.props.navigation.navigate('HomePage', {user_id: user_id, isFinder: 0});
+    this.props.navigation.navigate('HomePage', {user_id: user_id, isFinder: 0});
 
     //handle firebase authentication
     this.handleLogin(identity);
@@ -115,6 +115,7 @@ class LoginScreen extends React.Component {
         <View style={styles.inputView}>
           <TextInput
             style={styles.inputText}
+            testID={'EmailInput_detox'}
             //labelValue={email}
             placeholder="Email"
             placeholderTextColor="#003f5c"
@@ -126,6 +127,7 @@ class LoginScreen extends React.Component {
         <View style={styles.inputView}>
           <TextInput
             style={styles.inputText}
+            testID={'PasswordInput_detox'}
             secureTextEntry
             placeholder="Password"
             placeholderTextColor="#003f5c"

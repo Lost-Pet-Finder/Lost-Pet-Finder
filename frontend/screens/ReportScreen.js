@@ -209,6 +209,7 @@ export default class ReportScreen extends React.Component {
 
             <TextInput
               style={styles.textInputField}
+              testID={'DateInput_detox'}
               placeholder="Date: (yyyy-mm-dd hr-min)"
               onChangeText={(value) => this.setState({ date: value })}
               value={this.state.date}
@@ -218,7 +219,7 @@ export default class ReportScreen extends React.Component {
             <Text style={styles.textStyle}>Upload Photos</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.SearchButton} onPress={() => this.submit()}>
+          <TouchableOpacity style={styles.SearchButton} testID={'Reportsubmit_detox'} onPress={() => this.submit()}>
             <Text style={styles.textStyle}>Submit</Text>
           </TouchableOpacity>
       </View>

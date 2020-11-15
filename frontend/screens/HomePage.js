@@ -34,6 +34,7 @@ export default class HomePage extends React.Component {
             <View style={styles.containerView} testID={'HomePage_detox'}>
                 <TouchableOpacity 
                     style={styles.reportView}
+                    testID={'ReportButton_detox'}
                     onPress={() => {
                     this.props.navigation.navigate('ReportScreen', {user_id: this.state.user_id, isFinder: this.state.isFinder})}}
                 >
@@ -44,6 +45,7 @@ export default class HomePage extends React.Component {
 
                 <TouchableOpacity 
                     style={styles.browseView}
+                    testID={'BrowseButton_detox'}
                     onPress={() => {
                     this.props.navigation.navigate('BrowseScreen', {user_id: this.state.user_id, isFinder: this.state.isFinder})}}
                 >

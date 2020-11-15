@@ -59,7 +59,7 @@ export default class BrowseScreen extends React.Component {
           {this.state.petArray.map((pet, index) => {
             
             return (        
-                <View style={styles.scrollViewCell} key={index}>
+                <View style={styles.scrollViewCell} testID={'BrowseView_detox'} key={index}>
                   <Text style={styles.titleText}> Pet's Name </Text>
                   <View style={styles.imageAndTextContainer}>
                     <Image source={{uri:`https://lostpetpictures.s3-us-west-2.amazonaws.com/${pet.information.file_name}`}} style = {styles.imageView}></Image>
