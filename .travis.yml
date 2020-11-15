@@ -1,4 +1,4 @@
-os: windows
+os: osx
 language: node_js
 node_js:
   - '14'
@@ -10,7 +10,6 @@ cache:
     - node_modules
 before_install:
   - cd backend
-  - choco install -y python2 gtk-runtime microsoft-build-tools libjpeg-turbo
   - npm update
 install:
   - npm install
