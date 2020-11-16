@@ -8,7 +8,6 @@ const {getColour} = require('../util/colourFunctions')
 function withinTolerance(expectedColour, actualColour)
 {
     dist = Math.sqrt( Math.pow((expectedColour[0] - actualColour[0]), 2) + Math.pow((expectedColour[1] - actualColour[1]), 2) + Math.pow((expectedColour[2] - actualColour[2]), 2));
-    console.log(actualColour)
     if (dist > 30)
     {
         return false;
