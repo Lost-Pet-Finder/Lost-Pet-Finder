@@ -22,9 +22,9 @@ async function searchLostPets(req, res) {
 			});
 		}
 
-		console.log(retArray);
+		// console.log(retArray);
 
-		res.status(200).send(dataPackets);
+		res.status(200).send(retArray);
 	} catch (err) {
 		console.error(err);
 		res.status(500).send('Request failed');
@@ -54,12 +54,13 @@ async function postLostPets(req, res) {
 		});
 
 		const tagsString = JSON.stringify(tagNames);
-
+		console.log(tagsString);
 		const response = await sqlPool.query(
 			'CALL create_lost_pet_report(?, ?, POINT(?,?), ?, ?)',
 			[userid, filename, location_x, location_y, date, tagsString]
 		);
 
+		console.log('the response is :' + response);
 		res.status(200).send(response[0]);
 	} catch (err) {
 		console.error(err);
@@ -87,9 +88,9 @@ async function searchFoundPets(req, res) {
 			});
 		}
 
-		console.log(retArray);
+		// console.log(retArray);
 
-		res.status(200).send(dataPackets);
+		res.status(200).send(retArray);
 	} catch (err) {
 		console.error(err);
 		res.status(500).send('Request failed');

@@ -1,4 +1,9 @@
-const { allFoundPets, allLostPets } = require('../../tests/testVariables');
+const {
+	allFoundPets,
+	allLostPets,
+	expectedPostLostPets,
+	expectedPostFoundPets,
+} = require('../../tests/testVariables');
 const field2 = {
 	fieldCount: 0,
 	affectedRows: 0,
@@ -14,6 +19,10 @@ const query = string => {
 		return [allLostPets, field2];
 	} else if (string == 'CALL get_all_found_pets()') {
 		return [allFoundPets, field2];
+	} else if (string == 'CALL create_lost_pet_report(?, ?, POINT(?,?), ?, ?)') {
+		return expectedPostLostPets;
+	} else if (string == 'CALL create_found_pet_report(?, ?, POINT(?,?), ?, ?)') {
+		return expectedPostFoundPets;
 	}
 };
 
