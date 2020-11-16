@@ -60,7 +60,7 @@ async function postLostPets(req, res) {
 			[userid, filename, location_x, location_y, date, tagsString]
 		);
 
-		console.log('the response is :' + response);
+		// console.log('the response is :' + response);
 		res.status(200).send(response[0]);
 	} catch (err) {
 		console.error(err);

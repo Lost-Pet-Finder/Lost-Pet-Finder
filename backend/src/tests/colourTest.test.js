@@ -2,6 +2,8 @@ const request = require('supertest');
 const server = require('../app');
 const {getColour} = require('../util/colourFunctions')
 //const express = require('express');
+//const express = require('express');
+//const express = require('express');
 
 function withinTolerance(expectedColour, actualColour)
 {
@@ -15,12 +17,13 @@ function withinTolerance(expectedColour, actualColour)
     return true;
 }
 
-// something
+// // something
 afterAll(done => {
 	server.close(done);
 });
-// searchLostPets
-test('Golden_Retriever_or_Labrador Retriever_gold_on_black_background.jpg', async done => {
+
+
+test('gold on black positive', async done => {
     colour = await getColour('lostpetpictures', "Golden_Retriever_or_Labrador Retriever_gold_on_black_background.jpg");
     expectedColour = [210, 200, 150];
 	result = withinTolerance(expectedColour, colour.finalColor);
@@ -28,7 +31,7 @@ test('Golden_Retriever_or_Labrador Retriever_gold_on_black_background.jpg', asyn
 	done();
 });
 
-test('golden_retriever_puppy_white_background', async done => {
+test('brown on white positive', async done => {
     colour = await getColour('lostpetpictures', "golden_retriever_puppy_white_background.jpg");
     expectedColour = [110, 60, 20];
 	result = withinTolerance(expectedColour, colour.finalColor);
@@ -36,10 +39,52 @@ test('golden_retriever_puppy_white_background', async done => {
 	done();
 });
 
-test('golden_retriever_puppy_white_background', async done => {
+test('brown on white negative', async done => {
     colour = await getColour('lostpetpictures', "golden_retriever_puppy_white_background.jpg");
     expectedColour = [0, 0, 0];
 	result = withinTolerance(expectedColour, colour.finalColor);
 	expect(result).toBe(false);
 	done();
 });
+
+test('light on white positive', async done => {
+    colour = await getColour('lostpetpictures', "pug_light_coat_white_background.jpg");
+    expectedColour = [240, 210, 200];
+	result = withinTolerance(expectedColour, colour.finalColor);
+	expect(result).toBe(true);
+	done();
+});
+
+test('black on black negative', async done => {
+    colour = await getColour('lostpetpictures', "Labrador_Retriever_thinks_is_pig_black_on_black_background.jpg");
+    expectedColour = [240, 210, 200];
+	result = withinTolerance(expectedColour, colour.finalColor);
+	expect(result).toBe(false);
+	done();
+});
+
+test('black on black positive', async done => {
+    colour = await getColour('lostpetpictures', "Labrador_Retriever_thinks_is_pig_black_on_black_background.jpg");
+    expectedColour = [0, 0, 0];
+	result = withinTolerance(expectedColour, colour.finalColor);
+	expect(result).toBe(false);
+	done();
+});
+
+test('grey on green positive', async done => {
+    colour = await getColour('lostpetpictures', "Egyptian_Cat_dark_green_background.jpg");
+    expectedColour = [70, 70, 60];
+	result = withinTolerance(expectedColour, colour.finalColor);
+	expect(result).toBe(true);
+	done();
+}); 
+
+test('brown on green positive', async done => {
+    colour = await getColour('lostpetpictures', "beagle_brown_on_green_background.jpg");
+    expectedColour = [140, 130, 90];
+	result = withinTolerance(expectedColour, colour.finalColor);
+	expect(result).toBe(true);
+	done();
+}); 
+
+
