@@ -21,8 +21,8 @@ class LoginScreen extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      email: '',
-      password: '',
+      email: null,
+      password: null,
       errorMsg: null
     }
   }
@@ -83,27 +83,36 @@ class LoginScreen extends React.Component {
 
   handleLogin = async(identity)=>{
     console.log(identity);
-    try {
-      let result = await firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password);
-      if(result) {
-        this.props.navigation.navigate('HomePage', identity);
+
+    if (this.state.email == null || this.state.password == null){
+      Alert.alert('Login Information cannot be empty, plese try again');
+      this.props.navigation.navigate('Login');
+      this.setState({email: null, password: null});
+    }
+    else{
+      try {
+        let result = await firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password);
+        if(result) {
+          this.props.navigation.navigate('HomePage', identity);
+        }
+      }
+      catch(e){
+        switch(e.code){
+          //The provided value for the email user property is invalid. It must be a string email address.
+          //Invalid input example: cpen321321, 091e10
+          
+          case 'auth/invalid-email':
+            Alert.alert('Invalid email, please check if your account is correct');
+            break;
+          
+          //The provided value for the password user property is invalid. It must be a string with at least six characters.
+          case 'auth/wrong-password':
+            Alert.alert('Wrong password, please check if your password is correct');
+            break;
+        }
       }
     }
-    catch(e){
-      switch(e.code){
-        //The provided value for the email user property is invalid. It must be a string email address.
-        //Invalid input example: cpen321321, 091e10
-        
-        case 'auth/invalid-email':
-          Alert.alert('Invalid email, please check if your account is correct');
-          break;
-        
-        //The provided value for the password user property is invalid. It must be a string with at least six characters.
-        case 'auth/wrong-password':
-          Alert.alert('Wrong password, please check if your password is correct');
-          break;
-      }
-    }
+   
   }
 
   render(){
@@ -113,6 +122,7 @@ class LoginScreen extends React.Component {
       <View style={styles.container} testID={'LoginScreen_detox'}>
         <Image
           style={styles.image}
+          testID={'AppLogo_detox'}
           source={require('../assets/logo.png')}></Image>
         <View style={styles.inputView}>
           <TextInput

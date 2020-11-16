@@ -54,7 +54,10 @@ describe('Testing application', () => {
     await device.reloadReactNative();
     await expect(element(by.id('LoginScreen_detox'))).toBeVisible() 
         && expect(element(by.id('SignInFinderButton_detox'))).toBeVisible()
-        && expect(element(by.id('SignInLoserButton_detox'))).toBeVisible();
+        && expect(element(by.id('SignInLoserButton_detox'))).toBeVisible()
+        && expect(element(by.id('EmailInput_detox'))).toBeVisible()
+        && expect(element(by.id('PasswordInput_detox'))).toBeVisible()
+        && expect(element(by.id('AppLogo_detox'))).toBeVisible();
   });
 
   // Tap login:found button
