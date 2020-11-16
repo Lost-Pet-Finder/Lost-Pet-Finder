@@ -63,14 +63,18 @@ describe('Testing application', () => {
   // Tap login:found button
   it('signing in as finder takes us to home page', async () => {
     await element(by.id('SignInFinderButton_detox')).tap();
-    await expect(element(by.id('HomePage_detox'))).toBeNotVisible();
+    await expect(element(by.id('HomePage_detox'))).toBeNotVisible()
+       && expect(element(by.text('Login Information cannot be empty, plese try again'))).toBeVisible();
+    await element(by.text('OK')).tap();
   });
 
   // Tap login:lost button
   it('signing in as loser takes us to home page', async () => {
     await device.reloadReactNative();
     await element(by.id('SignInLoserButton_detox')).tap();
-    await expect(element(by.id('HomePage_detox'))).toBeNotVisible();
+    await expect(element(by.id('HomePage_detox'))).toBeNotVisible()
+       && expect(element(by.text('Login Information cannot be empty, plese try again'))).toBeVisible();
+    await element(by.text('OK')).tap();
   });
 
   //Test login functionality
@@ -111,6 +115,11 @@ describe('Testing application', () => {
     await login_test();
     await waitFor(element(by.id('ReportButton_detox'))).toBeVisible().withTimeout(4000);
     await element(by.id('ReportButton_detox')).tap();
+    await waitFor(element(by.id('Map_detox'))).toBeVisible().withTimeout(4000);
+    await expect(element(by.id('Map_detox'))).toBeVisible()
+          && expect(element(by.id('DateInput_detox'))).toBeVisible()
+          && expect(element(by.id('UploadButton_detox'))).toBeVisible()
+          && expect(element(by.id('ReportsubmitButton_detox'))).toBeVisible();
     await report_test();
     await waitFor(element(by.text('Upload Picture First!'))).toBeVisible().withTimeout(4000);
     await expect(element(by.text('Upload Picture First!'))).toBeVisible();
@@ -122,6 +131,11 @@ describe('Testing application', () => {
     await login_test();
     await waitFor(element(by.id('ReportButton_detox'))).toBeVisible().withTimeout(4000);
     await element(by.id('ReportButton_detox')).tap();
+    await waitFor(element(by.id('Map_detox'))).toBeVisible().withTimeout(4000);
+    await expect(element(by.id('Map_detox'))).toBeVisible()
+          && expect(element(by.id('DateInput_detox'))).toBeVisible()
+          && expect(element(by.id('UploadButton_detox'))).toBeVisible()
+          && expect(element(by.id('ReportsubmitButton_detox'))).toBeVisible();
     await report_test_one();
     await waitFor(element(by.text('Upload Picture First!'))).toBeVisible().withTimeout(4000);
     await expect(element(by.text('Upload Picture First!'))).toBeVisible();

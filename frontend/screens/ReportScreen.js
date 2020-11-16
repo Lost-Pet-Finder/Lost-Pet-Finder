@@ -191,7 +191,8 @@ export default class ReportScreen extends React.Component {
           <View style={styles.mapcontainer} >
             <MapView
               style={styles.map}
-              region={this.state.currentPosition}>
+              region={this.state.currentPosition}
+              testID={'Map_detox'}>
 
               <MapView.Marker
                 coordinate={{
@@ -215,7 +216,7 @@ export default class ReportScreen extends React.Component {
               value={this.state.date}
             ></TextInput>
           
-          <TouchableOpacity style={styles.SearchButton} onPress={() => this.getPhoto()} >
+          <TouchableOpacity style={styles.SearchButton} testID={'UploadButton_detox'} onPress={() => this.getPhoto()}>
             <Text style={styles.textStyle}>Upload Photos</Text>
           </TouchableOpacity>
 
