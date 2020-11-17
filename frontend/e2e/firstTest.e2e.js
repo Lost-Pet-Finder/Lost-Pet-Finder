@@ -6,6 +6,14 @@ const login_test = async () => {
   await element(by.id('SignInFinderButton_detox')).tap();
 };
 
+const login_test_lost = async () => {
+  await element(by.id('EmailInput_detox')).tap();
+  await element(by.id('EmailInput_detox')).typeText('ruolin.li07@gmail.com');
+  await element(by.id('PasswordInput_detox')).tap();
+  await element(by.id('PasswordInput_detox')).typeText('Liruolin982100');
+  await element(by.id('SignInLoserButton_detox')).tap();
+};
+
 const login_test_one = async () => {
   await element(by.id('EmailInput_detox')).tap();
   await element(by.id('EmailInput_detox')).typeText('eece');
@@ -109,6 +117,13 @@ describe('Testing application', () => {
     await expect(element(by.id('ReportButton_detox'))).toBeVisible();
   });
 
+  it('Should login with correct email address and password', async () => {
+    await device.reloadReactNative();
+    await login_test_lost();
+    await waitFor(element(by.id('ReportButton_detox'))).toBeVisible().withTimeout(4000);
+    await expect(element(by.id('ReportButton_detox'))).toBeVisible();
+  });
+
   // Test report page functionality
   it('Should alert user to upload photos', async () => {
     await device.reloadReactNative();
@@ -152,5 +167,22 @@ describe('Testing application', () => {
     await waitFor(element(by.id('BrowseView_detox'))).toBeVisible().withTimeout(4000);
     await expect(element(by.id('BrowseView_detox'))).toBeVisible();
   });
+
+  // it('Should go to camera roll after clicking upload button', async () => {
+  //   await device.reloadReactNative();
+  //   await login_test();
+  //   await waitFor(element(by.id('ReportButton_detox'))).toBeVisible().withTimeout(4000);
+  //   await element(by.id('ReportButton_detox')).tap();
+  //   await waitFor(element(by.id('Map_detox'))).toBeVisible().withTimeout(4000);
+  //   await expect(element(by.id('Map_detox'))).toBeVisible()
+  //         && expect(element(by.id('DateInput_detox'))).toBeVisible()
+  //         && expect(element(by.id('UploadButton_detox'))).toBeVisible()
+  //         && expect(element(by.id('ReportsubmitButton_detox'))).toBeVisible();
+  //   await element(by.id('UploadButton_detox')).tap();
+  //   await waitFor(element(by.text('Select a Photo'))).toBeVisible().withTimeout(4000);
+  //   await element(by.text('Photo Gallery')).tap();
+  //   await expect(element(by.text('Camera'))).toBeVisible().withTimeout(6000);
+  //   await element(by.text('Camera')).tap();
+  // });
 
 });
