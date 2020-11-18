@@ -9,7 +9,6 @@ cache:
     - node_modules
 before_install:
   - cd backend
-  - npm update
 install:
   - npm install
 script:
