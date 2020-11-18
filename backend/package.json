@@ -16,7 +16,7 @@
     "express": "^4.17.1"
   },
   "dependencies": {
-    "canvas": "^2.5.0",
+    "canvas": "^2.6.1",
     "buffer-image-size": "^0.6.4",
     "jimp": "^0.16.1",
     "color-thief": "^2.2.5",
