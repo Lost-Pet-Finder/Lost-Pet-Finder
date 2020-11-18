@@ -1,5 +1,6 @@
 const request = require('supertest');
 const server = require('../app');
+const pool = require('../sql/connection');
 const {
 	allFoundPets,
 	allLostPets,
@@ -7,24 +8,24 @@ const {
 	expectedPostFoundPets,
 } = require('./integrationTestVariables');
 //const express = require('express');
-jest.setTimeout(100000)
+jest.setTimeout(100000);
 // something
 afterAll(done => {
 	server.close(done);
+	pool.end();
 });
 
-function tagsSame (a, b){
-        var y = a.toString().split("").sort().join(""),
-            z = b.toString().split("").sort().join("");
-        return z===y ? true : false;
+function tagsSame(a, b) {
+	var y = a.toString().split('').sort().join(''),
+		z = b.toString().split('').sort().join('');
+	return z === y ? true : false;
 }
 // // searchLostPets
 test('search Lost Pets', async done => {
 	const { status, body } = await request(server).get('/pets/searchLostPets');
-    expect(status).toBe(200);
-    same = tagsSame(body, allLostPets);
-    expect(same).toStrictEqual(true);
-    console.log(body);
+	expect(status).toBe(200);
+	same = tagsSame(body, allLostPets);
+	expect(same).toStrictEqual(true);
 	done();
 });
 
@@ -32,9 +33,8 @@ test('search Lost Pets', async done => {
 test('search Found Pets', async done => {
 	const { status, body } = await request(server).get('/pets/searchFoundPets');
 	expect(status).toBe(200);
-    same = tagsSame(body, allFoundPets);
-    expect(same).toStrictEqual(true);
-    console.log(body);
+	same = tagsSame(body, allFoundPets);
+	expect(same).toStrictEqual(true);
 	done();
 });
 
@@ -76,7 +76,7 @@ test('post Found Pets', async done => {
 	const { status, body } = await request(server)
 		.post('/pets/postFoundPets')
 		.send(pet_post);
-		same = tagsSame(body, expected);
+	same = tagsSame(body, expected);
 	expect(status).toBe(200);
 	expect(same).toStrictEqual(true);
 	done();
