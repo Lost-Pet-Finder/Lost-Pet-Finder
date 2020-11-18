@@ -9,6 +9,7 @@ const s3 = aws.s3;
 const sizeOf = require('buffer-image-size');
 const Jimp = require('jimp');
 const ColorThief = require('color-thief');
+const DateDiff = require('date-diff');
 
 const { head } = require('../routers/awsRouter');
 const { response } = require('express');
@@ -39,6 +40,9 @@ async function sendRekognitionRequest(req, res) {
     const bucketName = req.body.bucketName;
     const fileName0 = req.body.fileName0;
     const fileName1 = req.body.fileName1;
+
+    date0 = req.body.date0;
+    date1 = req.body.date1;
 
     const params0 = {
         Image: {
@@ -96,11 +100,15 @@ async function sendRekognitionRequest(req, res) {
                 colour0 = await getColour(bucketName, fileName0, validBox0);
                 colour1 = await getColour(bucketName, fileName1, validBox1);
 
-                console.log(colour0);
                 colourScore = getColourScore(colour0, colour1);
 
+                dateScore = getDateScore(date0, date1);
+
                 //normalise each score to 1/2 max
-                finalScore = intersectionScore/20 / 2 + (441.67 - colourScore) / 441.67 / 2;
+                finalScore = intersectionScore / 3 + colourScore / 3 +  dateScore / 3;
+                console.log("\nintersection score is: " + intersectionScore);
+                console.log("\ncolour score is: " + colourScore);
+                console.log("\ndate score score is: " + dateScore);
                 console.log(finalScore);
                 res.status(200).send("Request succeeded");
             }
@@ -112,8 +120,6 @@ async function sendRekognitionRequest(req, res) {
         }
         else 
         {
-            // console.log(labels);
-            // console.log(labels.array.length);
             console.log("no animals detected in image! :(");
             res.status(401).send('Request failed');
             
@@ -124,6 +130,18 @@ async function sendRekognitionRequest(req, res) {
 
         res.status(500).send('Request failed');
     }
+}
+
+function getDateScore(date0, date1)
+{
+    dateDiff0 = new Date(date0);
+    dateDiff1 = new Date(date1);
+
+    diff = new DateDiff(dateDiff0, dateDiff1).hours();
+
+    max = 6*30*24;
+
+    return Math.max((max-diff), 0)/max;
 }
 
 //gets dominant colour of pet
@@ -141,10 +159,16 @@ async function getColour(bucketName, fileName, validBox) {
 
         colourTotal = color.getColor(image.Body);
 
+        var box;
 
         //get height width and colour of only box with pet in it
-        var box = validBox;
+        if(validBox.BoundingBox != undefined)
+        box = validBox.BoundingBox;
 
+        else
+        box = validBox
+
+        // console.log(validBox);
         boxWidth = box.Width * totalWidth;
         boxHeight = box.Height * totalHeight;
 
@@ -178,8 +202,6 @@ async function getColour(bucketName, fileName, validBox) {
         colourPet[1] = Math.max(Math.min(colourBox[1] + percentArea * gDiff * colourTotal[1], 255), 0) ;
         colourPet[2] = Math.max(Math.min(colourBox[2] + percentArea * bDiff * colourTotal[2], 255), 0) ;
 
-        // console.log(colourPet);
-
         return Promise.resolve(colourPet);
     } catch (err) {
         console.log(err);
@@ -199,8 +221,6 @@ function filterForPets(response)
         }
         response.forEach(label => {
             label.Parents.forEach(parent => {
-                // console.log(label.Name);
-                // console.log(parent);
                 if(parent.Name == "Animal" && ret.indexOf(label) < 0)
                 {
                     ret.push(label);
@@ -306,7 +326,7 @@ function getIntersectionScore(labels0, labels1) {
         parentsScore = Math.pow(parentsScore, 1.3);
         score += parentsScore; 
     }
-    sore = Math.pow(score, 1.2);
+    score = Math.pow(score, 1.2);
 
     return score;
 }
@@ -329,14 +349,14 @@ function getIntersection(labels0, labels1)
     }
     });
 
-    // console.log(intersection);
     return intersection;
 }
 
 //gets the colour difference betweeen two different colours
 function getColourScore(colour0, colour1)
 {
-    return Math.sqrt (Math.pow((colour0[0]-colour1[0]),2) + Math.pow((colour0[1]-colour1[1]),2) + Math.pow((colour0[2]-colour1[2]),2));
+    score = Math.sqrt (Math.pow((colour0[0]-colour1[0]),2) + Math.pow((colour0[1]-colour1[1]),2) + Math.pow((colour0[2]-colour1[2]),2));
+    return ((441.67 - score) / 441.67);
 }
 
 module.exports = {

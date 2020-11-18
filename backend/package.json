@@ -19,15 +19,16 @@
     "buffer-image-size": "^0.6.4",
     "canvas": "^2.5.0",
     "color-thief": "^2.2.5",
+    "date-diff": "^0.2.2",
     "dominant-color": "0.0.1",
+    "express": "^4.17.1",
     "firebase-admin": "^9.3.0",
     "gm": "^1.23.1",
     "image-clipper": "^0.4.4",
+    "jest": "^26.6.1",
     "jimp": "^0.16.1",
     "mysql": "^2.18.1",
     "probe-image-size": "^5.0.0",
-    "express": "^4.17.1",
-    "jest": "^26.6.1",
     "supertest": "^6.0.0"
   }
 }
