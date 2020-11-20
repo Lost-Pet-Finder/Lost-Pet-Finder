@@ -66,8 +66,8 @@ async function searchLostPets(req, res) {
 
         for (var i = 0; i < retArray.length; i++) {
             retArray[i]["intersection score"] /= intersectionMax;
-            retArray[i]["colour score"] /= colourMax;
-            retArray[i]["date score"] /= dateMax;
+            retArray[i]["colour score"] = (colourMax - retArray[i]["colour score"]) / colourMax;
+            retArray[i]["date score"] = (dateMax - retArray[i]["date score"]) / dateMax;
             retArray[i]["total score"] = retArray[i]["intersection score"] + retArray[i]["colour score"] + retArray[i]["date score"];
         }
 
