@@ -143,7 +143,7 @@ function getDateScore(date0, date1)
 
     max = 6*30*24;
 
-    return Math.max((max-diff), 0)/max;
+    return diff;
 }
 
 //gets dominant colour of pet
@@ -358,7 +358,7 @@ function getIntersection(labels0, labels1)
 function getColourScore(colour0, colour1)
 {
     score = Math.sqrt (Math.pow((colour0[0]-colour1[0]),2) + Math.pow((colour0[1]-colour1[1]),2) + Math.pow((colour0[2]-colour1[2]),2));
-    return ((441.67 - score) / 441.67);
+    return score;
 }
 
 module.exports = {

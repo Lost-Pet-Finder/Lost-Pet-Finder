@@ -32,16 +32,41 @@ async function searchLostPets(req, res) {
             const colourScore = awsFunctions.getColourScore(myColours, otherColours);
             const dateScore = awsFunctions.getDateScore(myDate, otherDate);
 
-            const totalScore = intersectionScore + colourScore + dateScore; // add other scores here
+            // const totalScore = intersectionScore + colourScore + dateScore; // add other scores here
 
             retArray.push({
-                "score": totalScore,
+                "intersection score": intersectionScore,
+                "colour score": colourScore,
+                "date score": dateScore,
+                "total score": 0,
                 "report": allReports[i]
             });
         }
 
         retArray.sort((a,b) => {
-            return b.score - a.score;
+            return b.intersectionScore - a.intersectionScore;
+        });
+        var intersectionMax = retArray[0]["intersection score"];
+
+        retArray.sort((a,b) => {
+            return b.colourScore - a.colourScore;
+        });
+        var colourMax = retArray[0]["colour score"];
+
+        retArray.sort((a,b) => {
+            return b.dateScore - a.dateScore;
+        });
+        var dateMax = retArray[0]["date score"];
+
+        for (var i = 0; i < allReports.length; i++) {
+            retArray[i]["intersection score"] /= intersectionMax;
+            retArray[i]["colour score"] /= colourMax;
+            retArray[i]["date score"] /= dateMax;
+            retArray[i]["total score"] = retArray[i]["intersection score"] + retArray[i]["colour score"] + retArray[i]["date score"];
+        }
+
+        retArray.sort((a,b) => {
+            return b["total score"] - a["total score"];
         });
 
         res.status(200).json(retArray);
@@ -125,16 +150,41 @@ async function searchFoundPets(req, res) {
             const colourScore = awsFunctions.getColourScore(myColours, otherColours);
             const dateScore = awsFunctions.getDateScore(myDate, otherDate);
 
-            const totalScore = intersectionScore + colourScore + dateScore; // add other scores here
+            // const totalScore = intersectionScore + colourScore + dateScore; // add other scores here
 
             retArray.push({
-                "score": totalScore,
+                "intersection score": intersectionScore,
+                "colour score": colourScore,
+                "date score": dateScore,
+                "total score": 0,
                 "report": allReports[i]
             });
         }
 
         retArray.sort((a,b) => {
-            return b.score - a.score;
+            return b.intersectionScore - a.intersectionScore;
+        });
+        var intersectionMax = retArray[0]["intersection score"];
+
+        retArray.sort((a,b) => {
+            return b.colourScore - a.colourScore;
+        });
+        var colourMax = retArray[0]["colour score"];
+
+        retArray.sort((a,b) => {
+            return b.dateScore - a.dateScore;
+        });
+        var dateMax = retArray[0]["date score"];
+
+        for (var i = 0; i < allReports.length; i++) {
+            retArray[i]["intersection score"] /= intersectionMax;
+            retArray[i]["colour score"] /= colourMax;
+            retArray[i]["date score"] /= dateMax;
+            retArray[i]["total score"] = retArray[i]["intersection score"] + retArray[i]["colour score"] + retArray[i]["date score"];
+        }
+
+        retArray.sort((a,b) => {
+            return b["total score"] - a["total score"];
         });
 
         res.status(200).json(retArray);
