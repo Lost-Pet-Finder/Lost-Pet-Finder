@@ -2,6 +2,7 @@ const awsFunctions = require('../util/awsFunctions');
 const colourFunctions = require('../util/colourFunctions');
 const getColour = colourFunctions.getColour;
 const sqlPool = require('../sql/connection');
+// const { distance } = require('jimp/*');
 
 // Should only be called by users who posted a "FOUND" report
 async function searchLostPets(req, res) {
@@ -14,6 +15,8 @@ async function searchLostPets(req, res) {
         const myLabels = JSON.parse(userReport.tags);
         const myColours = JSON.parse(userReport.colour);
         const myDate = userReport.report_date;
+        const myLocx = userReport.location_x;
+        const myLocy = userReport.location_y;
 
         const allReportsRows = await sqlPool.query('CALL get_all_lost_pets()', []);
         const allReports = allReportsRows[0];
@@ -27,10 +30,13 @@ async function searchLostPets(req, res) {
             const otherLabels = JSON.parse(allReports[i].tags);
             const otherColours = JSON.parse(allReports[i].colour);
             const otherDate = allReports[i].report_date;
+            const otherLocx = allReports[i].location_x;
+            const otherLocy = allReports[i].location_y;
 
             const intersectionScore = awsFunctions.getIntersectionScore(myLabels, otherLabels);
             const colourScore = awsFunctions.getColourScore(myColours, otherColours);
             const dateScore = awsFunctions.getDateScore(myDate, otherDate);
+            const distanceScore = awsFunctions.getDistanceScore(myLocx, myLocy, otherLocx, otherLocy);
 
             // const totalScore = intersectionScore + colourScore + dateScore; // add other scores here
 
@@ -38,6 +44,7 @@ async function searchLostPets(req, res) {
                 "intersection score": intersectionScore,
                 "colour score": colourScore,
                 "date score": dateScore,
+                "distance score": distanceScore,
                 "total score": 0,
                 "report": allReports[i]
             });
@@ -64,11 +71,19 @@ async function searchLostPets(req, res) {
             }
         }
 
+        var distanceMax = retArray[0]["distance score"];
+        for(var i = 0; i < retArray.length; i++) {
+            if(retArray[i]["distance score"] > distanceMax) {
+                distanceMax = retArray[i]["distance score"];
+            }
+        }
+
         for (var i = 0; i < retArray.length; i++) {
             retArray[i]["intersection score"] /= intersectionMax;
             retArray[i]["colour score"] = (colourMax - retArray[i]["colour score"]) / colourMax;
             retArray[i]["date score"] = (dateMax - retArray[i]["date score"]) / dateMax;
-            retArray[i]["total score"] = retArray[i]["intersection score"] + retArray[i]["colour score"] + retArray[i]["date score"];
+            retArray[i]["distance score"] = (distanceMax - retArray[i]["distance score"]) / distanceMax;
+            retArray[i]["total score"] = retArray[i]["intersection score"] + retArray[i]["colour score"] + retArray[i]["date score"] + retArray[i]["distance score"];
         }
 
         retArray.sort((a,b) => {
@@ -138,6 +153,8 @@ async function searchFoundPets(req, res) {
         const myLabels = JSON.parse(userReport.tags);
         const myColours = JSON.parse(userReport.colour);
         const myDate = userReport.report_date;
+        const myLocx = userReport.location_x;
+        const myLocy = userReport.location_y;
 
         const allReportsRows = await sqlPool.query('CALL get_all_found_pets()', []);
         const allReports = allReportsRows[0];
@@ -151,10 +168,13 @@ async function searchFoundPets(req, res) {
             const otherLabels = JSON.parse(allReports[i].tags);
             const otherColours = JSON.parse(allReports[i].colour);
             const otherDate = allReports[i].report_date;
+            const otherLocx = allReports[i].location_x;
+            const otherLocy = allReports[i].location_y;
 
             const intersectionScore = awsFunctions.getIntersectionScore(myLabels, otherLabels);
             const colourScore = awsFunctions.getColourScore(myColours, otherColours);
             const dateScore = awsFunctions.getDateScore(myDate, otherDate);
+            const distanceScore = awsFunctions.getDistanceScore(myLocx, myLocy, otherLocx, otherLocy);
 
             // const totalScore = intersectionScore + colourScore + dateScore; // add other scores here
 
@@ -162,6 +182,7 @@ async function searchFoundPets(req, res) {
                 "intersection score": intersectionScore,
                 "colour score": colourScore,
                 "date score": dateScore,
+                "distance score": distanceScore,
                 "total score": 0,
                 "report": allReports[i]
             });
@@ -188,11 +209,19 @@ async function searchFoundPets(req, res) {
             }
         }
 
+        var distanceMax = retArray[0]["distance score"];
+        for(var i = 0; i < retArray.length; i++) {
+            if(retArray[i]["distance score"] > distanceMax) {
+                distanceMax = retArray[i]["distance score"];
+            }
+        }
+
         for (var i = 0; i < retArray.length; i++) {
             retArray[i]["intersection score"] /= intersectionMax;
-            retArray[i]["colour score"] /= colourMax;
-            retArray[i]["date score"] /= dateMax;
-            retArray[i]["total score"] = retArray[i]["intersection score"] + retArray[i]["colour score"] + retArray[i]["date score"];
+            retArray[i]["colour score"] = (colourMax - retArray[i]["colour score"]) / colourMax;
+            retArray[i]["date score"] = (dateMax - retArray[i]["date score"]) / dateMax;
+            retArray[i]["distance score"] = (distanceMax - retArray[i]["distance score"]) / distanceMax;
+            retArray[i]["total score"] = retArray[i]["intersection score"] + retArray[i]["colour score"] + retArray[i]["date score"] + retArray[i]["distance score"];
         }
 
         retArray.sort((a,b) => {
