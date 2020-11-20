@@ -43,22 +43,28 @@ async function searchLostPets(req, res) {
             });
         }
 
-        retArray.sort((a,b) => {
-            return b.intersectionScore - a.intersectionScore;
-        });
         var intersectionMax = retArray[0]["intersection score"];
+        for(var i = 0; i < retArray.length; i++) {
+            if(retArray[i]["intersection score"] > intersectionMax) {
+                intersectionMax = retArray[i]["intersection score"];
+            }
+        }
 
-        retArray.sort((a,b) => {
-            return b.colourScore - a.colourScore;
-        });
         var colourMax = retArray[0]["colour score"];
+        for(var i = 0; i < retArray.length; i++) {
+            if(retArray[i]["colour score"] > colourMax) {
+                colourMax = retArray[i]["colour score"];
+            }
+        }
 
-        retArray.sort((a,b) => {
-            return b.dateScore - a.dateScore;
-        });
         var dateMax = retArray[0]["date score"];
+        for(var i = 0; i < retArray.length; i++) {
+            if(retArray[i]["date score"] > dateMax) {
+                dateMax = retArray[i]["date score"];
+            }
+        }
 
-        for (var i = 0; i < allReports.length; i++) {
+        for (var i = 0; i < retArray.length; i++) {
             retArray[i]["intersection score"] /= intersectionMax;
             retArray[i]["colour score"] /= colourMax;
             retArray[i]["date score"] /= dateMax;
@@ -161,22 +167,28 @@ async function searchFoundPets(req, res) {
             });
         }
 
-        retArray.sort((a,b) => {
-            return b.intersectionScore - a.intersectionScore;
-        });
         var intersectionMax = retArray[0]["intersection score"];
+        for(var i = 0; i < retArray.length; i++) {
+            if(retArray[i]["intersection score"] > intersectionMax) {
+                intersectionMax = retArray[i]["intersection score"];
+            }
+        }
 
-        retArray.sort((a,b) => {
-            return b.colourScore - a.colourScore;
-        });
         var colourMax = retArray[0]["colour score"];
+        for(var i = 0; i < retArray.length; i++) {
+            if(retArray[i]["colour score"] > colourMax) {
+                colourMax = retArray[i]["colour score"];
+            }
+        }
 
-        retArray.sort((a,b) => {
-            return b.dateScore - a.dateScore;
-        });
         var dateMax = retArray[0]["date score"];
+        for(var i = 0; i < retArray.length; i++) {
+            if(retArray[i]["date score"] > dateMax) {
+                dateMax = retArray[i]["date score"];
+            }
+        }
 
-        for (var i = 0; i < allReports.length; i++) {
+        for (var i = 0; i < retArray.length; i++) {
             retArray[i]["intersection score"] /= intersectionMax;
             retArray[i]["colour score"] /= colourMax;
             retArray[i]["date score"] /= dateMax;
