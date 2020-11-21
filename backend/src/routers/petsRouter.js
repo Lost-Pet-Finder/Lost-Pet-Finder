@@ -6,7 +6,7 @@ const petsController = require('../controllers/petsController');
 const router = express.Router();
 
 router.get('/', (req, res) => {
-    res.status(200).send('This is the pets endpoint');
+	res.status(200).send('This is the pets endpoint');
 });
 
 router.get('/searchLostPets', petsController.searchLostPets);

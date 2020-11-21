@@ -8,7 +8,6 @@ const sizeOf = require('buffer-image-size');
 const Jimp = require('jimp');
 const ColorThief = require('color-thief');
 
-
 async function getColour(bucketName, fileName) {
     try {
         const rekognitionParams = {
@@ -102,5 +101,5 @@ async function getColour(bucketName, fileName) {
 }
 
 module.exports = {
-    getColour: getColour
-}
+	getColour: getColour,
+};

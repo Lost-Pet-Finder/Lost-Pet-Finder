@@ -2,33 +2,35 @@ const sqlPool = require('../sql/connection');
 const fadmin = require('../util/firebaseAdmin');
 
 async function uploadDeviceToken(req, res) {
-    const userid = req.body.userid;
-    const token = req.body.deviceToken;
-    
+	const userid = req.body.userid;
+	const token = req.body.deviceToken;
 
-    try {
-        const rows = await sqlPool.query('CALL upload_device_token(?,?)', [userid, token]);
-        const dataPackets = rows[0];
+	try {
+		const rows = await sqlPool.query('CALL upload_device_token(?,?)', [
+			userid,
+			token,
+		]);
+		const dataPackets = rows[0];
 
-        res.status(200).send(dataPackets);
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Request failed');
-    }
+		res.status(200).send(dataPackets);
+	} catch (err) {
+		console.error(err);
+		res.status(500).send('Request failed');
+	}
 }
 
 async function getUserDeviceToken(req, res) {
-    const userid = req.body.userid;
-    
-    try {
-        const rows = await sqlPool.query('CALL get_user_device_token(?)', [userid]);
-        const dataPackets = rows[0];
+	const userid = req.body.userid;
 
-        res.status(200).send(dataPackets);
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Request failed');
-    }
+	try {
+		const rows = await sqlPool.query('CALL get_user_device_token(?)', [userid]);
+		const dataPackets = rows[0];
+
+		res.status(200).send(dataPackets);
+	} catch (err) {
+		console.error(err);
+		res.status(500).send('Request failed');
+	}
 }
 
 async function sendContactRequest(req, res) {
@@ -142,6 +144,13 @@ async function getMySentRequests(req, res) {
 }
 
 
+		res.status(200).send(response);
+	} catch (err) {
+		console.error(err);
+		res.status(500).send('Request failed');
+	}
+}
+
 module.exports = {
     uploadDeviceToken: uploadDeviceToken,
     getUserDeviceToken: getUserDeviceToken,
@@ -151,3 +160,4 @@ module.exports = {
     getMyPendingRequests: getMyPendingRequests,
     getMySentRequests: getMySentRequests
 }
+

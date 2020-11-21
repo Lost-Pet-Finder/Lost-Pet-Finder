@@ -142,7 +142,6 @@ async function postLostPets(req, res) {
     }
 }
 
-
 async function searchFoundPets(req, res) {
     var userid = req.body.userid;
 
@@ -281,8 +280,8 @@ async function postFoundPets(req, res) {
 }
 
 module.exports = {
-    searchLostPets: searchLostPets,
-    postLostPets: postLostPets,
-    searchFoundPets: searchFoundPets,
-    postFoundPets: postFoundPets
-}
+	searchLostPets: searchLostPets,
+	postLostPets: postLostPets,
+	searchFoundPets: searchFoundPets,
+	postFoundPets: postFoundPets,
+};

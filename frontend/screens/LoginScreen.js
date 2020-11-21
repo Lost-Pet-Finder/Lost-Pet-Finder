@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, {useState} from 'react';
+import React from 'react';
 
 import {
   StyleSheet,
@@ -8,14 +8,13 @@ import {
   Text,
   Image,
   TouchableOpacity,
-  Button
 } from 'react-native';
 
 // FCM
 import messaging from '@react-native-firebase/messaging';
 
 class LoginScreen extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
   }
 
@@ -23,23 +22,24 @@ class LoginScreen extends React.Component {
     const deviceToken = await messaging().getToken();
     console.log(`Device Token: ${deviceToken}`);
 
-    const url = 'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/notif/uploadDeviceToken';
+    const url =
+      'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/notif/uploadDeviceToken';
 
     const body = {
       userid: user_id,
-      deviceToken: deviceToken
-    }
+      deviceToken: deviceToken,
+    };
 
     try {
-      const response = await fetch(url, 
-        {
-            method:'POST',
-            headers:{
-              Accept: 'application/json',
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(body)
-        });
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      });
+      console.log(response);
     } catch (err) {
       console.log(err);
     }
@@ -50,7 +50,6 @@ class LoginScreen extends React.Component {
   signedInAsFinder() {
     // ... get user id from server
     const user_id = '1';
-
 
     this.updateFCMDeviceToken(user_id);
     this.props.navigation.navigate('HomePage', {user_id: user_id, isFinder: 1});
@@ -64,14 +63,11 @@ class LoginScreen extends React.Component {
     this.props.navigation.navigate('HomePage', {user_id: user_id, isFinder: 0});
   }
 
-  render(){
+  render() {
     //console.log(JSON.stringify(this.props));
     return (
-      
       <View style={styles.container} testID={'LoginScreen_detox'}>
-        <Image
-          style={styles.image}
-          source={require('../assets/logo.png')}></Image>
+        <Image style={styles.image} source={require('../assets/logo.png')} />
         <View style={styles.inputView}>
           <TextInput
             style={styles.inputText}
@@ -80,7 +76,7 @@ class LoginScreen extends React.Component {
             placeholderTextColor="#003f5c"
             //onChangeText={(email) => setEmail(email)}
           />
-        </View> 
+        </View>
 
         <View style={styles.inputView}>
           <TextInput
@@ -92,16 +88,18 @@ class LoginScreen extends React.Component {
           />
         </View>
 
-        <TouchableOpacity style={styles.loginButton} testID={'SignInFinderButton_detox'} onPress={()=>this.signedInAsFinder()} >
-         
+        <TouchableOpacity
+          style={styles.loginButton}
+          testID={'SignInFinderButton_detox'}
+          onPress={() => this.signedInAsFinder()}>
           <Text style={styles.loginText}>Sign In: Found</Text>
-  
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.loginButton} testID={'SignInLoserButton_detox'} onPress={()=>this.signedInAsLoser() } >
-         
+        <TouchableOpacity
+          style={styles.loginButton}
+          testID={'SignInLoserButton_detox'}
+          onPress={() => this.signedInAsLoser()}>
           <Text style={styles.loginText}>Sign In: Lost</Text>
-  
         </TouchableOpacity>
 
         <TouchableOpacity>
@@ -111,11 +109,9 @@ class LoginScreen extends React.Component {
           <Text style={styles.forgotPassword}>Forgot password?</Text>
         </TouchableOpacity>
       </View>
-    )
+    );
   }
-
-  
-};
+}
 
 export default LoginScreen;
 
@@ -169,4 +165,3 @@ const styles = StyleSheet.create({
     resizeMode: 'stretch',
   },
 });
-

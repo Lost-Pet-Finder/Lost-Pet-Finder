@@ -4,15 +4,15 @@ describe('Example', () => {
   });
 
   it('login screen is visible', async () => {
-    await expect(element(by.id('LoginScreen_detox'))).toBeVisible()
-  })
+    await expect(element(by.id('LoginScreen_detox'))).toBeVisible();
+  });
 
   it('sign in button for finder is visible', async () => {
-    await expect(element(by.id('SignInFinderButton_detox'))).toBeVisible()
+    await expect(element(by.id('SignInFinderButton_detox'))).toBeVisible();
   });
 
   it('sign in button for loser is visible', async () => {
-    await expect(element(by.id('SignInLoserButton_detox'))).toBeVisible()
+    await expect(element(by.id('SignInLoserButton_detox'))).toBeVisible();
   });
 
   // Tap button
@@ -26,7 +26,4 @@ describe('Example', () => {
     await element(by.id('SignInLoserButton_detox')).tap();
     await expect(by.id('HomePage_detox')).toBeVisible();
   });
-
-
-
 });

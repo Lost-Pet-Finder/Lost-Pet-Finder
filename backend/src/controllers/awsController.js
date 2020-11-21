@@ -18,22 +18,23 @@ const { response } = require('express');
 
 // const pets = ["Bird", "Bunny", "Cat", "Dog", "Guinea Pig", "Hamster", "Hare", "Kangaroo", "Mouse", "Pig", "Rabbit", "Rat", "Snake", "Wallaby"];
 //This indicates an error with the bounding boxes we get from the tags
+
 errorBox = {
-    "BoundingBox": {
-        "Width": -1,
-        "Height": -1,
-        "Left": -1,
-        "Top": -1
-    }
+	BoundingBox: {
+		Width: -1,
+		Height: -1,
+		Left: -1,
+		Top: -1,
+	},
 };
 //if there is no box, but we still rekognze a pet, we take the whole picture without cropping
 noBox = {
-    "BoundingBox": {
-        "Width": 1,
-        "Height": 1,
-        "Left": 0,
-        "Top": 0
-    }
+	BoundingBox: {
+		Width: 1,
+		Height: 1,
+		Left: 0,
+		Top: 0,
+	},
 };
 
 //this compares two pictures for similarity based on tags and colour: for the final product these values will
@@ -362,6 +363,47 @@ function getColourScore(colour0, colour1)
 }
 
 module.exports = {
-    sendRekognitionRequest: sendRekognitionRequest,
-    getIntersectionScore: getIntersectionScore
-}
+	sendRekognitionRequest: sendRekognitionRequest,
+	getIntersectionScore: getIntersectionScore,
+};
+
+// Imports;
+// const sqlPool = require('../sql/connection');
+// const rekognition = require('../aws/awsClient');
+
+// async function sendRekognitionRequest(req, res) {
+// 	const bucketName = req.body.bucketName;
+// 	const fileName = req.body.fileName;
+
+// 	const params = {
+// 		Image: {
+// 			S3Object: {
+// 				Bucket: bucketName,
+// 				Name: fileName,
+// 			},
+// 		},
+// 		MaxLabels: 10,
+// 	};
+
+// 	try {
+// 		const response = await rekognition.detectLabels(params).promise();
+
+// 		var returnedLabels = [];
+
+// 		response.Labels.forEach(label => {
+// 			returnedLabels.push(label);
+// 		});
+
+// 		res.status(200).json({
+// 			labels: returnedLabels,
+// 		});
+// 	} catch (err) {
+// 		console.log(err);
+
+// 		res.status(500).send('Request failed');
+// 	}
+// }
+
+// module.exports = {
+// 	sendRekognitionRequest: sendRekognitionRequest,
+// };

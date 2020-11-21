@@ -6,7 +6,7 @@ const notificationController = require('../controllers/notificationController');
 const router = express.Router();
 
 router.get('/', (req, res) => {
-    res.status(200).send('This is the notification endpoint');
+	res.status(200).send('This is the notification endpoint');
 });
 
 router.post('/uploadDeviceToken', notificationController.uploadDeviceToken);
@@ -16,6 +16,5 @@ router.post('/sendContactRequest', notificationController.sendContactRequest);
 router.post('/respondToContactRequest', notificationController.respondToContactRequest);
 router.get('/pendingRequests', notificationController.getMyPendingRequests);
 router.get('/sentRequests', notificationController.getMySentRequests);
-
 
 module.exports = router;
