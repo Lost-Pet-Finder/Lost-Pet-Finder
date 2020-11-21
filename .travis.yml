@@ -20,7 +20,7 @@ before_install:
   - sudo apt-get install libcairo2-dev
   - sudo apt-get install libpango1.0-dev
   - sudo apt-get install glibc-source
-  - npm install canvas@2.5.0 --build-from-source
+  - npm install canvas@2.5.0
 install:
   - npm install
 script:
