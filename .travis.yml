@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-  - lts/*
+  - 12
 branches:
   only:
     - master
@@ -12,12 +12,15 @@ before_install:
   - sudo apt-get update
   - sudo apt-get install wget
   - sudo apt-get install ca-certificates
-  - sudo mkdir -p /etc/apk/keys
-  - sudo wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub
-  - sudo wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.32-r0/glibc-2.32-r0.apk
+  # - sudo mkdir -p /etc/apk/keys
+  # - sudo wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub
+  # - sudo wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.32-r0/glibc-2.32-r0.apk
   # - sudo apt-get install glibc-2.32-r0.apk
+
+  - sudo apt-get install libcairo2-dev
+  - sudo apt-get install libpango1.0-dev
   - sudo apt-get install glibc-source
-  - npm install canvas@2.5.0
+  - npm install canvas@2.5.0 --build-from-source
 install:
   - npm install
 script:
