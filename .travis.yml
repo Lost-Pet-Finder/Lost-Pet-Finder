@@ -13,8 +13,8 @@ before_install:
   - sudo apt-get install wget
   - sudo apt-get install ca-certificates
   - sudo mkdir -p /etc/apk/keys
-  - wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub
-  - wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.32-r0/glibc-2.32-r0.apk
+  - sudo wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub
+  - sudo wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.32-r0/glibc-2.32-r0.apk
   - sudo apt-get install glibc-2.32-r0.apk
   - npm install canvas@2.5.0
 install:
