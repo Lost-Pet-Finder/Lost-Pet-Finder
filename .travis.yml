@@ -9,7 +9,8 @@ cache:
     - node_modules
 before_install:
   - cd backend
-  - sudo apt-get install ca-certificates && \
+  - sudo apt-get install wget
+  - sudo apt-get install ca-certificates wget && \
     wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub && \
     wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.29-r0/glibc-2.29-r0.apk && \
     sudo apt-get install glibc-2.29-r0.apk && \
