@@ -1,3 +1,5 @@
+//SHOULD BE COVERED IN AWSFUNCTIONS NOW
+
 /* eslint-disable */
 
 // Imports
@@ -9,27 +11,14 @@ const s3 = aws.s3;
 const sizeOf = require('buffer-image-size');
 const Jimp = require('jimp');
 const ColorThief = require('color-thief');
+const DateDiff = require('date-diff');
 
 const { head } = require('../routers/awsRouter');
 const { response } = require('express');
-// const { distance } = require('jimp');
 
-const pets = [
-	'Bird',
-	'Bunny',
-	'Cat',
-	'Dog',
-	'Guinea Pig',
-	'Hamster',
-	'Hare',
-	'Kangaroo',
-	'Mouse',
-	'Pig',
-	'Rabbit',
-	'Rat',
-	'Snake',
-	'Wallaby',
-];
+// const pets = ["Bird", "Bunny", "Cat", "Dog", "Guinea Pig", "Hamster", "Hare", "Kangaroo", "Mouse", "Pig", "Rabbit", "Rat", "Snake", "Wallaby"];
+//This indicates an error with the bounding boxes we get from the tags
+
 errorBox = {
 	BoundingBox: {
 		Width: -1,
@@ -38,6 +27,7 @@ errorBox = {
 		Top: -1,
 	},
 };
+//if there is no box, but we still rekognze a pet, we take the whole picture without cropping
 noBox = {
 	BoundingBox: {
 		Width: 1,
@@ -46,318 +36,330 @@ noBox = {
 		Top: 0,
 	},
 };
+
+//this compares two pictures for similarity based on tags and colour: for the final product these values will
+//be saved in MySQL so we don't have to recalculate them each time.
 async function sendRekognitionRequest(req, res) {
-	const bucketName = req.body.bucketName;
-	const fileName = req.body.fileName;
+    const bucketName = req.body.bucketName;
+    const fileName0 = req.body.fileName0;
+    const fileName1 = req.body.fileName1;
 
-	const params = {
-		Image: {
-			S3Object: {
-				Bucket: bucketName,
-				Name: fileName,
-			},
-		},
-		MaxLabels: 100,
-	};
+    date0 = req.body.date0;
+    date1 = req.body.date1;
 
-	try {
-		const response = await rekognition.detectLabels(params).promise();
+    const params0 = {
+        Image: {
+            S3Object: {
+                Bucket: bucketName,
+                Name: fileName0
+            }
+        },
+        MaxLabels: 100
+    };
 
-		var returnedLabels = [];
+    const params1 = {
+        Image: {
+            S3Object: {
+                Bucket: bucketName,
+                Name: fileName1
+            }
+        },
+        MaxLabels: 100
+    };
 
-		response.Labels.forEach(label => {
-			returnedLabels.push(label);
-		});
+    try {
+        const response0 = await rekognition.detectLabels(params0).promise();
+        const response1 = await rekognition.detectLabels(params1).promise();
 
-		// const colour = await getColour(req, response);
-		answer = [];
+        labels0 = [];
+        labels1 = [];
 
-		labels = [];
+        response0.Labels.forEach( label => {
+            labels0.push(label);
+        });
 
-		response.Labels.forEach(label => {
-			labels.push(label);
-		});
+        response1.Labels.forEach( label => {
+            labels1.push(label);
+        });
 
-		if (getLength(labels) > 0) labels = filterForPets(labels);
-		if (getLength(labels) > 0) labels = filterForConfidence(labels);
+        labels0 = filterForPets(labels0);
+        labels0 = filterForConfidence(labels0);
+        labels1 = filterForPets(labels1);
+        labels1 = filterForConfidence(labels1);
 
-		if (getLength(labels) > 0) {
-			validBox = validBoxes(labels);
-			if (validBox != errorBox) {
-				colour = await getColour(
-					req.body.bucketName,
-					req.body.fileName,
-					validBox,
-					labels
-				).then(function (value) {
-					console.log(value);
-				});
-			} else {
-				console.log('too many animals in picture! :(');
-			}
-		} else {
-			// console.log(labels);
-			// console.log(labels.array.length);
-			console.log('no animals detected in image! :(');
-		}
+        //only if rekognition worked on both
+        if(labels0.length > 0 && labels1.length > 0)
+        {
+            intersectionScore = getIntersectionScore(labels0, labels1);
+        
+            //only if each has valid box
+            validBox0 = validBoxes(labels0);
+            validBox1 = validBoxes(labels1);
+            if(validBox0 != errorBox && validBox1 != errorBox)
+            {
+                colour0 = [];
+                colour1 = [];
 
-		res.status(200).json({
-			labels: returnedLabels,
-		});
-	} catch (err) {
-		console.log(err);
+                colour0 = await getColour(bucketName, fileName0, validBox0);
+                colour1 = await getColour(bucketName, fileName1, validBox1);
 
-		res.status(500).send('Request failed');
-	}
+                colourScore = getColourScore(colour0, colour1);
+
+                dateScore = getDateScore(date0, date1);
+
+                //normalise each score to 1/2 max
+                finalScore = intersectionScore / 3 + colourScore / 3 +  dateScore / 3;
+                console.log("\nintersection score is: " + intersectionScore);
+                console.log("\ncolour score is: " + colourScore);
+                console.log("\ndate score score is: " + dateScore);
+                console.log(finalScore);
+                res.status(200).send("Request succeeded");
+            }
+            else 
+            {
+                console.log("too many animals in picture! :(");
+                res.status(400).send('Request failed');
+            }
+        }
+        else 
+        {
+            console.log("no animals detected in image! :(");
+            res.status(401).send('Request failed');
+            
+        }
+
+    } catch (err) {
+        console.log(err);
+
+        res.status(500).send('Request failed');
+    }
 }
 
-async function getColour(bucketName, fileName, validBox, response) {
-	try {
-		const image = await s3
-			.getObject({ Bucket: bucketName, Key: fileName })
-			.promise();
-		var color = new ColorThief();
+function getDateScore(date0, date1)
+{
+    dateDiff0 = new Date(date0);
+    dateDiff1 = new Date(date1);
 
-		var totalDimensions = sizeOf(image.Body);
-		totalWidth = totalDimensions.width;
-		totalHeight = totalDimensions.height;
+    diff = new DateDiff(dateDiff0, dateDiff1).hours();
 
-		modeTotal = color.getColor(image.Body);
-		// pixels = color.getPalette(image.Body, 8);
-		// modeTotal2 = (pixels.sort((a,b) =>
-		//   pixels.filter(v => v===a).length
-		// - pixels.filter(v => v===b).length).pop());
+    max = 6*30*24;
 
-		var box = validBox;
-		count = 0;
-
-		boxWidth = box.Width * totalWidth;
-		boxHeight = box.Height * totalHeight;
-
-		topLeft = [box.Left * totalWidth, box.Top * totalHeight];
-		cropped = [];
-		x = await Jimp.read(image.Body).then(img => {
-			img.crop(topLeft[0], topLeft[1], boxWidth, boxHeight);
-			img.getBuffer(Jimp.MIME_JPEG, (err, buf) => {
-				if (err) throw err;
-				cropped = buf;
-			});
-		});
-
-		mode = color.getColor(cropped);
-		// pixels = color.getPalette(cropped, 8);
-		// mode2 = (pixels.sort((a,b) =>
-		//   pixels.filter(v => v===a).length
-		// - pixels.filter(v => v===b).length).pop());
-
-		percentArea = 1 - (boxWidth * boxHeight) / (totalWidth * totalHeight);
-		rDiff = mode[0] - modeTotal[0];
-		gDiff = mode[1] - modeTotal[1];
-		bDiff = mode[2] - modeTotal[2];
-
-		rDiff = Math.sign(rDiff) * Math.abs(rDiff / (mode[0] + rDiff));
-		gDiff = Math.sign(gDiff) * Math.abs(gDiff / (mode[1] + gDiff));
-		bDiff = Math.sign(bDiff) * Math.abs(bDiff / (mode[2] + bDiff));
-
-		modeCorrected = [];
-		modeCorrected[0] = Math.max(
-			Math.min(mode[0] + percentArea * rDiff * modeTotal[0], 255),
-			0
-		);
-		modeCorrected[1] = Math.max(
-			Math.min(mode[1] + percentArea * gDiff * modeTotal[1], 255),
-			0
-		);
-		modeCorrected[2] = Math.max(
-			Math.min(mode[2] + percentArea * bDiff * modeTotal[2], 255),
-			0
-		);
-
-		// console.log(modeCorrected);
-
-		return Promise.resolve(modeCorrected);
-	} catch (err) {
-		console.log(err);
-		throw err;
-	}
+    return diff;
 }
 
-function filterForPets(response) {
-	const animal = { Name: 'Animal' };
-	try {
-		ret = [];
-		if (response.length < 1) {
-			return ret;
-		}
-		response.forEach(label => {
-			label.Parents.forEach(parent => {
-				// console.log(label.Name);
-				// console.log(parent);
-				if (parent.Name == 'Animal' && ret.indexOf(label) < 0) {
-					ret.push(label);
-				}
-			});
-		});
-		return ret;
-	} catch (err) {
-		console.log(err);
+//gets dominant colour of pet
+async function getColour(bucketName, fileName, validBox) {
 
-		throw err;
-	}
+    try {
+        const image = await s3.getObject({Bucket: bucketName,Key: fileName}).promise();
+        var color =  new ColorThief();
+
+
+        //get width height and colour of whole image
+        var totalDimensions = sizeOf(image.Body);
+        totalWidth = totalDimensions.width;
+        totalHeight = totalDimensions.height;
+
+        colourTotal = color.getColor(image.Body);
+
+        var box;
+
+        //get height width and colour of only box with pet in it
+        if(validBox.BoundingBox != undefined)
+        box = validBox.BoundingBox;
+
+        else
+        box = validBox
+
+        // console.log(validBox);
+        boxWidth = box.Width * totalWidth;
+        boxHeight = box.Height * totalHeight;
+
+        topLeft = [box.Left * totalWidth, box.Top * totalHeight];
+        cropped = []
+        x = await Jimp.read(image.Body).then(img => {
+            img.crop(topLeft[0], topLeft[1], boxWidth, boxHeight);
+            img.getBuffer(Jimp.MIME_JPEG, (err, buf) => {
+                if(err) throw err;
+                cropped = buf;
+            });
+        });
+
+        colourBox = color.getColor(cropped);
+
+
+        //get % area that crop is of total
+        //get % colour diff crop is of total
+        percentArea = 1 - ((boxWidth * boxHeight) / (totalWidth * totalHeight));
+        rDiff = (colourBox[0] - colourTotal[0]);
+        gDiff = (colourBox[1] - colourTotal[1]);
+        bDiff = (colourBox[2] - colourTotal[2]);
+
+        rDiff = Math.sign(rDiff) * (Math.abs(rDiff / 128));
+        gDiff = Math.sign(gDiff) * (Math.abs(gDiff / 128));
+        bDiff = Math.sign(bDiff) * (Math.abs(bDiff / 128));
+
+        //get colour of pet by subtracting total scaled with %s from the cropped
+        colourPet = []
+        colourPet[0] = Math.max(Math.min(colourBox[0] + percentArea * rDiff * colourTotal[0], 255), 0) ;
+        colourPet[1] = Math.max(Math.min(colourBox[1] + percentArea * gDiff * colourTotal[1], 255), 0) ;
+        colourPet[2] = Math.max(Math.min(colourBox[2] + percentArea * bDiff * colourTotal[2], 255), 0) ;
+
+        return Promise.resolve(colourPet);
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
 }
 
-function filterForConfidence(response) {
-	try {
-		ret = [];
-		if (response.length < 1) {
-			return ret;
-		}
-		response.forEach(label => {
-			if (label.Confidence >= 85) {
-				ret.push(label);
-			}
-		});
-		return ret;
-	} catch (err) {
-		console.log(err);
+//get rid of tags that are nnot releated to animals
+function filterForPets(response)
+{
+    const animal = {"Name": "Animal"};
+    try {
+        ret = []
+        if(response.length < 1)
+        {
+            return ret;
+        }
+        response.forEach(label => {
+            label.Parents.forEach(parent => {
+                if(parent.Name == "Animal" && ret.indexOf(label) < 0)
+                {
+                    ret.push(label);
+                }
+            });
+        });
+        return ret;
 
-		throw err;
-	}
+    } catch (err) {
+        console.log(err);
+
+        throw err;
+    }
 }
 
+//get rid of tags that arent of certain confidence
+function filterForConfidence(response)
+{
+    try {
+        ret = []
+        if(response.length < 1)
+        {
+            return ret;
+        }
+        response.forEach(label => {
+            if(label.Confidence >= 85)
+            {
+                ret.push(label);
+            }
+        });
+        return ret;
+
+    } catch (err) {
+        console.log(err);
+
+        throw err;
+    }
+}
+
+//gets a box for the animal in the picture
+//if multiple animals: sen err message
+//if no boxes: return noBox
+//if overlapping boxes for smae animal: choose one box
 function validBoxes(response) {
-	var boxes = [];
-	if (response.length < 1) {
-		return noBox;
-	}
-	response.forEach(label => {
-		label.Instances.forEach(instance => {
-			if (instance.BoundingBox != undefined) {
-				boxes.push(instance.BoundingBox);
-			}
-		});
-	});
+    var boxes = [];
+    if(response.length < 1)
+    {
+        return noBox;
+    }
+    response.forEach(label => {
+        label.Instances.forEach(instance => {
+            if(instance.BoundingBox != undefined)
+            {
+                boxes.push(instance.BoundingBox)
+            }
+        })
+    })
 
-	for (i = 0; i < boxes.length - 1; i++) {
-		for (j = 0; j < i; i++) {
-			console.log(i + j + boxes[i] + 'owo');
-			if (Math.abs(boxes[i].Width - boxes[j].Width) > 0.1) {
-				return errorBox;
-			}
-			if (Math.abs(boxes[i].Height - boxes[j].Height) > 0.1) {
-				return errorBox;
-			}
-			if (Math.abs(boxes[i].Left - boxes[j].Left) > 0.1) {
-				return errorBox;
-			}
-			if (Math.abs(boxes[i].Right - boxes[j].Right) > 0.1) {
-				return errorBox;
-			}
-		}
-	}
+    for( i = 0; i < boxes.length - 1; i++) {
+        for(j = 0; j < i; i++) {
+            if(Math.abs(boxes[i].Width - boxes[j].Width) > 0.1) {
+                return errorBox;
+            }
+            if(Math.abs(boxes[i].Height - boxes[j].Height) > 0.1) {
+                return errorBox;
+            }
+            if(Math.abs(boxes[i].Left - boxes[j].Left) > 0.1) {
+                return errorBox;
+            }
+            if(Math.abs(boxes[i].Right - boxes[j].Right) > 0.1) {
+                return errorBox;
+            }
+        }
+    }
 
-	if (boxes.length == 0) return noBox;
+    if(boxes.length == 0)
+    return noBox;
 
-	return boxes[Math.floor(boxes.length / 2)];
+    return boxes[Math.floor(boxes.length / 2)];
 }
 
-function getLength(response) {
-	length = 0;
-	response.forEach(label => {
-		length = length + 1;
-	});
-	return length;
+function getLength(response)
+{
+    length = 0;
+    response.Labels.forEach( label =>{
+        length = length + 1;
+    });
+    return length;
 }
 
-async function getIntersectionScore(req, res) {
-	const bucketName = req.body.bucketName;
-	const fileName0 = req.body.fileName0;
-	const fileName1 = req.body.fileName1;
+//gets a score from the similarity of a set of tags to another
+function getIntersectionScore(labels0, labels1) {
+    intersection = getIntersection(labels0, labels1);
 
-	const params0 = {
-		Image: {
-			S3Object: {
-				Bucket: bucketName,
-				Name: fileName0,
-			},
-		},
-		MaxLabels: 100,
-	};
+    score = 0.0;
 
-	const params1 = {
-		Image: {
-			S3Object: {
-				Bucket: bucketName,
-				Name: fileName1,
-			},
-		},
-		MaxLabels: 100,
-	};
+    for(i = 0; i < intersection.length; i++)
+    {
+        parentsScore = 0.0;
+        intersection[i].Parents.forEach( parent => {
+            parentsScore += 1;
+        });
+        parentsScore = Math.pow(parentsScore, 1.3);
+        score += parentsScore; 
+    }
+    score = Math.pow(score, 1.2);
 
-	try {
-		const response0 = await rekognition.detectLabels(params0).promise();
-		const response1 = await rekognition.detectLabels(params1).promise();
-
-		labels0 = [];
-		labels1 = [];
-
-		response0.Labels.forEach(label => {
-			labels0.push(label);
-		});
-
-		response1.Labels.forEach(label => {
-			labels1.push(label);
-		});
-
-		labels0 = filterForPets(labels0);
-		labels0 = filterForConfidence(labels0);
-		labels1 = filterForPets(labels1);
-		labels1 = filterForConfidence(labels1);
-
-		intersection = getIntersection(labels0, labels1);
-
-		score = 0.0;
-
-		for (i = 0; i < intersection.length; i++) {
-			parentsScore = 0.0;
-			intersection[i].Parents.forEach(parent => {
-				parentsScore += 1;
-			});
-			parentsScore = Math.pow(parentsScore, 1.3);
-			score += parentsScore;
-		}
-		sore = Math.pow(score, 1.2);
-
-		console.log(score);
-
-		res.status(200).json({
-			intersection,
-		});
-	} catch (err) {
-		console.log(err);
-
-		res.status(500).send('Request failed');
-	}
+    return score;
 }
 
-function getIntersection(labels0, labels1) {
-	// console.log(labels0);
-	// console.log(labels1);
-	var value0s = {};
-	intersection = [];
+//returns the intersection between two sets of JSON tags
+function getIntersection(labels0, labels1) 
+{
+    // console.log(labels0);
+    // console.log(labels1);
+    var value0s = {};
+    intersection = [];
 
-	labels0.forEach(function (item) {
-		value0s[item.Name] = item.Name;
-	});
+    labels0.forEach(function(item) {
+        value0s[item.Name] = item.Name;
+    });
 
-	labels1.forEach(function (item) {
-		if (item.Name in value0s) {
-			intersection.push(item);
-		}
-	});
+    labels1.forEach(function(item) {
+    if (item.Name in value0s) {
+        intersection.push(item);
+    }
+    });
 
-	// console.log(intersection);
-	return intersection;
+    return intersection;
+}
+
+//gets the colour difference betweeen two different colours
+function getColourScore(colour0, colour1)
+{
+    score = Math.sqrt (Math.pow((colour0[0]-colour1[0]),2) + Math.pow((colour0[1]-colour1[1]),2) + Math.pow((colour0[2]-colour1[2]),2));
+    return score;
 }
 
 module.exports = {
