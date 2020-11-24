@@ -10,6 +10,7 @@ import { RNS3 } from 'react-native-aws3';
 
 import MapView from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
+import { Callout } from 'react-native-maps';
 
 const options = {
   takePhotoButtonTitle: 'Take Photos',
@@ -47,7 +48,11 @@ export default class ReportScreen extends React.Component {
         longitudeDelta: 0
       },
       lastPosition: 'unknown',
+      isMapReady: false,
+      userLocation:"",
+      regionChangeProgress:false
     };
+    
   }
 
 
@@ -76,6 +81,51 @@ export default class ReportScreen extends React.Component {
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
     );
   }
+
+  onMapReady=()=> {
+    this.setState({isMapReady:true});
+  }
+
+
+  fetchAddress=()=> {
+    console.log(this.state.currentPosition.latitude + ", " + this.state.currentPosition.longitude);
+    fetch("https://maps.googleapis.com/maps/api/geocode/json?address=" + this.state.currentPosition.latitude + "," + this.state.currentPosition.longitude + "&key=" + "AIzaSyBk1oSy9YTS0SjTxnHiznhPyQpai8mgJh8")
+    .then((response)=>
+      response.json()
+        )
+    .then((responseJson) => {
+      console.log("yooyoy" + responseJson);
+      const userLocation = responseJson.results[0].formatted_address;
+      console.log(userLocation);
+
+      var change_coordination_info = {
+        latitude: responseJson.results[0].geometry.location.lat,
+        longitude: responseJson.results[0].geometry.location.lng,
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA,
+      };
+
+      this.setState({
+        currentPosition: change_coordination_info,
+        userLocation: userLocation,
+        lat: responseJson.results[0].geometry.location.lat,
+        lon: responseJson.results[0].geometry.location.lng,
+        regionChangeProgress:false
+      });
+    });
+  }
+
+  onRegionChange = currentPosition => {
+    this.setState({
+      currentPosition,
+      regionChangeProgress:true
+    }, ()=>{
+      console.log("calling");
+      this.fetchAddress();
+      });
+  }
+
+  onLocationSelect=()=> alert(this.state.userLocation);
 
   //submit the report
   submit() {
@@ -183,15 +233,19 @@ export default class ReportScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
- 
-          <View style={styles.imageWrapper}>
+
+        <View style={styles.imageWrapper}>
             <Image source={this.state.avatarSource} style={styles.photolist} />
           </View>
 
           <View style={styles.mapcontainer} >
+            
             <MapView
               style={styles.map}
-              region={this.state.currentPosition}
+              showUserLocation={true}
+              initialRegion={this.state.currentPosition}
+              onMapReady={this.onMapReady}
+              onRegionChangeComplete={this.onRegionChange}
               testID={'Map_detox'}>
 
               <MapView.Marker
@@ -200,12 +254,29 @@ export default class ReportScreen extends React.Component {
                   longitude: this.state.currentPosition.longitude
                 }}
                 title="Your current location"
-                image={require('../assets/pin.png')}
+                // image={require('../assets/pin.png')}
                 style={{ width: "5%", height: "5%" }}
                 draggable
-              ></MapView.Marker>
-
+              >
+              </MapView.Marker>
             </MapView>
+
+            <View style={styles.detailSection}>
+              <Text style={{ fontSize: 16, fontWeight: "bold", fontFamily: "roboto", marginBottom: 20 }}>Move map for location</Text>
+              <Text style={{ fontSize: 10, color: "#999" }}>LOCATION</Text>
+              <Text numberOfLines={2} style={{ fontSize: 14, paddingVertical: 10, borderBottomColor: "silver", borderBottomWidth: 0.5 }}>
+                {!this.state.regionChangeProgress ? this.state.userLocation : "Identifying Location..."}</Text>
+              <View style={styles.btnContainer}>
+              
+                <Button
+                  title="PICK THIS LOCATION"
+                  disabled={this.state.regionChangeProgress}
+                  onPress={this.onLocationSelect}
+                >
+                </Button>
+
+              </View>
+            </View>
           </View>
 
             <TextInput
@@ -215,14 +286,18 @@ export default class ReportScreen extends React.Component {
               onChangeText={(value) => this.setState({ date: value })}
               value={this.state.date}
             ></TextInput>
+
           
-          <TouchableOpacity style={styles.SearchButton} testID={'UploadButton_detox'} onPress={() => this.getPhoto()}>
+    
+        <TouchableOpacity style={styles.SearchButton} testID={'UploadButton_detox'} onPress={() => this.getPhoto()}>
             <Text style={styles.textStyle}>Upload Photos</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.SearchButton} testID={'Reportsubmit_detox'} onPress={() => this.submit()}>
             <Text style={styles.textStyle}>Submit</Text>
           </TouchableOpacity>
+     
+          
       </View>
 
     )
@@ -238,10 +313,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#BBDEFB',
     alignItems: 'baseline',
     justifyContent: 'center',
+    display: "flex"
   },
 
   topcontainer: {
-    flex: 8,
+    flex: 9,
     flexDirection: 'column',
     backgroundColor: '#BBDEFB',
     alignItems: 'baseline',
@@ -249,26 +325,34 @@ const styles = StyleSheet.create({
   },
 
   bottomcontainer: {
-    flex: 2,
-    flexDirection: 'column',
-    backgroundColor: '#BBDEFB',
+    flex: 1,
+    flexDirection: 'row',
+    backgroundColor: '#FFFFFF',
     alignItems: 'baseline',
     justifyContent: 'center',
   },
 
   imageWrapper: {
+    display: "flex",
+    flex: 1,
     width: "100%",
     height: 200,
     padding: 10,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    position: 'absolute',
+    top:10,
   },
 
   mapcontainer: {
-    padding: 10,
-    height: "25%",
-    width: "80%",
-    alignSelf: 'center',
+    position:"absolute",
+    height: "45%",
+    width: "90%",
+    display: "flex",
+    left: "5%",
+    top: "40%",
+    display: "flex",
+    flex: 7,
   },
   map: {
     ...StyleSheet.absoluteFillObject,
@@ -279,27 +363,26 @@ const styles = StyleSheet.create({
     height: 200
   },
   SearchButton: {
-    flex: 1,
+    display: "flex",
     alignSelf: 'center',
     padding: 20,
     backgroundColor: '#2196F3',
     borderRadius: 10,
-    height: "20%",
+    height: "5%",
     width: "55%",
     justifyContent: 'center',
     marginHorizontal: 5,
-    marginVertical: 50,
+    marginVertical: "5%",
   },
   ReportButton: {
     flex: 1,
     alignSelf: 'center',
-    padding: 12,
     backgroundColor: '#2196F3',
     borderRadius: 25,
-    height: 45,
+    height: "20%",
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 20,
+    // marginTop: 20,
     marginBottom: 10,
   },
   textStyle: {
@@ -309,11 +392,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   textInputField: {
-    marginTop: 10,
-    fontSize: 20,
-    alignSelf: 'center',
+    fontSize: 15,
+    width: '80%',
+    left: '10%',
     borderBottomColor: '#000',
-    borderBottomWidth: 1
+    borderBottomWidth: 1,
+    display: "flex",
+    flexDirection: "column",
+    position: 'absolute',
+    bottom: 10,
+    backgroundColor: '#FFFFF9'
   },
   inputView: {
     width: '80%',
@@ -330,4 +418,20 @@ const styles = StyleSheet.create({
     height: 120,
     resizeMode: 'cover',
   },
+  detailSection: {
+    height: "20%",
+    width: "95%",
+    backgroundColor: "#fff",
+    display: "flex",
+    position: "absolute",
+    bottom: 0,
+    left:"2.5%",
+    justifyContent: "flex-start"
+  },
+  btnContainer: {
+    position: "absolute",
+    width:"70%",
+    bottom: 0,
+    left: "15%",
+  }
 });
