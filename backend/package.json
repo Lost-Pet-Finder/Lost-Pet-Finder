@@ -27,7 +27,6 @@
     "gm": "^1.23.1",
     "image-clipper": "^0.4.4",
     "jest": "^26.6.1",
-    "jimp": "^0.16.1",
     "mysql": "^2.18.1",
     "probe-image-size": "^5.0.0",
     "supertest": "^6.0.0"
