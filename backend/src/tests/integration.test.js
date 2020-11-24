@@ -22,8 +22,12 @@ function tagsSame(a, b) {
 }
 // // searchLostPets
 test('search Lost Pets', async done => {
-	const { status, body } = await request(server).get('/pets/searchLostPets');
-	// expect(status).toBe(200);
+	const req = { userid: '1' };
+	const { status, body } = await request(server)
+		.get('/pets/searchLostPets')
+		.send(req);
+	expect(status).toBe(200);
+	// console.log(body);
 	// same = tagsSame(body, allLostPets);
 	// expect(same).toStrictEqual(true);
 	done();

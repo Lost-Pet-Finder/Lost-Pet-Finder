@@ -1,28 +1,33 @@
 const {
-	allFoundPets,
-	allLostPets,
+	allReportsRowsFound,
+	allReportsRowsLost,
 	expectedPostLostPets,
 	expectedPostFoundPets,
+	myReportRowsLost,
+	myReportRowsFound,
 } = require('../../tests/testVariables');
-const field2 = {
-	fieldCount: 0,
-	affectedRows: 0,
-	insertId: 0,
-	serverStatus: 34,
-	warningCount: 0,
-	message: '',
-	protocol41: true,
-	changedRows: 0,
-};
-const query = string => {
+
+const query = (string, userid) => {
 	if (string == 'CALL get_all_lost_pets()') {
-		return [allLostPets, field2];
+		return allReportsRowsLost;
 	} else if (string == 'CALL get_all_found_pets()') {
-		return [allFoundPets, field2];
-	} else if (string == 'CALL create_lost_pet_report(?, ?, POINT(?,?), ?, ?)') {
+		return allReportsRowsFound;
+	} else if (
+		string == 'CALL create_lost_pet_report(?, ?, POINT(?,?), ?, ?, ?)' &&
+		// invalid month
+		userid[4] != '202099 0303'
+	) {
 		return expectedPostLostPets;
-	} else if (string == 'CALL create_found_pet_report(?, ?, POINT(?,?), ?, ?)') {
+	} else if (
+		string == 'CALL create_found_pet_report(?, ?, POINT(?,?), ?, ?, ?)' &&
+		// invalid month
+		userid[4] != '202099 0303'
+	) {
 		return expectedPostFoundPets;
+	} else if (string == 'CALL get_users_found_reports(?)' && userid != 99999) {
+		return myReportRowsLost;
+	} else if (string == 'CALL get_users_lost_reports(?)' && userid != 99999) {
+		return myReportRowsFound;
 	}
 };
 

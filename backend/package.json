@@ -4,7 +4,7 @@
   "description": "nodejs backend for lost pet finder app",
   "main": "src/app.js",
   "scripts": {
-    "test": "jest --runInBand",
+    "test": "jest --runInBand --coverage",
     "start": "node src/app.js"
   },
   "author": "",
