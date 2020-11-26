@@ -1,5 +1,14 @@
 import React, { Component } from 'react';
 import 'react-native-gesture-handler';
+import {
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
 
 import { StyleSheet, View, Text, Modal, Image, TextInput, Button, TouchableOpacity, Alert } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';

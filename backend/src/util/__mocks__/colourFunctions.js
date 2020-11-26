@@ -1,16 +1,16 @@
-async function getColour(bucketName, fileName) {
-    modeTotal = 1;
-    mode = 2;
-    modeCorrected = 3;
-    const calculatedColors = {
-        totalColor: modeTotal,
-        croppedColor: mode,
-        finalColor: modeCorrected
-    }
+async function getColour() {
+	const modeTotal = 1;
+	const mode = 2;
+	const modeCorrected = 3;
+	const calculatedColors = {
+		totalColor: modeTotal,
+		croppedColor: mode,
+		finalColor: modeCorrected,
+	};
 
-    return null;
+	return calculatedColors;
 }
 
 module.exports = {
-    getColour: getColour
-}
+	getColour: getColour,
+};

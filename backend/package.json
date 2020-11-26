@@ -4,25 +4,31 @@
   "description": "nodejs backend for lost pet finder app",
   "main": "src/app.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --runInBand",
     "start": "node src/app.js"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "aws-sdk": "^2.783.0",
+    "aws-sdk": "^2.792.0",
     "dotenv": "^8.2.0",
-    "eslint": "^7.12.1",
+    "eslint": "^7.13.0",
     "express": "^4.17.1"
   },
   "dependencies": {
-    "aws-sdk": "^2.777.0",
-    "dotenv": "^8.2.0",
-    "eslint": "^7.11.0",
+    "canvas": "^2.6.1",
+    "buffer-image-size": "^0.6.4",
+    "jimp": "^0.16.1",
+    "color-thief": "^2.2.5",
+    "date-diff": "^0.2.2",
+    "dominant-color": "0.0.1",
     "express": "^4.17.1",
     "firebase-admin": "^9.3.0",
+    "gm": "^1.23.1",
+    "image-clipper": "^0.4.4",
     "jest": "^26.6.1",
     "mysql": "^2.18.1",
+    "probe-image-size": "^5.0.0",
     "supertest": "^6.0.0"
   }
 }

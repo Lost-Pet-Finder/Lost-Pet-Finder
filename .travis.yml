@@ -1,16 +1,22 @@
 language: node_js
 node_js:
-- '14'
+  - 12
 branches:
   only:
-  - master
+    - master
 cache:
   directories:
-  - node_modules
+    - node_modules
 before_install:
-- cd backend
-- npm update
+  - cd backend
+  - sudo apt-get update
+  - sudo apt-get install wget
+  - sudo apt-get install ca-certificates
+  - sudo apt-get install libcairo2-dev
+  - sudo apt-get install libpango1.0-dev
+  - sudo apt-get install glibc-source
+  - npm install canvas@2.5.0
 install:
-- npm install
+  - npm install
 script:
-- npm test
+  - npm test

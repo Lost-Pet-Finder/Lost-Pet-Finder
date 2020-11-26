@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, {useState} from 'react';
+import React from 'react';
 
 import {
   StyleSheet,
@@ -8,8 +8,11 @@ import {
   Text,
   Image,
   TouchableOpacity,
+<<<<<<< HEAD
   Button,
   Alert
+=======
+>>>>>>> master
 } from 'react-native';
 
 // FCM
@@ -18,7 +21,7 @@ import auth, {firebase} from '@react-native-firebase/auth';
 
 
 class LoginScreen extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       email: null,
@@ -33,23 +36,24 @@ class LoginScreen extends React.Component {
     const deviceToken = await messaging().getToken();
     console.log(`Device Token: ${deviceToken}`);
 
-    const url = 'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/notif/uploadDeviceToken';
+    const url =
+      'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/notif/uploadDeviceToken';
 
     const body = {
       userid: user_id,
-      deviceToken: deviceToken
-    }
+      deviceToken: deviceToken,
+    };
 
     try {
-      const response = await fetch(url, 
-        {
-            method:'POST',
-            headers:{
-              Accept: 'application/json',
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(body)
-        });
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      });
+      console.log(response);
     } catch (err) {
       console.log(err);
     }
@@ -115,15 +119,18 @@ class LoginScreen extends React.Component {
    
   }
 
-  render(){
+  render() {
     //console.log(JSON.stringify(this.props));
     return (
-      
       <View style={styles.container} testID={'LoginScreen_detox'}>
+<<<<<<< HEAD
         <Image
           style={styles.image}
           testID={'AppLogo_detox'}
           source={require('../assets/logo.png')}></Image>
+=======
+        <Image style={styles.image} source={require('../assets/logo.png')} />
+>>>>>>> master
         <View style={styles.inputView}>
           <TextInput
             style={styles.inputText}
@@ -134,7 +141,7 @@ class LoginScreen extends React.Component {
             onChangeText={(email) => this.setState({email})}
             value = {this.state.email}
           />
-        </View> 
+        </View>
 
         <View style={styles.inputView}>
           <TextInput
@@ -148,16 +155,28 @@ class LoginScreen extends React.Component {
           />
         </View>
 
+<<<<<<< HEAD
         <TouchableOpacity style={styles.loginButton} testID={'SignInFinderButton_detox'} onPress={()=>this.props.navigation.navigate('HomePage', {user_id: '1', isFinder: 1})} >
          
+=======
+        <TouchableOpacity
+          style={styles.loginButton}
+          testID={'SignInFinderButton_detox'}
+          onPress={() => this.signedInAsFinder()}>
+>>>>>>> master
           <Text style={styles.loginText}>Sign In: Found</Text>
-  
         </TouchableOpacity>
 
+<<<<<<< HEAD
         <TouchableOpacity style={styles.loginButton} testID={'SignInLoserButton_detox'} onPress={()=>this.props.navigation.navigate('HomePage', {user_id: '2', isFinder: 0})} >
          
+=======
+        <TouchableOpacity
+          style={styles.loginButton}
+          testID={'SignInLoserButton_detox'}
+          onPress={() => this.signedInAsLoser()}>
+>>>>>>> master
           <Text style={styles.loginText}>Sign In: Lost</Text>
-  
         </TouchableOpacity>
 
         <TouchableOpacity>
@@ -167,11 +186,9 @@ class LoginScreen extends React.Component {
           <Text style={styles.forgotPassword}>Forgot password?</Text>
         </TouchableOpacity>
       </View>
-    )
+    );
   }
-
-  
-};
+}
 
 export default LoginScreen;
 
@@ -225,4 +242,3 @@ const styles = StyleSheet.create({
     resizeMode: 'stretch',
   },
 });
-
