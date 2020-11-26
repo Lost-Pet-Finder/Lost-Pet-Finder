@@ -75,9 +75,9 @@ async function getColour(bucketName, fileName) {
         var gDiff = (mode[1] - modeTotal[1]);
         var bDiff = (mode[2] - modeTotal[2]);
 
-        var rDiff = Math.sign(rDiff) * (Math.abs(rDiff / (mode[0] + rDiff)));
-        var gDiff = Math.sign(gDiff) * (Math.abs(gDiff / (mode[1] + gDiff)));
-        var bDiff = Math.sign(bDiff) * (Math.abs(bDiff / (mode[2] + bDiff)));
+        var rDiff = Math.sign(rDiff) * (Math.abs(rDiff / (128)));
+        var gDiff = Math.sign(gDiff) * (Math.abs(gDiff / (128)));
+        var bDiff = Math.sign(bDiff) * (Math.abs(bDiff / (128)));
 
         var modeCorrected = []
         modeCorrected[0] = Math.max(Math.min(mode[0] + percentArea * rDiff * modeTotal[0], 255), 0) ;

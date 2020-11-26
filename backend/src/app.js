@@ -17,7 +17,7 @@ const { Redshift } = require('aws-sdk');
 const { response, json } = require('express');
 
 // Routers
-const awsRouter = require('./routers/awsRouter');
+// const awsRouter = require('./routers/awsRouter');
 const petsRouter = require('./routers/petsRouter');
 const userRouter = require('./routers/userRouter');
 const notifRouter = require('./routers/notificationRouter');
@@ -36,7 +36,7 @@ app.get('/', (req, res) => {
 	res.status(200).send('This is the Lost Pet Finder API');
 });
 
-app.use('/aws', awsRouter);
+// app.use('/aws', awsRouter);
 app.use('/pets', petsRouter);
 app.use('/user', userRouter);
 app.use('/notif', notifRouter);

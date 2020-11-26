@@ -37,20 +37,19 @@ test('gold on black positive', async done => {
 	done();
 });
 
-// // this test is strange
-// test('brown on white positive', async done => {
-// 	colour = await getColour(
-// 		'lostpetpictures',
-// 		'golden_retriever_puppy_white_background.jpg'
-// 	);
-// 	expectedColour = [110, 60, 20];
-// 	console.log('??????????????????????????????????????????????????????');
-// 	console.log(colour.finalColor);
-// 	console.log(expectedColour);
-// 	result = withinTolerance(expectedColour, colour.finalColor);
-// 	expect(result).toBe(true);
-// 	done();
-// });
+// this test is strange
+test('brown on white positive', async done => {
+	colour = await getColour(
+		'lostpetpictures',
+		'golden_retriever_puppy_white_background.jpg'
+	);
+	expectedColour = [110, 60, 20];
+	console.log(colour.finalColor);
+	console.log(expectedColour);
+	result = withinTolerance(expectedColour, colour.finalColor);
+	expect(result).toBe(true);
+	done();
+});
 
 test('brown on white negative', async done => {
 	colour = await getColour(
