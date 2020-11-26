@@ -376,7 +376,7 @@ test('normal box', async done => {
 			"Left": 0.23442380130290985,
 			"Top": 0.1497994214296341
 	};
-	expect(box).toBe(expectedColour);
+	expect(box).toStrictEqual(expectedColour);
 	done();
 });
 
@@ -561,6 +561,6 @@ test('two boxes', async done => {
 		"Left": 0.13671883940696716,
 		"Top": 0.061898574233055115
 	};
-	expect(box).toBe(expectedColour);
+	expect(box).toStrictEqual(expectedColour);
 	done();
 });
