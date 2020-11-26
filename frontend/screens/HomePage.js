@@ -46,31 +46,44 @@ export default class HomePage extends React.Component {
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.browseView}
-          onPress={() => {
-            this.props.navigation.navigate('BrowseScreen', {
-              user_id: this.state.user_id,
-              isFinder: this.state.isFinder,
-            });
-          }}>
-          <View>
-            <Text style={styles.viewTitle}>🔎 Browse 🔍</Text>
-          </View>
-        </TouchableOpacity>
+    render() {
+        return (
+            <View style={styles.containerView} testID={'HomePage_detox'}>
+                <TouchableOpacity 
+                    style={styles.reportView}
+                    testID={'ReportButton_detox'}
+                    onPress={() => {
+                    this.props.navigation.navigate('ReportScreen', {user_id: this.state.user_id, isFinder: this.state.isFinder})}}
+                >
+                    <View >
+                        <Text style={styles.viewTitle} >📸 Report 📸</Text>
+                    </View>
+                </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.contactView}
-          onPress={() => {
-            console.log('go to contact page');
-          }}>
-          <View>
-            <Text style={styles.viewTitle}>📱 Contact 📱</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
-    );
-  }
+                <TouchableOpacity 
+                    style={styles.browseView}
+                    testID={'BrowseButton_detox'}
+                    onPress={() => {
+                    this.props.navigation.navigate('BrowseScreen', {user_id: this.state.user_id, isFinder: this.state.isFinder})}}
+                >
+                    <View >
+                        <Text style={styles.viewTitle}>🔎 Browse 🔍</Text>
+                    </View>
+                </TouchableOpacity>
+
+                <TouchableOpacity 
+                    style={styles.contactView}
+                    testID={'ContactButton_detox'}
+                    onPress={() => {
+                    console.log('go to contact page')}}
+                >
+                    <View >
+                        <Text style={styles.viewTitle}>📱 Contact 📱</Text>
+                    </View>
+                </TouchableOpacity>
+            </View>
+        );
+    }
 }
 
 const styles = StyleSheet.create({

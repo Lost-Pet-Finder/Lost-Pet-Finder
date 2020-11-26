@@ -69,9 +69,7 @@ export default class BrowseScreen extends React.Component {
 
     return (
       <SafeAreaView style={styles.container}>
-        <ScrollView
-          style={styles.scrollView}
-          contentContainerStyle={styles.scrollViewCellContainer}>
+        <ScrollView style={styles.scrollView} testID={'BrowseView_detox'} contentContainerStyle={styles.scrollViewCellContainer}>
           {this.state.petArray.map((pet, index) => {
             return (
               <View style={styles.scrollViewCell} key={index}>
