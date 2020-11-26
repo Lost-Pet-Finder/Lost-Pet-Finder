@@ -116,3 +116,16 @@ test('brown on green positive', async done => {
 	expect(result).toBe(true);
 	done();
 });
+
+
+
+test('gobbledeegook', async done => {
+	colour = await getColour(
+		'xd',
+		'lmao.jpg'
+	);
+	expectedColour = null;
+	result = colour;
+	expect(result).toBe(null);
+	done();
+});
