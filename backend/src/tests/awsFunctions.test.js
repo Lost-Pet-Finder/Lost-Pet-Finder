@@ -179,3 +179,388 @@ test('errorBox', async done => {
 	expect(box).toBe(errorBox);
 	done();
 });
+
+
+test('noBox', async done => {
+	tagData = {
+		"Labels": [
+			{
+				"Name": "Mammal",
+				"Confidence": 88.10366821289062,
+				"Instances": [],
+				"Parents": [
+					{
+						"Name": "Animal"
+					}
+				]
+			},
+			{
+				"Name": "Animal",
+				"Confidence": 88.10366821289062,
+				"Instances": [],
+				"Parents": []
+			},
+			{
+				"Name": "Rabbit",
+				"Confidence": 81.39126586914062,
+				"Instances": [],
+				"Parents": [
+					{
+						"Name": "Rodent"
+					},
+					{
+						"Name": "Mammal"
+					},
+					{
+						"Name": "Animal"
+					}
+				]
+			},
+			{
+				"Name": "Rodent",
+				"Confidence": 81.39126586914062,
+				"Instances": [],
+				"Parents": [
+					{
+						"Name": "Mammal"
+					},
+					{
+						"Name": "Animal"
+					}
+				]
+			},
+			{
+				"Name": "Bunny",
+				"Confidence": 81.39126586914062,
+				"Instances": [],
+				"Parents": [
+					{
+						"Name": "Rodent"
+					},
+					{
+						"Name": "Mammal"
+					},
+					{
+						"Name": "Animal"
+					}
+				]
+			},
+			{
+				"Name": "Pet",
+				"Confidence": 68.93390655517578,
+				"Instances": [],
+				"Parents": [
+					{
+						"Name": "Animal"
+					}
+				]
+			},
+			{
+				"Name": "Sleeping",
+				"Confidence": 56.7302360534668,
+				"Instances": [],
+				"Parents": []
+			},
+			{
+				"Name": "Asleep",
+				"Confidence": 56.7302360534668,
+				"Instances": [],
+				"Parents": []
+			}
+		],
+		"LabelModelVersion": "2.0"
+	};
+	var boxes = [];
+
+	tagData.Labels.forEach(label => {
+		boxes.push(label);
+	});
+
+	box = await validBoxes(
+		boxes
+	);
+	expect(box).toBe(noBox);
+	done();
+});
+
+
+test('normal box', async done => {
+	tagData = {
+		"Labels": [
+			{
+				"Name": "Pet",
+				"Confidence": 98.75236511230469,
+				"Instances": [],
+				"Parents": [
+					{
+						"Name": "Animal"
+					}
+				]
+			},
+			{
+				"Name": "Angora",
+				"Confidence": 98.75236511230469,
+				"Instances": [],
+				"Parents": [
+					{
+						"Name": "Cat"
+					},
+					{
+						"Name": "Pet"
+					},
+					{
+						"Name": "Mammal"
+					},
+					{
+						"Name": "Animal"
+					}
+				]
+			},
+			{
+				"Name": "Mammal",
+				"Confidence": 98.75236511230469,
+				"Instances": [],
+				"Parents": [
+					{
+						"Name": "Animal"
+					}
+				]
+			},
+			{
+				"Name": "Animal",
+				"Confidence": 98.75236511230469,
+				"Instances": [],
+				"Parents": []
+			},
+			{
+				"Name": "Cat",
+				"Confidence": 98.75236511230469,
+				"Instances": [
+					{
+						"BoundingBox": {
+							"Width": 0.6037029027938843,
+							"Height": 0.7648425698280334,
+							"Left": 0.23442380130290985,
+							"Top": 0.1497994214296341
+						},
+						"Confidence": 97.71615600585938
+					}
+				],
+				"Parents": [
+					{
+						"Name": "Pet"
+					},
+					{
+						"Name": "Mammal"
+					},
+					{
+						"Name": "Animal"
+					}
+				]
+			}
+		],
+		"LabelModelVersion": "2.0"
+	};
+	var boxes = [];
+
+	tagData.Labels.forEach(label => {
+		boxes.push(label);
+	});
+
+	box = await validBoxes(
+		boxes
+	);
+	expectedColour = {
+			"Width": 0.6037029027938843,
+			"Height": 0.7648425698280334,
+			"Left": 0.23442380130290985,
+			"Top": 0.1497994214296341
+	};
+	expect(box).toBe(expectedColour);
+	done();
+});
+
+
+
+test('two boxes', async done => {
+	tagData = {
+		"Labels": [
+			{
+				"Name": "Cat",
+				"Confidence": 92.57097625732422,
+				"Instances": [
+					{
+						"BoundingBox": {
+							"Width": 0.6108936667442322,
+							"Height": 0.9516386389732361,
+							"Left": 0.14043430984020233,
+							"Top": 0.04057978838682175
+						},
+						"Confidence": 67.11946105957031
+					}
+				],
+				"Parents": [
+					{
+						"Name": "Pet"
+					},
+					{
+						"Name": "Mammal"
+					},
+					{
+						"Name": "Animal"
+					}
+				]
+			},
+			{
+				"Name": "Animal",
+				"Confidence": 92.57097625732422,
+				"Instances": [],
+				"Parents": []
+			},
+			{
+				"Name": "Pet",
+				"Confidence": 92.57097625732422,
+				"Instances": [],
+				"Parents": [
+					{
+						"Name": "Animal"
+					}
+				]
+			},
+			{
+				"Name": "Mammal",
+				"Confidence": 92.57097625732422,
+				"Instances": [],
+				"Parents": [
+					{
+						"Name": "Animal"
+					}
+				]
+			},
+			{
+				"Name": "Kitten",
+				"Confidence": 86.38482666015625,
+				"Instances": [],
+				"Parents": [
+					{
+						"Name": "Cat"
+					},
+					{
+						"Name": "Pet"
+					},
+					{
+						"Name": "Mammal"
+					},
+					{
+						"Name": "Animal"
+					}
+				]
+			},
+			{
+				"Name": "Abyssinian",
+				"Confidence": 84.37126922607422,
+				"Instances": [],
+				"Parents": [
+					{
+						"Name": "Cat"
+					},
+					{
+						"Name": "Pet"
+					},
+					{
+						"Name": "Mammal"
+					},
+					{
+						"Name": "Animal"
+					}
+				]
+			},
+			{
+				"Name": "Leopard",
+				"Confidence": 77.34283447265625,
+				"Instances": [],
+				"Parents": [
+					{
+						"Name": "Wildlife"
+					},
+					{
+						"Name": "Mammal"
+					},
+					{
+						"Name": "Animal"
+					}
+				]
+			},
+			{
+				"Name": "Wildlife",
+				"Confidence": 77.34283447265625,
+				"Instances": [],
+				"Parents": [
+					{
+						"Name": "Animal"
+					}
+				]
+			},
+			{
+				"Name": "Jaguar",
+				"Confidence": 77.34283447265625,
+				"Instances": [],
+				"Parents": [
+					{
+						"Name": "Wildlife"
+					},
+					{
+						"Name": "Mammal"
+					},
+					{
+						"Name": "Animal"
+					}
+				]
+			},
+			{
+				"Name": "Panther",
+				"Confidence": 77.34283447265625,
+				"Instances": [
+					{
+						"BoundingBox": {
+							"Width": 0.6285470724105835,
+							"Height": 0.9082770347595215,
+							"Left": 0.13671883940696716,
+							"Top": 0.061898574233055115
+						},
+						"Confidence": 77.34283447265625
+					}
+				],
+				"Parents": [
+					{
+						"Name": "Wildlife"
+					},
+					{
+						"Name": "Mammal"
+					},
+					{
+						"Name": "Animal"
+					}
+				]
+			}
+		],
+		"LabelModelVersion": "2.0"
+	};
+	var boxes = [];
+
+	tagData.Labels.forEach(label => {
+		boxes.push(label);
+	});
+
+	box = await validBoxes(
+		boxes
+	);
+	expectedColour = {
+		"Width": 0.6285470724105835,
+		"Height": 0.9082770347595215,
+		"Left": 0.13671883940696716,
+		"Top": 0.061898574233055115
+	};
+	expect(box).toBe(expectedColour);
+	done();
+});
