@@ -10,7 +10,7 @@ import {
   Alert,
 } from 'react-native';
 
-import { StyleSheet, View, Text, Modal, Image, TextInput, Button, TouchableOpacity, Alert } from 'react-native';
+//import { StyleSheet, View, Text, Modal, Image, TextInput, Button, TouchableOpacity, Alert } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import ImagePicker from 'react-native-image-picker';
 import CameraRollPicker from 'react-native-camera-roll-picker';
@@ -56,10 +56,11 @@ export default class ReportScreen extends React.Component {
         latitudeDelta: 0,
         longitudeDelta: 0
       },
+
       lastPosition: 'unknown',
       isMapReady: false,
-      userLocation:"",
-      regionChangeProgress:false
+      userLocation: "",
+      regionChangeProgress: false
     };
     
   }
@@ -68,7 +69,7 @@ export default class ReportScreen extends React.Component {
   componentDidMount() {
     Geolocation.getCurrentPosition((position) => {
       const current_pos = JSON.stringify(position);
-      this.setState({ region: current_pos });
+      this.setState({region: current_pos});
       console.log("latitude is: " + position["coords"]["latitude"]);
       console.log("longitude is: " + position["coords"]["longitude"]);
 
@@ -81,31 +82,30 @@ export default class ReportScreen extends React.Component {
 
       this.setState(
         {
-        currentPosition: coordination_info,
-        lat: position["coords"]["latitude"],
-        lon: position["coords"]["longitude"],
+          currentPosition: coordination_info,
+          lat: position["coords"]["latitude"],
+          lon: position["coords"]["longitude"],
         });
     },
       (error) => alert(JSON.stringify(error)),
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
     );
   }
 
   onMapReady=()=> {
-    this.setState({isMapReady:true});
+    this.setState({isMapReady: true});
   }
 
-
   fetchAddress=()=> {
-    console.log(this.state.currentPosition.latitude + ", " + this.state.currentPosition.longitude);
+    //console.log(this.state.currentPosition.latitude + ", " + this.state.currentPosition.longitude);
     fetch("https://maps.googleapis.com/maps/api/geocode/json?address=" + this.state.currentPosition.latitude + "," + this.state.currentPosition.longitude + "&key=" + "AIzaSyBk1oSy9YTS0SjTxnHiznhPyQpai8mgJh8")
     .then((response)=>
       response.json()
-        )
+      )
     .then((responseJson) => {
-      console.log("yooyoy" + responseJson);
+      //console.log("yooyoy" + responseJson);
       const userLocation = responseJson.results[0].formatted_address;
-      console.log(userLocation);
+      //console.log(userLocation);
 
       var change_coordination_info = {
         latitude: responseJson.results[0].geometry.location.lat,
@@ -114,23 +114,25 @@ export default class ReportScreen extends React.Component {
         longitudeDelta: LONGITUDE_DELTA,
       };
 
-      this.setState({
-        currentPosition: change_coordination_info,
-        userLocation: userLocation,
-        lat: responseJson.results[0].geometry.location.lat,
-        lon: responseJson.results[0].geometry.location.lng,
-        regionChangeProgress:false
+      this.setState(
+        {
+          currentPosition: change_coordination_info,
+          userLocation: userLocation,
+          lat: responseJson.results[0].geometry.location.lat,
+          lon: responseJson.results[0].geometry.location.lng,
+          regionChangeProgress: false
       });
     });
   }
 
-  onRegionChange = currentPosition => {
+  onRegionChange = (currentPosition) => {
     this.setState({
       currentPosition,
-      regionChangeProgress:true
-    }, ()=>{
-      console.log("calling");
-      this.fetchAddress();
+      regionChangeProgress: true}, 
+      
+      ()=>{
+        console.log("calling");
+        this.fetchAddress();
       });
   }
 
@@ -271,9 +273,9 @@ export default class ReportScreen extends React.Component {
             </MapView>
 
             <View style={styles.detailSection}>
-              <Text style={{ fontSize: 16, fontWeight: "bold", fontFamily: "roboto", marginBottom: 20 }}>Move map for location</Text>
-              <Text style={{ fontSize: 10, color: "#999" }}>LOCATION</Text>
-              <Text numberOfLines={2} style={{ fontSize: 14, paddingVertical: 10, borderBottomColor: "silver", borderBottomWidth: 0.5 }}>
+              <Text style={styles.move_style}>Move map for location</Text>
+              <Text style={styles.loc_style}>LOCATION</Text>
+              <Text numberOfLines={2} style={styles.identity_style}>
                 {!this.state.regionChangeProgress ? this.state.userLocation : "Identifying Location..."}</Text>
               <View style={styles.btnContainer}>
               
@@ -296,8 +298,6 @@ export default class ReportScreen extends React.Component {
               value={this.state.date}
             ></TextInput>
 
-          
-    
         <TouchableOpacity style={styles.SearchButton} testID={'UploadButton_detox'} onPress={() => this.getPhoto()}>
             <Text style={styles.textStyle}>Upload Photos</Text>
           </TouchableOpacity>
@@ -369,8 +369,28 @@ const styles = StyleSheet.create({
 
   photolist: {
     width: 200,
-    height: 200
+    height: 200,
   },
+
+  move_style: {
+    fontSize: 16, 
+    fontWeight: "bold", 
+    fontFamily: "roboto", 
+    marginBottom: 20, 
+  },
+
+  loc_style: {
+    fontSize: 10, 
+    color: "#999",
+  },
+
+  identity_style: {
+    fontSize: 14, 
+    paddingVertical: 10, 
+    borderBottomColor: "silver", 
+    borderBottomWidth: 0.5,
+  },
+
   SearchButton: {
     display: "flex",
     alignSelf: 'center',
@@ -383,6 +403,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
     marginVertical: "5%",
   },
+
   ReportButton: {
     flex: 1,
     alignSelf: 'center',

@@ -8,11 +8,8 @@ import {
   Text,
   Image,
   TouchableOpacity,
-<<<<<<< HEAD
   Button,
   Alert
-=======
->>>>>>> master
 } from 'react-native';
 
 // FCM
@@ -104,7 +101,6 @@ class LoginScreen extends React.Component {
         switch(e.code){
           //The provided value for the email user property is invalid. It must be a string email address.
           //Invalid input example: cpen321321, 091e10
-          
           case 'auth/invalid-email':
             Alert.alert('Invalid email, please check if your account is correct');
             break;
@@ -116,21 +112,20 @@ class LoginScreen extends React.Component {
         }
       }
     }
-   
+  }
+
+  handleSignup() {
+      this.props.navigation.navigate('SignScreen');
   }
 
   render() {
     //console.log(JSON.stringify(this.props));
     return (
       <View style={styles.container} testID={'LoginScreen_detox'}>
-<<<<<<< HEAD
         <Image
           style={styles.image}
           testID={'AppLogo_detox'}
           source={require('../assets/logo.png')}></Image>
-=======
-        <Image style={styles.image} source={require('../assets/logo.png')} />
->>>>>>> master
         <View style={styles.inputView}>
           <TextInput
             style={styles.inputText}
@@ -155,31 +150,22 @@ class LoginScreen extends React.Component {
           />
         </View>
 
-<<<<<<< HEAD
-        <TouchableOpacity style={styles.loginButton} testID={'SignInFinderButton_detox'} onPress={()=>this.props.navigation.navigate('HomePage', {user_id: '1', isFinder: 1})} >
-         
-=======
         <TouchableOpacity
           style={styles.loginButton}
           testID={'SignInFinderButton_detox'}
           onPress={() => this.signedInAsFinder()}>
->>>>>>> master
           <Text style={styles.loginText}>Sign In: Found</Text>
         </TouchableOpacity>
 
-<<<<<<< HEAD
-        <TouchableOpacity style={styles.loginButton} testID={'SignInLoserButton_detox'} onPress={()=>this.props.navigation.navigate('HomePage', {user_id: '2', isFinder: 0})} >
-         
-=======
         <TouchableOpacity
           style={styles.loginButton}
           testID={'SignInLoserButton_detox'}
           onPress={() => this.signedInAsLoser()}>
->>>>>>> master
           <Text style={styles.loginText}>Sign In: Lost</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => this.handleSignup()}>
           <Text style={styles.signup}>Don't have an account? Sign up</Text>
         </TouchableOpacity>
         <TouchableOpacity>
