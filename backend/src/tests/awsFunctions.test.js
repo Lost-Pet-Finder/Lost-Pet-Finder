@@ -681,7 +681,7 @@ test('getDataScore', async done => {
 	date1 = '2020-03-03 03:00:00';
 	result = await getDateScore(date0, date1);
 	ans = withinTolerance(result, 5634.8);
-	expect(ans).toStrictEqual(true);
+	expect(ans).toBe(true);
 	done();
 });
 
@@ -945,5 +945,21 @@ test('getIntersection', async done => {
 	expect(result).toStrictEqual(['b', 'd', 'e']);
 	console.log("Intersection-------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
 	console.log(result);
+	done();
+});
+
+
+test('revenge of the sith', async done => {
+	tagData = {
+		Labels: [],
+	};
+	var boxes = [];
+
+	tagData.Labels.forEach(label => {
+		boxes.push(label);
+	});
+
+	box = await validBoxes([]);
+	expect(box).toBe(noBox);
 	done();
 });
