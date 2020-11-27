@@ -213,7 +213,7 @@ function getColourScore(colour0, colour1) {
 			Math.pow(colour0[1] - colour1[1], 2) +
 			Math.pow(colour0[2] - colour1[2], 2)
 	);
-	return (441.67 - score) / 441.67;
+	return score;
 }
 
 //gets a score from the similarity of a set of tags to another
@@ -262,9 +262,7 @@ function getDateScore(date0, date1) {
 
 	diff = new DateDiff(dateDiff0, dateDiff1).hours();
 
-	max = 6 * 30 * 24;
-
-	return Math.max(max - diff, 0) / max;
+	return diff;
 }
 
 //gets the distance between two coordinates
@@ -298,6 +296,7 @@ module.exports = {
 	getIntersectionScore: getIntersectionScore,
 	getDateScore: getDateScore,
 	getDistanceScore: getDistanceScore,
+	getIntersection: getIntersection,
 
 	// Filter Functions
 	filterForConfidence: filterForConfidence,

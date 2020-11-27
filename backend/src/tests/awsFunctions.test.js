@@ -3,12 +3,16 @@ const server = require('../app');
 const pool = require('../sql/connection');
 const {
 	filterForConfidence,
+	getIntersection,
+	getDateScore,
 	filterForPets,
 	getColour,
 	validBoxes,
 	getAWSTags,
 	noBox,
 	errorBox,
+	getColourScore,
+	getIntersectionScore,
 } = require('../util/awsFunctions');
 const { getAWStagsConst } = require('./awsFunctionsTestVariable');
 jest.setTimeout(100000);
@@ -607,5 +611,339 @@ test('filterForConfidence err', async done => {
 	data = [];
 	result = await filterForConfidence(data);
 	expect(result).toStrictEqual(data);
+	done();
+});
+
+test('filterforconfidence', async done => {
+	var data = [
+		{
+			Confidence: 97.96702575683594,
+			Instances: [],
+			Name: 'Canine',
+			Parents: [{ Name: 'Mammal' }, { Name: 'Animal' }],
+		},
+		{
+			Confidence: 97.96702575683594,
+			Instances: [
+				{
+					BoundingBox: {
+						Height: 0.862496554851532,
+						Left: 0.3017416000366211,
+						Top: 0.1239473968744278,
+						Width: 0.3514426648616791,
+					},
+					Confidence: 97.96702575683594,
+				},
+			],
+			Name: 'Dog',
+			Parents: [
+				{ Name: 'Pet' },
+				{ Name: 'Canine' },
+				{ Name: 'Animal' },
+				{ Name: 'Mammal' },
+			],
+		},
+		{
+			Confidence: 97.96702575683594,
+			Instances: [],
+			Name: 'Mammal',
+			Parents: [{ Name: 'Animal' }],
+		},
+		{
+			Confidence: 97.96702575683594,
+			Instances: [],
+			Name: 'Pet',
+			Parents: [{ Name: 'Animal' }],
+		},
+		{ Confidence: 97.96702575683594, Instances: [], Name: 'Animal', Parents: [] }
+	];
+	var result = await filterForConfidence(getAWStagsConst);
+	same = tagsSame(result, data);
+	expect(same).toStrictEqual(true);
+	done();
+});
+
+function withinTolerance(actual, expected)
+{
+	return Math.abs(actual - expected) < 0.1;
+}
+test('getColourScore', async done => {
+	colour0 = [255,255,255];
+	colour1 = [0,0,0];
+	result = await getColourScore(colour0, colour1);
+	ans = withinTolerance(result, 441.67);
+	expect(ans).toStrictEqual(true);
+	done();
+});
+
+test('getDataScore', async done => {
+	date0 = '2020-10-23 22:50:00';
+	date1 = '2020-03-03 03:00:00';
+	result = await getDateScore(date0, date1);
+	ans = withinTolerance(result, 5634.8);
+	expect(ans).toStrictEqual(true);
+	done();
+});
+
+
+
+test('getIntersectionScore', async done => {
+	colour0 =  [
+		{
+			Confidence: 97.96702575683594,
+			Instances: [],
+			Name: 'Canine',
+			Parents: [{ Name: 'Mammal' }, { Name: 'Animal' }],
+		},
+		{
+			Confidence: 97.96702575683594,
+			Instances: [
+				{
+					BoundingBox: {
+						Height: 0.862496554851532,
+						Left: 0.3017416000366211,
+						Top: 0.1239473968744278,
+						Width: 0.3514426648616791,
+					},
+					Confidence: 97.96702575683594,
+				},
+			],
+			Name: 'Dog',
+			Parents: [
+				{ Name: 'Pet' },
+				{ Name: 'Canine' },
+				{ Name: 'Animal' },
+				{ Name: 'Mammal' },
+			],
+		},
+		{
+			Confidence: 97.96702575683594,
+			Instances: [],
+			Name: 'Mammal',
+			Parents: [{ Name: 'Animal' }],
+		},
+		{
+			Confidence: 97.96702575683594,
+			Instances: [],
+			Name: 'Pet',
+			Parents: [{ Name: 'Animal' }],
+		},
+		{ Confidence: 97.96702575683594, Instances: [], Name: 'Animal', Parents: [] }
+	];
+	colour1 = [
+		{
+			Confidence: 97.96702575683594,
+			Instances: [],
+			Name: 'Canine',
+			Parents: [{ Name: 'Mammal' }, { Name: 'Animal' }],
+		},
+		{
+			Confidence: 97.96702575683594,
+			Instances: [
+				{
+					BoundingBox: {
+						Height: 0.862496554851532,
+						Left: 0.3017416000366211,
+						Top: 0.1239473968744278,
+						Width: 0.3514426648616791,
+					},
+					Confidence: 97.96702575683594,
+				},
+			],
+			Name: 'Dog',
+			Parents: [
+				{ Name: 'Pet' },
+				{ Name: 'Canine' },
+				{ Name: 'Animal' },
+				{ Name: 'Mammal' },
+			],
+		},
+		{
+			Confidence: 97.96702575683594,
+			Instances: [],
+			Name: 'Mammal',
+			Parents: [{ Name: 'Animal' }],
+		},
+		{
+			Confidence: 97.96702575683594,
+			Instances: [],
+			Name: 'Pet',
+			Parents: [{ Name: 'Animal' }],
+		},
+		{ Confidence: 97.96702575683594, Instances: [], Name: 'Animal', Parents: [] }
+	];
+	result = await getIntersectionScore(colour0, colour1);
+	ans = withinTolerance(result, 16.9);
+	expect(ans).toStrictEqual(true);
+	done();
+});
+
+test('filterforpets', async done => {
+	tagData = [
+			{
+				Name: 'Mammal',
+				Confidence: 88.10366821289062,
+				Instances: [],
+				Parents: [
+					{
+						Name: 'Animal',
+					},
+				],
+			},
+			{
+				Name: 'Animal',
+				Confidence: 88.10366821289062,
+				Instances: [],
+				Parents: [],
+			},
+			{
+				Name: 'Rabbit',
+				Confidence: 81.39126586914062,
+				Instances: [],
+				Parents: [
+					{
+						Name: 'Rodent',
+					},
+					{
+						Name: 'Mammal',
+					},
+					{
+						Name: 'Animal',
+					},
+				],
+			},
+			{
+				Name: 'Rodent',
+				Confidence: 81.39126586914062,
+				Instances: [],
+				Parents: [
+					{
+						Name: 'Mammal',
+					},
+					{
+						Name: 'Animal',
+					},
+				],
+			},
+			{
+				Name: 'Bunny',
+				Confidence: 81.39126586914062,
+				Instances: [],
+				Parents: [
+					{
+						Name: 'Rodent',
+					},
+					{
+						Name: 'Mammal',
+					},
+					{
+						Name: 'Animal',
+					},
+				],
+			},
+			{
+				Name: 'Pet',
+				Confidence: 68.93390655517578,
+				Instances: [],
+				Parents: [
+					{
+						Name: 'Animal',
+					},
+				],
+			},
+			{
+				Name: 'Sleeping',
+				Confidence: 56.7302360534668,
+				Instances: [],
+				Parents: [],
+			},
+			{
+				Name: 'Asleep',
+				Confidence: 56.7302360534668,
+				Instances: [],
+				Parents: [],
+			},
+		];
+	expetedTags = [
+		{
+			Name: 'Mammal',
+			Confidence: 88.10366821289062,
+			Instances: [],
+			Parents: [
+				{
+					Name: 'Animal',
+				},
+			],
+		},
+		{
+			Name: 'Rabbit',
+			Confidence: 81.39126586914062,
+			Instances: [],
+			Parents: [
+				{
+					Name: 'Rodent',
+				},
+				{
+					Name: 'Mammal',
+				},
+				{
+					Name: 'Animal',
+				},
+			],
+		},
+		{
+			Name: 'Rodent',
+			Confidence: 81.39126586914062,
+			Instances: [],
+			Parents: [
+				{
+					Name: 'Mammal',
+				},
+				{
+					Name: 'Animal',
+				},
+			],
+		},
+		{
+			Name: 'Bunny',
+			Confidence: 81.39126586914062,
+			Instances: [],
+			Parents: [
+				{
+					Name: 'Rodent',
+				},
+				{
+					Name: 'Mammal',
+				},
+				{
+					Name: 'Animal',
+				},
+			],
+		},
+		{
+			Name: 'Pet',
+			Confidence: 68.93390655517578,
+			Instances: [],
+			Parents: [
+				{
+					Name: 'Animal',
+				},
+			],
+		}
+	];
+	box = await filterForPets(tagData);
+	expect(box).toStrictEqual(expetedTags);
+	console.log("PETS-------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+	console.log(box);
+	done();
+});
+
+test('getIntersection', async done => {
+	date0 = ['a','b','c'];
+	date1 = ['b','d','e'];
+	result = await getIntersection(date0, date1);
+	expect(result).toStrictEqual(['b', 'd', 'e']);
+	console.log("Intersection-------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+	console.log(result);
 	done();
 });
