@@ -665,8 +665,13 @@ test('filterforconfidence', async done => {
 
 function withinTolerance(actual, expected)
 {
+	return Math.abs(actual - expected) < 0.1;
+}
+
+function withinToleranceDate(actual, expected){
 	return Math.abs(actual - expected) <= 2;
 }
+
 test('getColourScore', async done => {
 	colour0 = [255,255,255];
 	colour1 = [0,0,0];
@@ -682,7 +687,7 @@ test('getDataScore', async done => {
 	result = await getDateScore(date0, date1);
 	console.log("-----------------------------");
 	console.log(result);
-	ans = withinTolerance(result, 5634.8);
+	ans = withinToleranceDate(result, 5634.8);
 	expect(ans).toBe(true);
 	done();
 });
