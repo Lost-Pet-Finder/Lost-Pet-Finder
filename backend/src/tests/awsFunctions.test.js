@@ -680,6 +680,8 @@ test('getDataScore', async done => {
 	date0 = '2020-10-23 22:50:00';
 	date1 = '2020-03-03 03:00:00';
 	result = await getDateScore(date0, date1);
+	console.log("-----------------------------");
+	console.log(result);
 	ans = withinTolerance(result, 5634.8);
 	expect(ans).toBe(true);
 	done();
