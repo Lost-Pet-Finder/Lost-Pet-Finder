@@ -26,9 +26,6 @@ async function searchLostPets(req, res) {
 
 		var retArray = [];
 
-		// console.log(userReport);
-		// console.log(allReports);
-
 		for (var i = 0; i < allReports.length; i++) {
 			const otherLabels = JSON.parse(allReports[i].tags);
 			const otherColours = JSON.parse(allReports[i].colour);
@@ -182,8 +179,6 @@ async function searchFoundPets(req, res) {
 		const myReportRows = await sqlPool.query('CALL get_users_lost_reports(?)', [
 			userid,
 		]);
-		// console.log('1111111111111111111');
-		// console.log(myReportRows);
 		const userReport = myReportRows[0][0];
 
 		const myLabels = JSON.parse(userReport.tags);
@@ -196,9 +191,6 @@ async function searchFoundPets(req, res) {
 		const allReports = allReportsRows[0];
 
 		var retArray = [];
-
-		// console.log(userReport);
-		// console.log(allReports);
 
 		for (var i = 0; i < allReports.length; i++) {
 			const otherLabels = JSON.parse(allReports[i].tags);

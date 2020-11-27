@@ -28,6 +28,9 @@ const query = (string, userid) => {
 		return myReportRowsLost;
 	} else if (string == 'CALL get_users_lost_reports(?)' && userid != 99999) {
 		return myReportRowsFound;
+	} else if (string == 'CALL get_user_contact_info(?)' && userid != 99999) {
+		const data = [[0], [1]];
+		return data;
 	}
 };
 

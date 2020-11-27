@@ -16,6 +16,15 @@ afterAll(done => {
 	server.close(done);
 });
 
+// test the pets endpoint
+test('search Lost Pets error', async done => {
+	const { body, status } = await request(server).get('/pets');
+	expect(status).toBe(200);
+	// this is just the pets endpoint, to get Json info, add /searchLostPets, / postLostPets, etc.
+	expect(body).toStrictEqual({});
+	done();
+});
+
 // when search a nonexisting post
 test('search Lost Pets error', async done => {
 	const req = { userid: '99999' };
