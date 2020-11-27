@@ -665,7 +665,7 @@ test('filterforconfidence', async done => {
 
 function withinTolerance(actual, expected)
 {
-	return Math.abs(actual - expected) < 0.1;
+	return Math.abs(actual - expected) <= 2;
 }
 test('getColourScore', async done => {
 	colour0 = [255,255,255];
