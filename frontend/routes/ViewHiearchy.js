@@ -3,6 +3,7 @@ import {createStackNavigator} from 'react-navigation-stack';
 import {createAppContainer} from 'react-navigation';
 
 import Login from '../screens/LoginScreen';
+import Signup from '../screens/SignScreen';
 import HomePage from '../screens/HomePage';
 import ReportScreen from '../screens/ReportScreen';
 import BrowseScreen from '../screens/BrowseScreen';
@@ -15,6 +16,13 @@ const screens = {
       title: 'FirstPage',
       headerShown: false,
     },
+  },
+  SignScreen: {
+    screen: Signup,
+    navigationOptions: {
+      title: 'SignUp Page',
+      headerShown: false,
+    }
   },
   HomePage: {
     screen: HomePage,
