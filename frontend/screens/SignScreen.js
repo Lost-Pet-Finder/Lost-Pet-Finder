@@ -11,6 +11,7 @@ import {
   } from 'react-native';
 import React from 'react';  
 import { firebase } from '@react-native-firebase/messaging';
+//import { post } from '../../backend/src/routers/userRouter';
 
 class SignScreen extends React.Component {
     constructor(props) {
@@ -26,6 +27,7 @@ class SignScreen extends React.Component {
         if(this.state.new_pwd === '' && this.state.new_pwd === ''){
             Alert.alert('Sign up information incomplete, please complete the procedure');
         } else{
+            // create new user 
             this.setState({isLoading: true});
             firebase
             .auth()
@@ -37,13 +39,41 @@ class SignScreen extends React.Component {
                     new_pwd: '',
                     isLoading: false
                 })
-                this.props.navigation.navigate('LoginPage')
+                let uid =  res["user"]["uid"];
+                //this.postUser(uid);
+                this.props.navigation.navigate('LoginPage');
             }).catch((e)=>{
                 console.log(e);
             });
 
         }
     }
+
+    // async postUser(uid){
+    //   const url = 'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/users/postUser';
+      
+    //   //get the firebase UID from response and generate unique user id for each user
+    //   let body = JSON.stringify(
+    //     {
+    //       uid: res["user"]["uid"],
+    //       user_id: parseInt(Date.now())
+    //     });
+
+    //   const response = await fetch(url,
+    //     {
+    //       method: 'POST',
+    //       headers: {
+    //         Accept: 'application/json',
+    //         'Content-Type': 'application/json',
+    //       },
+    //       body: body
+    //     })
+      
+    //   if(response.status == 201 || response.status == 200){
+    //     console.log("user created in the database");
+    //     this.props.navigation.navigate('LoginPage');
+    //   }
+    // }
 
     render() {
         return (
@@ -67,7 +97,7 @@ class SignScreen extends React.Component {
                 </View>
 
                 <TouchableOpacity
-                    onPress={() => this.createUser()}
+                    //onPress={() => this.createUser()}
                     style={styles.loginButton}>
                     <Text>Sign Up</Text>
                 </TouchableOpacity>

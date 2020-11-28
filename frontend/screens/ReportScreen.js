@@ -8,6 +8,7 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
+  Button,
 } from 'react-native';
 
 //import { StyleSheet, View, Text, Modal, Image, TextInput, Button, TouchableOpacity, Alert } from 'react-native';
@@ -62,14 +63,14 @@ export default class ReportScreen extends React.Component {
       userLocation: "",
       regionChangeProgress: false
     };
-    
+
   }
 
 
   componentDidMount() {
     Geolocation.getCurrentPosition((position) => {
       const current_pos = JSON.stringify(position);
-      this.setState({region: current_pos});
+      this.setState({ region: current_pos });
       console.log("latitude is: " + position["coords"]["latitude"]);
       console.log("longitude is: " + position["coords"]["longitude"]);
 
@@ -88,55 +89,56 @@ export default class ReportScreen extends React.Component {
         });
     },
       (error) => alert(JSON.stringify(error)),
-      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
     );
   }
 
-  onMapReady=()=> {
-    this.setState({isMapReady: true});
+  onMapReady = () => {
+    this.setState({ isMapReady: true });
   }
 
-  fetchAddress=()=> {
+  fetchAddress = () => {
     //console.log(this.state.currentPosition.latitude + ", " + this.state.currentPosition.longitude);
     fetch("https://maps.googleapis.com/maps/api/geocode/json?address=" + this.state.currentPosition.latitude + "," + this.state.currentPosition.longitude + "&key=" + "AIzaSyBk1oSy9YTS0SjTxnHiznhPyQpai8mgJh8")
-    .then((response)=>
-      response.json()
+      .then((response) =>
+        response.json()
       )
-    .then((responseJson) => {
-      //console.log("yooyoy" + responseJson);
-      const userLocation = responseJson.results[0].formatted_address;
-      //console.log(userLocation);
+      .then((responseJson) => {
+        //console.log("yooyoy" + responseJson);
+        const userLocation = responseJson.results[0].formatted_address;
+        //console.log(userLocation);
 
-      var change_coordination_info = {
-        latitude: responseJson.results[0].geometry.location.lat,
-        longitude: responseJson.results[0].geometry.location.lng,
-        latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA,
-      };
+        var change_coordination_info = {
+          latitude: responseJson.results[0].geometry.location.lat,
+          longitude: responseJson.results[0].geometry.location.lng,
+          latitudeDelta: LATITUDE_DELTA,
+          longitudeDelta: LONGITUDE_DELTA,
+        };
 
-      this.setState(
-        {
-          currentPosition: change_coordination_info,
-          userLocation: userLocation,
-          lat: responseJson.results[0].geometry.location.lat,
-          lon: responseJson.results[0].geometry.location.lng,
-          regionChangeProgress: false
+        this.setState(
+          {
+            currentPosition: change_coordination_info,
+            userLocation: userLocation,
+            lat: responseJson.results[0].geometry.location.lat,
+            lon: responseJson.results[0].geometry.location.lng,
+            regionChangeProgress: false
+          });
       });
-    });
   }
 
   onRegionChange = (currentPosition) => {
     this.setState({
       currentPosition,
-      regionChangeProgress: true}, 
-      
-      ()=>{
+      regionChangeProgress: true
+    },
+
+      () => {
         console.log("calling");
         this.fetchAddress();
       });
   }
 
-  onLocationSelect=()=> alert(this.state.userLocation);
+  onLocationSelect = () => alert(this.state.userLocation);
 
   //submit the report
   submit() {
@@ -192,8 +194,6 @@ export default class ReportScreen extends React.Component {
     }
   }
 
-
-
   // get photo from photo gallery
   getPhoto() {
     ImagePicker.showImagePicker(options, (response) => {
@@ -239,76 +239,81 @@ export default class ReportScreen extends React.Component {
     });
   }
 
-
-
   render() {
     return (
       <View style={styles.container}>
 
+        {/* photo part */}
         <View style={styles.imageWrapper}>
-            <Image source={this.state.avatarSource} style={styles.photolist} />
-          </View>
+          <Image source={this.state.avatarSource} style={styles.image} />
+          {/* <Image style={styles.image}
+            testID={'AppLogo_detox'}
+            source={require('../assets/logo.png')} /> */}
+        </View>
 
-          <View style={styles.mapcontainer} >
-            
-            <MapView
-              style={styles.map}
-              showUserLocation={true}
-              initialRegion={this.state.currentPosition}
-              onMapReady={this.onMapReady}
-              onRegionChangeComplete={this.onRegionChange}
-              testID={'Map_detox'}>
+        {/* google map */}
+        <View style={styles.mapcontainer} >
 
-              <MapView.Marker
-                coordinate={{
-                  latitude: this.state.currentPosition.latitude,
-                  longitude: this.state.currentPosition.longitude
-                }}
-                title="Your current location"
-                // image={require('../assets/pin.png')}
-                style={{ width: "5%", height: "5%" }}
-                draggable
-              >
-              </MapView.Marker>
-            </MapView>
+          <MapView
+            style={styles.map}
+            showUserLocation={true}
+            initialRegion={this.state.currentPosition}
+            onMapReady={this.onMapReady}
+            onRegionChangeComplete={this.onRegionChange}
+            testID={'Map_detox'}>
 
-            <View style={styles.detailSection}>
-              <Text style={styles.move_style}>Move map for location</Text>
-              <Text style={styles.loc_style}>LOCATION</Text>
-              <Text numberOfLines={2} style={styles.identity_style}>
-                {!this.state.regionChangeProgress ? this.state.userLocation : "Identifying Location..."}</Text>
-              <View style={styles.btnContainer}>
-              
-                <Button
-                  title="PICK THIS LOCATION"
-                  disabled={this.state.regionChangeProgress}
-                  onPress={this.onLocationSelect}
-                >
-                </Button>
+            <MapView.Marker
+              coordinate={{
+                latitude: this.state.currentPosition.latitude,
+                longitude: this.state.currentPosition.longitude
+              }}
+              title="Your current location"
+              // image={require('../assets/pin.png')}
+              style={{ width: '5%', height: '5%' }}
+              draggable
+            >
+            </MapView.Marker>
+          </MapView>
+        </View>
 
-              </View>
-            </View>
-          </View>
+        {/* google map dragger and info */}
+        <View style={styles.detailSection}>
+          <Text style={styles.move_style}>Move map for location</Text>
+          <Text style={styles.loc_style}>LOCATION</Text>
+          <Text numberOfLines={2} style={styles.identity_style}>
+            {!this.state.regionChangeProgress ? this.state.userLocation : "Identifying Location..."}</Text>
+        </View>
 
-            <TextInput
-              style={styles.textInputField}
-              testID={'DateInput_detox'}
-              placeholder="Date: (yyyy-mm-dd hr-min)"
-              onChangeText={(value) => this.setState({ date: value })}
-              value={this.state.date}
-            ></TextInput>
+        <View style={styles.btnContainer}>
+          <Button 
+            title="PICK THIS LOCATION"
+            disabled={this.state.regionChangeProgress}
+            onPress={this.onLocationSelect}
+          >
+          </Button>
+        </View>
 
-        <TouchableOpacity style={styles.SearchButton} testID={'UploadButton_detox'} onPress={() => this.getPhoto()}>
+        {/* user input date */}
+        <TextInput
+          style={styles.textInputField}
+          testID={'DateInput_detox'}
+          placeholder="Date: (yyyy-mm-dd hr-min)"
+          onChangeText={(value) => this.setState({ date: value })}
+          value={this.state.date}
+        ></TextInput>
+
+        <View style={styles.button}>
+          {/* upload photo button */}
+          <TouchableOpacity style={styles.SearchButton} testID={'UploadButton_detox'} onPress={() => this.getPhoto()}>
             <Text style={styles.textStyle}>Upload Photos</Text>
           </TouchableOpacity>
 
+          {/* submit report button */}
           <TouchableOpacity style={styles.SearchButton} testID={'Reportsubmit_detox'} onPress={() => this.submit()}>
             <Text style={styles.textStyle}>Submit</Text>
           </TouchableOpacity>
-     
-          
+        </View>
       </View>
-
     )
   }
 
@@ -320,100 +325,73 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     backgroundColor: '#BBDEFB',
-    alignItems: 'baseline',
-    justifyContent: 'center',
-    display: "flex"
-  },
-
-  topcontainer: {
-    flex: 9,
-    flexDirection: 'column',
-    backgroundColor: '#BBDEFB',
-    alignItems: 'baseline',
-    justifyContent: 'center',
-  },
-
-  bottomcontainer: {
-    flex: 1,
-    flexDirection: 'row',
-    backgroundColor: '#FFFFFF',
-    alignItems: 'baseline',
-    justifyContent: 'center',
+    alignItems: 'center',
+    alignContent: 'center',
+    justifyContent: 'space-between',
+    display: 'flex'
   },
 
   imageWrapper: {
-    display: "flex",
-    flex: 1,
-    width: "100%",
-    height: 200,
-    padding: 10,
+    flex: 0.25,
+    width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    position: 'absolute',
-    top:10,
   },
 
   mapcontainer: {
-    position:"absolute",
-    height: "45%",
-    width: "90%",
-    display: "flex",
-    left: "5%",
-    top: "40%",
-    display: "flex",
-    flex: 7,
+    width: '90%',
+    flex: 0.35,
   },
   map: {
     ...StyleSheet.absoluteFillObject,
   },
 
-  photolist: {
-    width: 200,
-    height: 200,
+  detailSection: {
+    flex: 0.15,
+    width: '90%',
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    alignContent: 'center',
+    justifyContent: 'center',
+  },
+
+  btnContainer: {
+    flex: 0.05,
+    width: '90%',
+    backgroundColor:'#fff',
   },
 
   move_style: {
-    fontSize: 16, 
-    fontWeight: "bold", 
-    fontFamily: "roboto", 
-    marginBottom: 20, 
+    fontSize: 16,
+    fontWeight: "bold",
+    fontFamily: "roboto",
+    textAlign: 'center',
   },
 
   loc_style: {
-    fontSize: 10, 
-    color: "#999",
+    fontSize: 10,
+    color: '#999',
+    textAlign: 'center',
   },
-
   identity_style: {
-    fontSize: 14, 
-    paddingVertical: 10, 
-    borderBottomColor: "silver", 
+    fontSize: 14,
+    paddingVertical: 10,
+    borderBottomColor: 'silver',
     borderBottomWidth: 0.5,
   },
-
+  button: {
+    flex: 0.1,
+    flexDirection: 'row',
+  },
   SearchButton: {
-    display: "flex",
     alignSelf: 'center',
     padding: 20,
+    flex: 0.5,
     backgroundColor: '#2196F3',
     borderRadius: 10,
-    height: "5%",
-    width: "55%",
+    height: '5%',
     justifyContent: 'center',
     marginHorizontal: 5,
-    marginVertical: "5%",
-  },
-
-  ReportButton: {
-    flex: 1,
-    alignSelf: 'center',
-    backgroundColor: '#2196F3',
-    borderRadius: 25,
-    height: "20%",
-    alignItems: 'center',
-    justifyContent: 'center',
-    // marginTop: 20,
-    marginBottom: 10,
   },
   textStyle: {
     textAlign: 'center',
@@ -423,45 +401,14 @@ const styles = StyleSheet.create({
   },
   textInputField: {
     fontSize: 15,
-    width: '80%',
-    left: '10%',
+    width: '90%',
     borderBottomColor: '#000',
     borderBottomWidth: 1,
-    display: "flex",
-    flexDirection: "column",
-    position: 'absolute',
-    bottom: 10,
-    backgroundColor: '#FFFFF9'
-  },
-  inputView: {
-    width: '80%',
-    backgroundColor: '#465881',
-    borderRadius: 25,
-    height: 50,
-    marginBottom: 20,
-    justifyContent: 'center',
-    padding: 20,
+    flex: 0.05,
+    textAlign: 'center',
   },
   image: {
-    marginBottom: 40,
-    width: 120,
-    height: 120,
-    resizeMode: 'cover',
+    width: 130,
+    height: 130,
   },
-  detailSection: {
-    height: "20%",
-    width: "95%",
-    backgroundColor: "#fff",
-    display: "flex",
-    position: "absolute",
-    bottom: 0,
-    left:"2.5%",
-    justifyContent: "flex-start"
-  },
-  btnContainer: {
-    position: "absolute",
-    width:"70%",
-    bottom: 0,
-    left: "15%",
-  }
 });

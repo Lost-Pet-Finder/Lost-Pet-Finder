@@ -58,10 +58,10 @@ class LoginScreen extends React.Component {
     return;
   }
 
-  signedInAsFinder() {
+  signedInAsFinder(){
     // ... get user id from server
-    const user_id = '1';
-    let identity = {user_id: '1', isFinder: 1};
+    //let user_id = await getUserId(this.state.email);
+    let identity = {isFinder: 1};
 
     this.updateFCMDeviceToken(identity.user_id);
     //this.props.navigation.navigate('HomePage', {user_id: user_id, isFinder: 1});
@@ -69,6 +69,8 @@ class LoginScreen extends React.Component {
     //handle firebase authentication
     this.handleLogin(identity);
   }
+
+  
 
   signedInAsLoser() {
     // .. get user id from server
@@ -81,6 +83,8 @@ class LoginScreen extends React.Component {
     //handle firebase authentication
     this.handleLogin(identity);
   }
+
+
 
   handleLogin = async(identity)=>{
     console.log(identity);
@@ -150,7 +154,7 @@ class LoginScreen extends React.Component {
           />
         </View>
 
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={styles.loginButton}
           testID={'SignInFinderButton_detox'}
           onPress={() => this.signedInAsFinder()}>
@@ -162,6 +166,14 @@ class LoginScreen extends React.Component {
           testID={'SignInLoserButton_detox'}
           onPress={() => this.signedInAsLoser()}>
           <Text style={styles.loginText}>Sign In: Lost</Text>
+        </TouchableOpacity> */}
+
+        <TouchableOpacity style={styles.loginButton} testID={'SignInFinderButton_detox'} onPress={()=>this.props.navigation.navigate('HomePage', {user_id: '1', isFinder: 1})} >
+        <Text style={styles.loginText}>Sign In: Found</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.loginButton} testID={'SignInLoserButton_detox'} onPress={()=>this.props.navigation.navigate('HomePage', {user_id: '2', isFinder: 0})} >
+        <Text style={styles.loginText}>Sign In: Lost</Text>
         </TouchableOpacity>
 
         <TouchableOpacity

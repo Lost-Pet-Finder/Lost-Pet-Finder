@@ -11,4 +11,6 @@ router.get('/', (req, res) => {
 
 router.get('/getUserContactInfo/:userid', userController.getUserContactInfo);
 
+router.post('/postUser', userController.postUser);
+
 module.exports = router;

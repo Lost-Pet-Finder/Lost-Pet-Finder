@@ -35,7 +35,7 @@ const screens = {
     screen: ReportScreen,
     navigationOptions: {
       title: 'Report Screen',
-      headerShown: true,
+      headerShown: false,
     },
   },
   BrowseScreen: {

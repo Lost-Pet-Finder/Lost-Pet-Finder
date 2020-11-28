@@ -14,6 +14,25 @@ async function getUserContactInfo(req, res) {
 	}
 }
 
+async function postUser(req, res){
+	var uid = req.body.uid;
+	var user_id = req.body.user_id;
+	
+	try{
+		const response = await sqlPool.query(
+			'CALL create_user_info(?, ?)',
+			[uid, user_id]
+		);
+		res.status(200).send(response[0]);
+	}catch(err){
+		console.log(err);
+		res.status(500).send("failed");
+	}
+	
+
+}
+
 module.exports = {
 	getUserContactInfo: getUserContactInfo,
+	postUser: postUser,
 };
