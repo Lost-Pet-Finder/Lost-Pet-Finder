@@ -6,7 +6,6 @@ async function getUserContactInfo(req, res) {
 	try {
 		const rows = await sqlPool.query('CALL get_user_contact_info(?)', [userid]);
 		const data = rows[0];
-
 		res.status(200).send(data);
 	} catch (err) {
 		console.error(err);
