@@ -10,7 +10,6 @@ router.get('/', (req, res) => {
 });
 
 router.get('/getUserContactInfo/:userid', userController.getUserContactInfo);
-
-router.post('/postUser', userController.postUser);
-
+router.post('/createNewUser', userController.createNewUser);
+router.get('/getUserIdNumber', userController.getUserIdNumber);
 module.exports = router;

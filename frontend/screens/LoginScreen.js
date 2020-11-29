@@ -27,7 +27,8 @@ class LoginScreen extends React.Component {
     }
   }
 
-  identity = {user_id: '', isFinder: null};
+  //identity = {user_id: '', isFinder: null};
+  identity = {};
 
   async updateFCMDeviceToken(user_id) {
     const deviceToken = await messaging().getToken();
@@ -59,9 +60,9 @@ class LoginScreen extends React.Component {
   }
 
   signedInAsFinder(){
-    // ... get user id from server
-    //let user_id = await getUserId(this.state.email);
-    let identity = {isFinder: 1};
+    
+    //let identity = {user_id: '1', isFinder: 1};
+    identity["isFinder"] = 1;
 
     this.updateFCMDeviceToken(identity.user_id);
     //this.props.navigation.navigate('HomePage', {user_id: user_id, isFinder: 1});
@@ -75,7 +76,8 @@ class LoginScreen extends React.Component {
   signedInAsLoser() {
     // .. get user id from server
     const user_id = '2';
-    let identity = {user_id: '2', isFinder: 0};
+    //let identity = {user_id: '2', isFinder: 0};
+    identity["isFinder"] = 0;
 
     this.updateFCMDeviceToken(identity.user_id);
     //this.props.navigation.navigate('HomePage', {user_id: user_id, isFinder: 0});
@@ -98,7 +100,17 @@ class LoginScreen extends React.Component {
       try {
         let result = await firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password);
         if(result) {
-          this.props.navigation.navigate('HomePage', identity);
+          console.log(JSON.stringify(result));
+
+          //get the firebase uid
+          let uid = result["user"]["uid"];
+          
+          //get user_id for application
+          let user_id = await getUserId(uid);
+          if(user_id != null){
+            identity["user_id"] = user_id;
+            this.props.navigation.navigate('HomePage', identity);
+          }
         }
       }
       catch(e){
@@ -116,6 +128,31 @@ class LoginScreen extends React.Component {
         }
       }
     }
+  }
+
+  getUserId= async(uid)=>{
+    //access the databse to get the user_id based on firebase uid
+    const url = 'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/user/getUserIdNumber';
+    let body = JSON.stringify({uid:uid});
+    const result = await fetch(url, 
+      {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: body
+      })
+    
+      //get the user_id successfully
+      if(result.status == 201 || result.status == 200){
+        console.log(result);
+        return result;
+      }
+      else{
+        //if not, return null
+        return null;
+      }
   }
 
   handleSignup() {
@@ -154,7 +191,7 @@ class LoginScreen extends React.Component {
           />
         </View>
 
-        {/* <TouchableOpacity
+        <TouchableOpacity
           style={styles.loginButton}
           testID={'SignInFinderButton_detox'}
           onPress={() => this.signedInAsFinder()}>
@@ -166,15 +203,15 @@ class LoginScreen extends React.Component {
           testID={'SignInLoserButton_detox'}
           onPress={() => this.signedInAsLoser()}>
           <Text style={styles.loginText}>Sign In: Lost</Text>
-        </TouchableOpacity> */}
+        </TouchableOpacity> 
 
-        <TouchableOpacity style={styles.loginButton} testID={'SignInFinderButton_detox'} onPress={()=>this.props.navigation.navigate('HomePage', {user_id: '1', isFinder: 1})} >
+        {/* <TouchableOpacity style={styles.loginButton} testID={'SignInFinderButton_detox'} onPress={()=>this.props.navigation.navigate('HomePage', {user_id: '1', isFinder: 1})} >
         <Text style={styles.loginText}>Sign In: Found</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.loginButton} testID={'SignInLoserButton_detox'} onPress={()=>this.props.navigation.navigate('HomePage', {user_id: '2', isFinder: 0})} >
         <Text style={styles.loginText}>Sign In: Lost</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
         <TouchableOpacity
           onPress={() => this.handleSignup()}>

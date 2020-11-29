@@ -13,7 +13,7 @@ async function getUserContactInfo(req, res) {
 	}
 }
 
-async function postUser(req, res){
+async function createNewUser(req, res){
 	var uid = req.body.uid;
 	var user_id = req.body.user_id;
 	
@@ -27,11 +27,25 @@ async function postUser(req, res){
 		console.log(err);
 		res.status(500).send("failed");
 	}
-	
+}
 
+async function getUserIdNumber(req, res){
+	var uid = req.body.uid;
+	
+	try{
+		const response = await sqlPool.query('CALL get_user_id_number(?)', [uid]);
+		//get user_id
+		const userIdNumber = response[1];
+		res.status(200).send(userIdNumber);
+	}
+	catch(error){
+		console.log(error);
+		res.status(500).send("getUserIdNumber failed");
+	}
 }
 
 module.exports = {
 	getUserContactInfo: getUserContactInfo,
-	postUser: postUser,
+	createNewUser: createNewUser,
+	getUserIdNumber: getUserIdNumber,
 };
