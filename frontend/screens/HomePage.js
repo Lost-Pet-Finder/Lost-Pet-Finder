@@ -1,5 +1,6 @@
 import React from 'react';
 import {View, Text, Alert, StyleSheet, TouchableOpacity} from 'react-native';
+import styles from './styles';
 //import { useEffect } from 'react';
 
 // FCM
@@ -85,42 +86,3 @@ export default class HomePage extends React.Component {
         );
     }
 }
-
-const styles = StyleSheet.create({
-  containerView: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-    backgroundColor: '#BBDEFB',
-  },
-  reportView: {
-    backgroundColor: '#22577A',
-    height: '30%',
-    width: '90%',
-    borderRadius: 15,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  browseView: {
-    backgroundColor: '#2F8789',
-    height: '30%',
-    width: '90%',
-    borderRadius: 15,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  contactView: {
-    backgroundColor: '#2E8B57',
-    height: '30%',
-    width: '90%',
-    borderRadius: 15,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  viewTitle: {
-    fontSize: 30,
-    fontWeight: 'bold',
-    color: 'white',
-  },
-});

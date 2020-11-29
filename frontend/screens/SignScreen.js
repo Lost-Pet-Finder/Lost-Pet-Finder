@@ -1,6 +1,5 @@
 import 'react-native-gesture-handler';
 import {
-  StyleSheet,
   View,
   TextInput,
   Text,
@@ -10,6 +9,7 @@ import {
   Alert
 } from 'react-native';
 import React from 'react';
+import styles from './styles';
 import { firebase } from '@react-native-firebase/messaging';
 //import { post } from '../../backend/src/routers/userRouter';
 
@@ -130,54 +130,3 @@ class SignScreen extends React.Component {
 }
 
 export default SignScreen;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#BBDEFB',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  inputText: {
-    height: 50,
-    color: '#fff',
-    fontSize: 16,
-  },
-  inputView: {
-    width: '80%',
-    backgroundColor: '#465881',
-    borderRadius: 25,
-    height: 50,
-    marginBottom: 20,
-    justifyContent: 'center',
-    padding: 20,
-  },
-  loginText: {
-    color: '#fff',
-    fontSize: 16,
-  },
-  forgotPassword: {
-    color: '#fff',
-    marginTop: 50,
-  },
-  signup: {
-    color: '#fff',
-    marginTop: 15,
-  },
-  loginButton: {
-    width: '40%',
-    backgroundColor: '#2196F3',
-    borderRadius: 25,
-    height: 45,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 20,
-    marginBottom: 10,
-  },
-  image: {
-    marginBottom: 40,
-    width: 120,
-    height: 120,
-    resizeMode: 'stretch',
-  },
-});

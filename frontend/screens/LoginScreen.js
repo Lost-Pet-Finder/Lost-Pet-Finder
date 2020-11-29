@@ -2,7 +2,6 @@ import 'react-native-gesture-handler';
 import React from 'react';
 
 import {
-  StyleSheet,
   View,
   TextInput,
   Text,
@@ -12,10 +11,13 @@ import {
   Alert
 } from 'react-native';
 
+import styles from './styles';
+
 // FCM
 import messaging from '@react-native-firebase/messaging';
 import auth, {firebase} from '@react-native-firebase/auth';
 
+var identity = {};
 
 class LoginScreen extends React.Component {
   constructor(props) {
@@ -28,7 +30,6 @@ class LoginScreen extends React.Component {
   }
 
   //identity = {user_id: '', isFinder: null};
-  identity = {};
 
   async updateFCMDeviceToken(user_id) {
     const deviceToken = await messaging().getToken();
@@ -104,7 +105,7 @@ class LoginScreen extends React.Component {
 
           //get the firebase uid
           let uid = result["user"]["uid"];
-          
+
           //get user_id for application
           let user_id = await getUserId(uid);
           if(user_id != null){
@@ -191,7 +192,7 @@ class LoginScreen extends React.Component {
           />
         </View>
 
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={styles.loginButton}
           testID={'SignInFinderButton_detox'}
           onPress={() => this.signedInAsFinder()}>
@@ -203,22 +204,19 @@ class LoginScreen extends React.Component {
           testID={'SignInLoserButton_detox'}
           onPress={() => this.signedInAsLoser()}>
           <Text style={styles.loginText}>Sign In: Lost</Text>
-        </TouchableOpacity> 
+        </TouchableOpacity>  */}
 
-        {/* <TouchableOpacity style={styles.loginButton} testID={'SignInFinderButton_detox'} onPress={()=>this.props.navigation.navigate('HomePage', {user_id: '1', isFinder: 1})} >
+        <TouchableOpacity style={styles.loginButton} testID={'SignInFinderButton_detox'} onPress={()=>this.props.navigation.navigate('HomePage', {user_id: '1', isFinder: 1})} >
         <Text style={styles.loginText}>Sign In: Found</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.loginButton} testID={'SignInLoserButton_detox'} onPress={()=>this.props.navigation.navigate('HomePage', {user_id: '2', isFinder: 0})} >
         <Text style={styles.loginText}>Sign In: Lost</Text>
-        </TouchableOpacity> */}
+        </TouchableOpacity>
 
         <TouchableOpacity
           onPress={() => this.handleSignup()}>
           <Text style={styles.signup}>Don't have an account? Sign up</Text>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Text style={styles.forgotPassword}>Forgot password?</Text>
         </TouchableOpacity>
       </View>
     );
@@ -226,54 +224,3 @@ class LoginScreen extends React.Component {
 }
 
 export default LoginScreen;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#BBDEFB',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  inputText: {
-    height: 50,
-    color: '#fff',
-    fontSize: 16,
-  },
-  inputView: {
-    width: '80%',
-    backgroundColor: '#465881',
-    borderRadius: 25,
-    height: 50,
-    marginBottom: 20,
-    justifyContent: 'center',
-    padding: 20,
-  },
-  loginText: {
-    color: '#fff',
-    fontSize: 16,
-  },
-  forgotPassword: {
-    color: '#fff',
-    marginTop: 50,
-  },
-  signup: {
-    color: '#fff',
-    marginTop: 15,
-  },
-  loginButton: {
-    width: '40%',
-    backgroundColor: '#2196F3',
-    borderRadius: 25,
-    height: 45,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 20,
-    marginBottom: 10,
-  },
-  image: {
-    marginBottom: 40,
-    width: 120,
-    height: 120,
-    resizeMode: 'stretch',
-  },
-});

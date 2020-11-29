@@ -1,7 +1,7 @@
 import React from 'react';
 import 'react-native-gesture-handler';
+import styles from './styles';
 import {
-  StyleSheet,
   Button,
   View,
   SafeAreaView,
@@ -68,7 +68,7 @@ export default class BrowseScreen extends React.Component {
     }
 
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={styles.browse_container}>
         <ScrollView style={styles.scrollView} testID={'BrowseView_detox'} contentContainerStyle={styles.scrollViewCellContainer}>
           {this.state.petArray.map((pet, index) => {
             return (
@@ -103,39 +103,3 @@ export default class BrowseScreen extends React.Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-    backgroundColor: '#FFFFFF',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  scrollView: {
-    width: '100%',
-  },
-  scrollViewCellContainer: {},
-  scrollViewCell: {
-    backgroundColor: '#BBDEFB',
-    marginBottom: 10,
-    borderRadius: 15,
-  },
-  titleText: {
-    marginLeft: 20,
-    fontSize: 20,
-    textAlign: 'left',
-  },
-  imageView: {
-    height: 140,
-    marginHorizontal: 20,
-    width: 140,
-    marginBottom: 20,
-  },
-  imageAndTextContainer: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    width: '100%',
-    alignItems: 'center',
-  },
-});

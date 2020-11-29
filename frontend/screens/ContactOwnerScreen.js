@@ -2,6 +2,7 @@ import React from 'react';
 import 'react-native-gesture-handler';
 import {StyleSheet, View, Text, Image} from 'react-native';
 import {rgbToHex} from '../util/rgbToHex';
+import styles from './styles';
 
 export default class ContactOwnerScreen extends React.Component {
   constructor(props) {
@@ -18,8 +19,8 @@ export default class ContactOwnerScreen extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.titleText}> Pet's Name </Text>
+      <View style={styles.contact_container}>
+        <Text style={styles.contact_titleText}> Pet's Name </Text>
         <View style={styles.imageAndTextContainer}>
           <Image
             source={{
@@ -95,61 +96,3 @@ export default class ContactOwnerScreen extends React.Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-    backgroundColor: '#FFFFFF',
-    alignItems: 'center',
-    justifyContent: 'space-evenly',
-  },
-  viewContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  horizontalFlexContainer: {
-    width: '100%',
-    height: 150,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-evenly',
-  },
-  colorUnit: {
-    alignItems: 'center',
-    width: '30%',
-  },
-  colorBox: {
-    backgroundColor: '#000000',
-    height: '50%',
-    width: '100%',
-  },
-  colorText: {
-    fontSize: 18,
-  },
-  imageAndTextContainer: {
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-  },
-  imageView: {
-    width: 140,
-    height: 140,
-    marginHorizontal: 20,
-    marginBottom: 20,
-  },
-  titleText: {
-    fontSize: 30,
-    fontWeight: 'bold',
-  },
-  aiTags: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  infoText: {
-    fontSize: 18,
-    textAlign: 'center',
-  },
-});

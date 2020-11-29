@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import 'react-native-gesture-handler';
 import {
-  StyleSheet,
   View,
   Text,
   Image,
@@ -11,7 +10,8 @@ import {
   Button,
 } from 'react-native';
 
-//import { StyleSheet, View, Text, Modal, Image, TextInput, Button, TouchableOpacity, Alert } from 'react-native';
+import styles from './styles';
+
 import { NavigationContainer } from '@react-navigation/native';
 import ImagePicker from 'react-native-image-picker';
 import CameraRollPicker from 'react-native-camera-roll-picker';
@@ -241,11 +241,11 @@ export default class ReportScreen extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <View style={styles.report_container}>
 
         {/* photo part */}
         <View style={styles.imageWrapper}>
-          <Image source={this.state.avatarSource} style={styles.image} />
+          <Image source={this.state.avatarSource} style={styles.report_image} />
           {/* <Image style={styles.image}
             testID={'AppLogo_detox'}
             source={require('../assets/logo.png')} /> */}
@@ -302,7 +302,7 @@ export default class ReportScreen extends React.Component {
           value={this.state.date}
         ></TextInput>
 
-        <View style={styles.button}>
+        <View style={styles.buttonWrapper}>
           {/* upload photo button */}
           <TouchableOpacity style={styles.SearchButton} testID={'UploadButton_detox'} onPress={() => this.getPhoto()}>
             <Text style={styles.textStyle}>Upload Photos</Text>
@@ -316,99 +316,4 @@ export default class ReportScreen extends React.Component {
       </View>
     )
   }
-
-
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-    backgroundColor: '#BBDEFB',
-    alignItems: 'center',
-    alignContent: 'center',
-    justifyContent: 'space-between',
-    display: 'flex'
-  },
-
-  imageWrapper: {
-    flex: 0.25,
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
-  mapcontainer: {
-    width: '90%',
-    flex: 0.35,
-  },
-  map: {
-    ...StyleSheet.absoluteFillObject,
-  },
-
-  detailSection: {
-    flex: 0.15,
-    width: '90%',
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    alignContent: 'center',
-    justifyContent: 'center',
-  },
-
-  btnContainer: {
-    flex: 0.05,
-    width: '90%',
-    backgroundColor:'#fff',
-  },
-
-  move_style: {
-    fontSize: 16,
-    fontWeight: "bold",
-    fontFamily: "roboto",
-    textAlign: 'center',
-  },
-
-  loc_style: {
-    fontSize: 10,
-    color: '#999',
-    textAlign: 'center',
-  },
-  identity_style: {
-    fontSize: 14,
-    paddingVertical: 10,
-    borderBottomColor: 'silver',
-    borderBottomWidth: 0.5,
-  },
-  button: {
-    flex: 0.1,
-    flexDirection: 'row',
-  },
-  SearchButton: {
-    alignSelf: 'center',
-    padding: 20,
-    flex: 0.5,
-    backgroundColor: '#2196F3',
-    borderRadius: 10,
-    height: '5%',
-    justifyContent: 'center',
-    marginHorizontal: 5,
-  },
-  textStyle: {
-    textAlign: 'center',
-    textAlignVertical: 'center',
-    color: '#fff',
-    fontSize: 16,
-  },
-  textInputField: {
-    fontSize: 15,
-    width: '90%',
-    borderBottomColor: '#000',
-    borderBottomWidth: 1,
-    flex: 0.05,
-    textAlign: 'center',
-  },
-  image: {
-    width: 130,
-    height: 130,
-  },
-});
