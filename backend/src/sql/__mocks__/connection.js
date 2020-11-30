@@ -31,6 +31,24 @@ const query = (string, userid) => {
 	} else if (string == 'CALL get_user_contact_info(?)' && userid != 99999) {
 		const data = [[0], [1]];
 		return data;
+	} else if (string == 'CALL create_user_info(?, ?)' && userid[0] != 99999) {
+		const data = [[0], [1]];
+		return data;
+	} else if (string == 'CALL get_user_id_number(?)' && userid != 99999) {
+		const data = [[1], ['this is the expected id']];
+		return data;
+	} else if (string == 'CALL get_my_pending_requests(?)' && userid != 99999) {
+		const data = [[0], [1]];
+		return data;
+	} else if (string == 'CALL get_my_sent_requests(?)' && userid != 99999) {
+		const data = [[0], [1]];
+		return data;
+	} else if (string == 'CALL get_user_device_token(?)' && userid != 99999) {
+		const data = [[0], [1]];
+		return data;
+	} else if (string == 'CALL upload_device_token(?,?)' && userid[0] != 99999) {
+		const data = [[0], [1]];
+		return data;
 	}
 };
 

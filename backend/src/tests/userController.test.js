@@ -36,3 +36,44 @@ test('get user contact info', async done => {
 	expect(body).toStrictEqual([0]);
 	done();
 });
+
+// new user
+test('create a new user', async done => {
+	const req = { uid: '1', user_id: '1' };
+	const { body, status } = await request(server)
+		.post('/user/createNewUser')
+		.send(req);
+	expect(status).toBe(200);
+	expect(body).toStrictEqual([0]);
+	done();
+});
+
+// fail to create a new user
+test('create a new user error', async done => {
+	const req = { uid: '99999', user_id: '1' };
+	const { status } = await request(server)
+		.post('/user/createNewUser')
+		.send(req);
+	expect(status).toBe(500);
+	done();
+});
+
+test('get user id number', async done => {
+	const req = { uid: '1' };
+	const { body, status } = await request(server)
+		.get('/user/getUserIdNumber')
+		.send(req);
+	expect(status).toBe(200);
+	expect(body).toStrictEqual(['this is the expected id']);
+	done();
+});
+
+// fail to get user id number
+test('get user id number error', async done => {
+	const req = { uid: '99999' };
+	const { status } = await request(server)
+		.get('/user/getUserIdNumber')
+		.send(req);
+	expect(status).toBe(500);
+	done();
+});
