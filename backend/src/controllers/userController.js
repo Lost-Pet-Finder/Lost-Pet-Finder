@@ -14,13 +14,15 @@ async function getUserContactInfo(req, res) {
 }
 
 async function createNewUser(req, res){
+	var name = req.body.name;
 	var uid = req.body.uid;
 	var user_id = req.body.user_id;
+	var phone_num = req.body.phone;
 	
 	try{
 		const response = await sqlPool.query(
-			'CALL create_user_info(?, ?)',
-			[uid, user_id]
+			'CALL create_user_info(?, ?, ?, ?)',
+			[name, uid, user_id, phone_num]
 		);
 		res.status(200).send(response[0]);
 	}catch(err){

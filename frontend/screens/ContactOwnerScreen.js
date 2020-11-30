@@ -1,8 +1,11 @@
 import React from 'react';
 import 'react-native-gesture-handler';
-import {StyleSheet, View, Text, Image} from 'react-native';
+import {Button, View, Text, Image} from 'react-native';
 import {rgbToHex} from '../util/rgbToHex';
 import styles from './styles';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+
+const pet_text = "Pet's Information";
 
 export default class ContactOwnerScreen extends React.Component {
   constructor(props) {
@@ -10,17 +13,39 @@ export default class ContactOwnerScreen extends React.Component {
 
     this.state = {
       pet: this.props.navigation.state.params.petInfo,
-      totalColor: this.props.navigation.state.params.petInfo.colours.totalColor,
-      croppedColor: this.props.navigation.state.params.petInfo.colours
-        .croppedColor,
-      finalColor: this.props.navigation.state.params.petInfo.colours.finalColor,
+      // totalColor: this.props.navigation.state.params.petInfo.colours.totalColor,
+      // croppedColor: this.props.navigation.state.params.petInfo.colours
+      //   .croppedColor,
+      // finalColor: this.props.navigation.state.params.petInfo.colours.finalColor,
+      //contactInfo: 'heyheyhey',
     };
   }
 
+  // async contact(){
+  //   //get the reporter's user id
+  //   var id = this.state.pet.information.fk_user_id;
+  //   const url = "http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/getUserContactInfo/" +  `${id}`;
+  //   const request = {
+  //     method: 'GET',
+  //     headers: {
+  //       Accept: 'application/json',
+  //       'Content-Type': 'application/json',
+  //     },
+  //   };
+  //   //get the reporter's contact information
+  //   let result = await fetch(url, request);
+  //   if(result.status === 400){
+  //     this.setState({contactInfo: 'Sorry, reporter rejects your contact request'});
+  //   }
+  //   else{
+  //     this.setState({contactInfo: result.json()});
+  //   }
+  // }
+
   render() {
     return (
-      <View style={styles.contact_container}>
-        <Text style={styles.contact_titleText}> Pet's Name </Text>
+      <View style={styles.contact_container} testID={'ContactScreen_detox'}>
+        <Text style={styles.contact_titleText}> {pet_text} </Text>
         <View style={styles.imageAndTextContainer}>
           <Image
             source={{
@@ -40,10 +65,19 @@ export default class ContactOwnerScreen extends React.Component {
           <Text
             style={
               styles.infoText
-            }>{`${this.state.pet.information.tags}`}</Text>
+            }>{`${JSON.parse(this.state.pet.information.tags)[0].Name}`}</Text>
         </View>
 
-        <View style={styles.horizontalFlexContainer}>
+        <Text>
+            {"reporter contact information will be shown"}
+        </Text>
+
+        <TouchableOpacity style={styles.contactButton} testID={'ContactButton_detox'} onPress={() => this.contact()}>
+            <Text style={styles.textStyle}>Contact reporter</Text>
+          </TouchableOpacity>
+
+
+        {/* <View style={styles.horizontalFlexContainer}>
           <View style={styles.colorUnit}>
             <View
               style={[
@@ -91,7 +125,7 @@ export default class ContactOwnerScreen extends React.Component {
             />
             <Text style={styles.colorText}>Final Color</Text>
           </View>
-        </View>
+        </View> */}
       </View>
     );
   }

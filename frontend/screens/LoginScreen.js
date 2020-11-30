@@ -17,7 +17,7 @@ import styles from './styles';
 import messaging from '@react-native-firebase/messaging';
 import auth, {firebase} from '@react-native-firebase/auth';
 
-var identity = {};
+//var identity = {};
 
 class LoginScreen extends React.Component {
   constructor(props) {
@@ -29,7 +29,7 @@ class LoginScreen extends React.Component {
     }
   }
 
-  //identity = {user_id: '', isFinder: null};
+  entity = {user_id: '', isFinder: null};
 
   async updateFCMDeviceToken(user_id) {
     const deviceToken = await messaging().getToken();
@@ -62,8 +62,8 @@ class LoginScreen extends React.Component {
 
   signedInAsFinder(){
     
-    //let identity = {user_id: '1', isFinder: 1};
-    identity["isFinder"] = 1;
+    let identity = {user_id: '1', isFinder: 1};
+    //identity['isFinder'] = 1;
 
     this.updateFCMDeviceToken(identity.user_id);
     //this.props.navigation.navigate('HomePage', {user_id: user_id, isFinder: 1});
@@ -77,8 +77,8 @@ class LoginScreen extends React.Component {
   signedInAsLoser() {
     // .. get user id from server
     const user_id = '2';
-    //let identity = {user_id: '2', isFinder: 0};
-    identity["isFinder"] = 0;
+    let identity = {user_id: '2', isFinder: 0};
+    //identity['isFinder'] = 0;
 
     this.updateFCMDeviceToken(identity.user_id);
     //this.props.navigation.navigate('HomePage', {user_id: user_id, isFinder: 0});
@@ -104,14 +104,15 @@ class LoginScreen extends React.Component {
           console.log(JSON.stringify(result));
 
           //get the firebase uid
-          let uid = result["user"]["uid"];
+          let uid = result['user']['uid'];
 
           //get user_id for application
-          let user_id = await getUserId(uid);
-          if(user_id != null){
-            identity["user_id"] = user_id;
-            this.props.navigation.navigate('HomePage', identity);
-          }
+          // let user_id = await getUserId(uid);
+          // if(user_id != null){
+          //   identity['user_id'] = user_id;
+          //   this.props.navigation.navigate('HomePage', identity);
+          // }
+          this.props.navigation.navigate('HomePage', identity);
         }
       }
       catch(e){
@@ -135,25 +136,17 @@ class LoginScreen extends React.Component {
     //access the databse to get the user_id based on firebase uid
     const url = 'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/user/getUserIdNumber';
     let body = JSON.stringify({uid:uid});
-    const result = await fetch(url, 
-      {
-        method: 'GET',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: body
-      })
+    const result = await fetch(url, {method: 'GET', headers: {Accept: 'application/json', 'Content-Type': 'application/json'}, body: body});
     
       //get the user_id successfully
-      if(result.status == 201 || result.status == 200){
-        console.log(result);
-        return result;
-      }
-      else{
-        //if not, return null
-        return null;
-      }
+    if(result.status == 201 || result.status == 200){
+      console.log(result);
+      return result;
+    }
+    else{
+      //if not, return null
+      return null;
+    }
   }
 
   handleSignup() {
@@ -173,8 +166,8 @@ class LoginScreen extends React.Component {
             style={styles.inputText}
             testID={'EmailInput_detox'}
             //labelValue={email}
-            placeholder="Email"
-            placeholderTextColor="#003f5c"
+            placeholder='Email'
+            placeholderTextColor='#003f5c'
             onChangeText={(email) => this.setState({email})}
             value = {this.state.email}
           />
@@ -185,8 +178,8 @@ class LoginScreen extends React.Component {
             style={styles.inputText}
             testID={'PasswordInput_detox'}
             secureTextEntry
-            placeholder="Password"
-            placeholderTextColor="#003f5c"
+            placeholder='Password'
+            placeholderTextColor='#003f5c'
             onChangeText={(password) => this.setState({password})}
             value = {this.state.password}
           />

@@ -31,6 +31,10 @@ export default class HomePage extends React.Component {
     return unsubscribeFore;
   }
 
+  async getPetInfo(){
+    
+  }
+
   // render() {
   //   return (
   //     <View style={styles.containerView} testID={'HomePage_detox'}>
@@ -76,7 +80,9 @@ export default class HomePage extends React.Component {
                     style={styles.contactView}
                     testID={'ContactButton_detox'}
                     onPress={() => {
-                    console.log('go to contact page')}}
+                    //direct to the page displaying all the requests
+                    this.props.navigation.navigate('InfoScreen');
+                    console.log('go to info page')}}
                 >
                     <View >
                         <Text style={styles.viewTitle}>📱 Contact 📱</Text>

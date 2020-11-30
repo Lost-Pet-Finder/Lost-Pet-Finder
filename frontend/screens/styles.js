@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import {StyleSheet} from 'react-native';
 
 export default styles = StyleSheet.create({
     //signup and login components
@@ -185,7 +185,7 @@ export default styles = StyleSheet.create({
     scrollViewCellContainer: {},
     scrollViewCell: {
         backgroundColor: '#BBDEFB',
-        marginBottom: 10,
+        margin: 10,
         borderRadius: 15,
     },
     titleText: {
@@ -251,5 +251,12 @@ export default styles = StyleSheet.create({
         fontSize: 18,
         textAlign: 'center',
     },
+    contactButton: {
+        alignSelf: 'center',
+        padding: 10,
+        backgroundColor: '#2196F3',
+        borderRadius: 10,
+        justifyContent: 'center',
+    }
 
 })

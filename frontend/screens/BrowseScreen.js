@@ -10,7 +10,7 @@ import {
   ScrollView,
 } from 'react-native';
 
-const pet_text = "Pet's Name";
+const pet_text = "Pet's Information";
 
 export default class BrowseScreen extends React.Component {
   constructor(props) {
@@ -72,7 +72,7 @@ export default class BrowseScreen extends React.Component {
         <ScrollView style={styles.scrollView} testID={'BrowseView_detox'} contentContainerStyle={styles.scrollViewCellContainer}>
           {this.state.petArray.map((pet, index) => {
             return (
-              <View style={styles.scrollViewCell} key={index}>
+              <View style={styles.scrollViewCell} testID={'ScrollViewCell_detox'} key={index}>
                 <Text style={styles.titleText}> {pet_text} </Text>
                 <View style={styles.imageAndTextContainer}>
                   <Image
@@ -85,13 +85,9 @@ export default class BrowseScreen extends React.Component {
                     <Text>{`Reporter ID: ${pet.information.fk_user_id}`}</Text>
                     <Text>{`Location: (${pet.information.location_x}, ${pet.information.location_y})`}</Text>
                     <Text>{`Report Date: \n${pet.information.report_date}`}</Text>
-                    <Button
+                    <Button testID={'learnmore_detox'}
                       title="Learn More"
-                      onPress={() =>
-                        this.props.navigation.navigate('ContactOwnerScreen', {
-                          petInfo: this.state.petArray[index],
-                        })
-                      }
+                      onPress={() => this.props.navigation.navigate('ContactOwnerScreen', {petInfo: this.state.petArray[index]})}
                     />
                   </View>
                 </View>

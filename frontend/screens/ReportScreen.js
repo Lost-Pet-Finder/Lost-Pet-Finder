@@ -40,7 +40,7 @@ export default class ReportScreen extends React.Component {
       user_id: this.props.navigation.state.params.user_id,
       isFinder: this.props.navigation.state.isFinder,
 
-      avatarSource: null,
+      avatarSource: require('../assets/logo.png'),
       filename: null,
       lat: null,
       lon: null,
@@ -98,7 +98,7 @@ export default class ReportScreen extends React.Component {
   }
 
   fetchAddress = () => {
-    //console.log(this.state.currentPosition.latitude + ", " + this.state.currentPosition.longitude);
+    console.log(this.state.currentPosition.latitude + ", " + this.state.currentPosition.longitude);
     fetch("https://maps.googleapis.com/maps/api/geocode/json?address=" + this.state.currentPosition.latitude + "," + this.state.currentPosition.longitude + "&key=" + "AIzaSyBk1oSy9YTS0SjTxnHiznhPyQpai8mgJh8")
       .then((response) =>
         response.json()
