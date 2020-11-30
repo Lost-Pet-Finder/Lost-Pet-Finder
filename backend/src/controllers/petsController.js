@@ -13,6 +13,7 @@ async function searchLostPets(req, res) {
 			'CALL get_users_found_reports(?)',
 			[userid]
 		);
+		console.log(myReportRows);
 		const userReport = myReportRows[0][0];
 
 		const myLabels = JSON.parse(userReport.tags);
