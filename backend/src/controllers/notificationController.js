@@ -67,7 +67,7 @@ async function sendContactRequest(req, res) {
 
 		await fadmin.messaging().sendToDevice(deviceToken, payload);
 
-		res.status(200).send('Done');
+		res.status(200).send(payload);
 	} catch (err) {
 		console.error(err);
 		res.status(500).send('Request failed');
@@ -123,7 +123,7 @@ async function respondToContactRequest(req, res) {
 			]);
 		}
 
-		res.status(200).send('Done');
+		res.status(200).send(payload);
 	} catch (err) {
 		console.error(err);
 		res.status(500).send('Request failed');
