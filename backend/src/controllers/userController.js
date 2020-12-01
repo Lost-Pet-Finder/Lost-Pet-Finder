@@ -13,36 +13,37 @@ async function getUserContactInfo(req, res) {
 	}
 }
 
-async function createNewUser(req, res){
-	var name = req.body.name;
+async function createNewUser(req, res) {
+	var user_name = req.body.user_name;
 	var uid = req.body.uid;
 	var user_id = req.body.user_id;
-	var phone_num = req.body.phone;
-	
-	try{
-		const response = await sqlPool.query(
-			'CALL create_user_info(?, ?, ?, ?)',
-			[name, uid, user_id, phone_num]
-		);
+	var phone_num = req.body.phone_num;
+
+	try {
+		const response = await sqlPool.query('CALL create_user_info(?, ?, ?, ?)', [
+			user_name,
+			uid,
+			user_id,
+			phone_num,
+		]);
 		res.status(200).send(response[0]);
-	}catch(err){
+	} catch (err) {
 		console.log(err);
-		res.status(500).send("failed");
+		res.status(500).send('failed');
 	}
 }
 
-async function getUserIdNumber(req, res){
+async function getUserIdNumber(req, res) {
 	var uid = req.body.uid;
-	
-	try{
+
+	try {
 		const response = await sqlPool.query('CALL get_user_id_number(?)', [uid]);
 		//get user_id
-		const userIdNumber = response[1];
-		res.status(200).send(userIdNumber);
-	}
-	catch(error){
+		const userIdNumber = response[0][0].user_id;
+		res.status(200).json(userIdNumber);
+	} catch (error) {
 		console.log(error);
-		res.status(500).send("getUserIdNumber failed");
+		res.status(500).send('getUserIdNumber failed');
 	}
 }
 

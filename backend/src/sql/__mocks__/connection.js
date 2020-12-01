@@ -31,11 +31,26 @@ const query = (string, userid) => {
 	} else if (string == 'CALL get_user_contact_info(?)' && userid != 99999) {
 		const data = [[0], [1]];
 		return data;
-	} else if (string == 'CALL create_user_info(?, ?)' && userid[0] != 99999) {
+	} else if (
+		string == 'CALL create_user_info(?, ?, ?, ?)' &&
+		userid[1] != 99999
+	) {
 		const data = [[0], [1]];
 		return data;
 	} else if (string == 'CALL get_user_id_number(?)' && userid != 99999) {
-		const data = [[1], ['this is the expected id']];
+		const data = [
+			[{ user_id: 321 }],
+			{
+				fieldCount: 0,
+				affectedRows: 0,
+				insertId: 0,
+				serverStatus: 2,
+				warningCount: 0,
+				message: '',
+				protocol41: true,
+				changedRows: 0,
+			},
+		];
 		return data;
 	} else if (string == 'CALL get_my_pending_requests(?)' && userid != 99999) {
 		const data = [[0], [1]];
