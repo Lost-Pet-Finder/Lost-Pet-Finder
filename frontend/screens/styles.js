@@ -186,24 +186,35 @@ export default styles = StyleSheet.create({
     scrollViewCell: {
         backgroundColor: '#BBDEFB',
         margin: 10,
+        padding: 15,
         borderRadius: 15,
     },
     titleText: {
-        marginLeft: 20,
         fontSize: 20,
         textAlign: 'left',
     },
     imageView: {
         height: 140,
-        marginHorizontal: 20,
         width: 140,
         marginBottom: 20,
     },
     imageAndTextContainer: {
         flexDirection: 'row',
-        justifyContent: 'flex-start',
         width: '100%',
+        justifyContent: 'space-evenly',
         alignItems: 'center',
+    },
+    textText: {
+        fontSize: 13,
+        textAlign: 'center',
+    },
+    rateText: {
+        fontSize: 13,
+        textAlign: 'left',
+    },
+    buttonStyle: {
+        // padding: 10,
+        // width: 10,
     },
 
     //contact page component
@@ -258,4 +269,7 @@ export default styles = StyleSheet.create({
         borderRadius: 10,
         justifyContent: 'center',
     },
+    detailsView: {
+        marginTop: -20,
+    }
 })

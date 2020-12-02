@@ -155,7 +155,7 @@ export default class ReportScreen extends React.Component {
   //submit the report
   submit() {
     const url = this.state.isFinder == 0 ? 'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/pets/postLostPets' : 'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/pets/postFoundPets';
-
+    console.log(this.state.date);
     if (this.state.didUploadPicture == false) {
       Alert.alert('Upload Picture First!', 'You need to provide a picture of your pet so we can run AI/ML image recognition');
       return;
@@ -235,8 +235,8 @@ export default class ReportScreen extends React.Component {
     const config = {
       bucket: 'lostpetpictures',
       region: 'us-west-2',
-      accessKey: 'AKIAJ5OYQDSWAJXXAVFQ',
-      secretKey: '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',
+      accessKey: 'AKIAI3JSFCKZ2CVX4EZA',
+      secretKey: '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',
       successActionStatus: 201
     }
     const response = await RNS3.put(file, config);

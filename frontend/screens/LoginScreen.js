@@ -185,7 +185,7 @@ class LoginScreen extends React.Component {
           />
         </View>
 
-        {/* <TouchableOpacity
+        <TouchableOpacity
           style={styles.loginButton}
           testID={'SignInFinderButton_detox'}
           onPress={() => this.signedInAsFinder()}>
@@ -197,15 +197,15 @@ class LoginScreen extends React.Component {
           testID={'SignInLoserButton_detox'}
           onPress={() => this.signedInAsLoser()}>
           <Text style={styles.loginText}>Sign In: Lost</Text>
-        </TouchableOpacity>  */}
+        </TouchableOpacity> 
 
-        <TouchableOpacity style={styles.loginButton} testID={'SignInFinderButton_detox'} onPress={()=>this.props.navigation.navigate('HomePage', {user_id: '1', isFinder: 1})} >
+        {/* <TouchableOpacity style={styles.loginButton} testID={'SignInFinderButton_detox'} onPress={()=>this.props.navigation.navigate('HomePage', {user_id: '1', isFinder: 1})} >
         <Text style={styles.loginText}>Sign In: Found</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.loginButton} testID={'SignInLoserButton_detox'} onPress={()=>this.props.navigation.navigate('HomePage', {user_id: '2', isFinder: 0})} >
         <Text style={styles.loginText}>Sign In: Lost</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
         <TouchableOpacity
           onPress={() => this.handleSignup()}>

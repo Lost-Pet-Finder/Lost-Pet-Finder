@@ -97,9 +97,9 @@ const expectedAllLostPets = [
 	{
 		'intersection score': 1,
 		'colour score': 0,
-		'date score': 1.125,
+		'date score': 0.875,
 		'distance score': 0.4768832709379163,
-		'total score': 2.6018832709379165,
+		'total score': 2.3518832709379165,
 		report: {
 			report_id: 6,
 			fk_user_id: 4,
@@ -115,9 +115,9 @@ const expectedAllLostPets = [
 	{
 		'intersection score': 0.5040370648848483,
 		'colour score': 0.14735778010786882,
-		'date score': 1.125,
+		'date score': 0.875,
 		'distance score': 0.5230171759949982,
-		'total score': 2.2994120209877154,
+		'total score': 2.0494120209877154,
 		report: {
 			report_id: 9,
 			fk_user_id: 2,
@@ -134,9 +134,9 @@ const expectedAllLostPets = [
 	{
 		'intersection score': 0.06871068272662594,
 		'colour score': 0.44460074958525775,
-		'date score': 1.125,
+		'date score': 0.875,
 		'distance score': 0,
-		'total score': 1.6383114323118837,
+		'total score': 1.3883114323118837,
 		report: {
 			report_id: 72,
 			fk_user_id: 6,

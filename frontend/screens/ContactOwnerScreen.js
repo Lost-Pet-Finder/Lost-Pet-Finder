@@ -1,7 +1,7 @@
 import React from 'react';
 import 'react-native-gesture-handler';
-import {Button, View, Text, Image} from 'react-native';
-import {rgbToHex} from '../util/rgbToHex';
+import { Button, View, Text, Image } from 'react-native';
+import { rgbToHex } from '../util/rgbToHex';
 import styles from './styles';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
@@ -20,10 +20,10 @@ export default class ContactOwnerScreen extends React.Component {
     };
   }
 
-  async contact(){
+  async contact() {
     //get the reporter's user id
     var id = this.state.pet.report.fk_user_id;
-    const url = "http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/getUserContactInfo/" +  `${id}`;
+    const url = "http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/getUserContactInfo/" + `${id}`;
     const request = {
       method: 'GET',
       headers: {
@@ -33,19 +33,19 @@ export default class ContactOwnerScreen extends React.Component {
     };
     //get the reporter's contact information
     let result = await fetch(url, request);
-    if(result.status === 400){
-      this.setState({contactInfo: 'Sorry, reporter rejects your contact request'});
+    if (result.status === 400) {
+      this.setState({ contactInfo: 'Sorry, reporter rejects your contact request' });
     }
-    else{
-      this.setState({contactInfo: result.json()});
+    else {
+      this.setState({ contactInfo: result.json() });
     }
   }
 
-  extractTags(arr){
+  extractTags(arr) {
     // console.log(arr);
     var tag = '';
     var jsonArr = JSON.parse(arr);
-    for(let i = 0; i < jsonArr.length; i ++){
+    for (let i = 0; i < jsonArr.length; i++) {
       tag = tag.concat(`${jsonArr[i].Name}, `);
     }
     // console.log(tag);
@@ -64,9 +64,14 @@ export default class ContactOwnerScreen extends React.Component {
             style={styles.imageView}
           />
           <View style={styles.detailsView}>
-            <Text>{`Reporter ID: ${this.state.pet.report.fk_user_id}`}</Text>
-            <Text>{`Location: (${this.state.pet.report.location_x}, ${this.state.pet.report.location_y})`}</Text>
-            <Text>{`Report Date: \n${this.state.pet.report.report_date}`}</Text>
+            <Text style={styles.rateText}>{`Reporter ID: ${this.state.pet.report.fk_user_id}`}</Text>
+            <Text style={styles.rateText}>{`Location: (${this.state.pet.report.location_x}, ${this.state.pet.report.location_y})`}</Text>
+            <Text style={styles.rateText}>{`Report Date: \n${this.state.pet.report.report_date}`}</Text>
+            <Text></Text>
+            <Text style={styles.rateText}>{`Colour matching rate: ${(this.state.pet['colour score'] * 100).toFixed(0) + '%'}`}</Text>
+            <Text style={styles.rateText}>{`Date matching rate: ${(this.state.pet['date score'] * 100).toFixed(0) + '%'}`}</Text>
+            <Text style={styles.rateText}>{`Distance matching rate: ${(this.state.pet['distance score'] * 100).toFixed(0) + '%'}`}</Text>
+            <Text style={styles.rateText}>{`Intersection matching rate: ${(this.state.pet['intersection score']*100).toFixed(0)+'%'}`}</Text>
           </View>
         </View>
 
@@ -83,8 +88,8 @@ export default class ContactOwnerScreen extends React.Component {
         </Text> */}
 
         <TouchableOpacity style={styles.contactButton} testID={'ContactButton_detox'} onPress={() => this.contact()}>
-            <Text style={styles.textStyle}>Contact reporter</Text>
-          </TouchableOpacity>
+          <Text style={styles.textStyle}>Contact reporter</Text>
+        </TouchableOpacity>
 
 
         {/* <View style={styles.horizontalFlexContainer}>

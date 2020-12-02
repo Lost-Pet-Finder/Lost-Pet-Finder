@@ -104,9 +104,9 @@ async function getColour(bucketName, fileName, validBox) {
 		gDiff = colourBox[1] - colourTotal[1];
 		bDiff = colourBox[2] - colourTotal[2];
 
-		rDiff = Math.sign(rDiff) * Math.abs(rDiff / (colourBox[0] + rDiff));
-		gDiff = Math.sign(gDiff) * Math.abs(gDiff / (colourBox[1] + gDiff));
-		bDiff = Math.sign(bDiff) * Math.abs(bDiff / (colourBox[2] + bDiff));
+		rDiff = Math.sign(rDiff) * Math.abs(rDiff / (128));
+		gDiff = Math.sign(gDiff) * Math.abs(gDiff / (128));
+		bDiff = Math.sign(bDiff) * Math.abs(bDiff / (128));
 
 		//get colour of pet by subtracting total scaled with %s from the cropped
 		colourPet = [];
@@ -213,7 +213,7 @@ function getColourScore(colour0, colour1) {
 			Math.pow(colour0[1] - colour1[1], 2) +
 			Math.pow(colour0[2] - colour1[2], 2)
 	);
-	return score;
+	return Math.abs(score);
 }
 
 //gets a score from the similarity of a set of tags to another
@@ -232,7 +232,7 @@ function getIntersectionScore(labels0, labels1) {
 	}
 	score = Math.pow(score, 1.2);
 
-	return score;
+	return Math.abs(score);
 }
 
 //returns the intersection between two sets of JSON tags
@@ -262,7 +262,7 @@ function getDateScore(date0, date1) {
 
 	diff = new DateDiff(dateDiff0, dateDiff1).hours();
 
-	return diff;
+	return Math.abs(diff);
 }
 
 //gets the distance between two coordinates
@@ -278,7 +278,7 @@ function getDistanceScore(locx0, locy0, locx1, locy1) {
 			Math.sin(dLon / 2);
 	var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 	var d = R * c; // Distance in km
-	return d;
+	return Math.abs(d);
 }
 
 function deg2rad(deg) {

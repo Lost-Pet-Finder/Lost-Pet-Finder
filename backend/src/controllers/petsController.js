@@ -7,13 +7,12 @@ const sqlPool = require('../sql/connection');
 // Should only be called by users who posted a "FOUND" report
 async function searchLostPets(req, res) {
 	var userid = req.params.userid;
-
 	try {
 		const myReportRows = await sqlPool.query(
 			'CALL get_users_found_reports(?)',
 			[userid]
 		);
-		console.log(myReportRows);
+		// console.log(myReportRows);
 		const userReport = myReportRows[0][0];
 
 		const myLabels = JSON.parse(userReport.tags);
@@ -151,7 +150,7 @@ async function postLostPets(req, res) {
 		const tagDataString = JSON.stringify(tagData);
 		const coloursArrayString = JSON.stringify(coloursArray);
 
-		console.log(tagDataString);
+		// console.log(tagDataString);
 
 		const response = await sqlPool.query(
 			'CALL create_lost_pet_report(?, ?, POINT(?,?), ?, ?, ?)',
@@ -317,7 +316,7 @@ async function postFoundPets(req, res) {
 		const tagDataString = JSON.stringify(tagData);
 		const coloursArrayString = JSON.stringify(coloursArray);
 
-		console.log(tagDataString);
+		// console.log(tagDataString);
 
 		const response = await sqlPool.query(
 			'CALL create_found_pet_report(?, ?, POINT(?,?), ?, ?, ?)',
