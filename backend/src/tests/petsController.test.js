@@ -27,28 +27,21 @@ test('search Lost Pets error', async done => {
 
 // when search a nonexisting post
 test('search Lost Pets error', async done => {
-	const req = { userid: '99999' };
-	const { status } = await request(server)
-		.get('/pets/searchLostPets')
-		.send(req);
+	const { body, status } = await request(server).get(
+		'/pets/searchLostPets/99999'
+	);
 	expect(status).toBe(500);
 	done();
 });
 test('search Lost Pets error', async done => {
-	const req = { userid: '99999' };
-	const { status } = await request(server)
-		.get('/pets/searchFoundPets')
-		.send(req);
+	const { status } = await request(server).get('/pets/searchFoundPets/99999');
 	expect(status).toBe(500);
 	done();
 });
 
 // // searchLostPets
 test('search Lost Pets', async done => {
-	const req = { userid: '1' };
-	const { status, body } = await request(server)
-		.get('/pets/searchLostPets')
-		.send(req);
+	const { status, body } = await request(server).get('/pets/searchLostPets/1');
 	expect(status).toBe(200);
 	expect(body).toStrictEqual(expectedAllLostPets);
 	done();
@@ -56,10 +49,7 @@ test('search Lost Pets', async done => {
 
 // searchFoundPets
 test('search Found Pets', async done => {
-	const req = { userid: '2' };
-	const { status, body } = await request(server)
-		.get('/pets/searchFoundPets')
-		.send(req);
+	const { status, body } = await request(server).get('/pets/searchFoundPets/2');
 	expect(status).toBe(200);
 	expect(body).toStrictEqual(expectedAllFoundPets);
 	done();

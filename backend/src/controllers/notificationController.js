@@ -11,7 +11,6 @@ async function uploadDeviceToken(req, res) {
 			token,
 		]);
 		const dataPackets = rows[0];
-
 		res.status(200).send(dataPackets);
 	} catch (err) {
 		console.error(err);
@@ -51,8 +50,8 @@ async function sendContactRequest(req, res) {
 		);
 		const contactData = contactDataRows[0][0];
 
-		console.log('Contact Data');
-		console.log(contactData);
+		// console.log('Contact Data');
+		// console.log(contactDataRows);
 
 		const payload = {
 			notification: {
@@ -66,7 +65,6 @@ async function sendContactRequest(req, res) {
 		};
 
 		await fadmin.messaging().sendToDevice(deviceToken, payload);
-
 		res.status(200).send(payload);
 	} catch (err) {
 		console.error(err);
@@ -122,6 +120,7 @@ async function respondToContactRequest(req, res) {
 				userid,
 				requesterid,
 			]);
+			console.log('here-----------------');
 			res.status(200).send('Contact Request Declined');
 		}
 	} catch (err) {

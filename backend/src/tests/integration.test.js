@@ -66,10 +66,9 @@ test('post Found Pets', async done => {
 // // searchLostPets
 test('search Lost Pets', async done => {
 	// user 1 posts golden_retriever_0.jpg
-	const req = { userid: '77777' };
-	const { status, body } = await request(server)
-		.get('/pets/searchLostPets')
-		.send(req);
+	const { status, body } = await request(server).get(
+		'/pets/searchLostPets/77777'
+	);
 	expect(status).toBe(200);
 	// the best result must be at first index and it should be the same file
 	expect(body[0].report.file_name).toBe('golden_retriever_0.jpg');
@@ -80,10 +79,9 @@ test('search Lost Pets', async done => {
 
 // searchFoundPets
 test('search Found Pets', async done => {
-	const req = { userid: '66666' };
-	const { status, body } = await request(server)
-		.get('/pets/searchFoundPets')
-		.send(req);
+	const { status, body } = await request(server).get(
+		'/pets/searchFoundPets/66666'
+	);
 	expect(status).toBe(200);
 	// the best result must be at first index and it should be the same file
 	expect(body[0].report.file_name).toBe('golden_retriever_0.jpg');
