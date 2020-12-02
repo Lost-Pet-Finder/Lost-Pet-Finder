@@ -213,7 +213,7 @@ function getColourScore(colour0, colour1) {
 			Math.pow(colour0[1] - colour1[1], 2) +
 			Math.pow(colour0[2] - colour1[2], 2)
 	);
-	return score;
+	return Math.abs(score);
 }
 
 //gets a score from the similarity of a set of tags to another
@@ -232,7 +232,7 @@ function getIntersectionScore(labels0, labels1) {
 	}
 	score = Math.pow(score, 1.2);
 
-	return score;
+	return Math.abs(score);
 }
 
 //returns the intersection between two sets of JSON tags
@@ -278,7 +278,7 @@ function getDistanceScore(locx0, locy0, locx1, locy1) {
 			Math.sin(dLon / 2);
 	var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 	var d = R * c; // Distance in km
-	return d;
+	return Math.abs(d);
 }
 
 function deg2rad(deg) {
