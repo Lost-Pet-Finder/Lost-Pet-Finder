@@ -116,14 +116,14 @@ async function respondToContactRequest(req, res) {
 			};
 
 			await fadmin.messaging().sendToDevice(deviceToken, payload);
+			res.status(200).send(payload);
 		} else {
 			await sqlPool.query('CALL delete_contact_request(?,?)', [
 				userid,
 				requesterid,
 			]);
+			res.status(200).send('Contact Request Declined');
 		}
-
-		res.status(200).send(payload);
 	} catch (err) {
 		console.error(err);
 		res.status(500).send('Request failed');
@@ -159,13 +159,6 @@ async function getMySentRequests(req, res) {
 		res.status(500).send('Request failed');
 	}
 }
-
-// 		res.status(200).send(response);
-// 	} catch (err) {
-// 		console.error(err);
-// 		res.status(500).send('Request failed');
-// 	}
-// }
 
 module.exports = {
 	uploadDeviceToken: uploadDeviceToken,
