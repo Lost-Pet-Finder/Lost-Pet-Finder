@@ -71,7 +71,7 @@ export default class ContactOwnerScreen extends React.Component {
             <Text style={styles.rateText}>{`Colour matching rate: ${(this.state.pet['colour score'] * 100).toFixed(0) + '%'}`}</Text>
             <Text style={styles.rateText}>{`Date matching rate: ${(this.state.pet['date score'] * 100).toFixed(0) + '%'}`}</Text>
             <Text style={styles.rateText}>{`Distance matching rate: ${(this.state.pet['distance score'] * 100).toFixed(0) + '%'}`}</Text>
-            {/* <Text>{`Intersection matching rate: ${(pet['intersection score']*100).toFixed(0)+'%'`}</Text> */}
+            <Text style={styles.rateText}>{`Intersection matching rate: ${(this.state.pet['intersection score']*100).toFixed(0)+'%'}`}</Text>
           </View>
         </View>
 

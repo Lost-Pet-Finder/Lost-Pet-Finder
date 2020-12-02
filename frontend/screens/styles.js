@@ -270,6 +270,6 @@ export default styles = StyleSheet.create({
         justifyContent: 'center',
     },
     detailsView: {
-        marginTop: -25,
+        marginTop: -20,
     }
 })
