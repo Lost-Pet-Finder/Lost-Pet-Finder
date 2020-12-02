@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Alert,
   Button,
+  ActivityIndicator
 } from 'react-native';
 
 import styles from './styles';
@@ -40,7 +41,7 @@ export default class ReportScreen extends React.Component {
       user_id: this.props.navigation.state.params.user_id,
       isFinder: this.props.navigation.state.isFinder,
 
-      avatarSource: require('../assets/logo.png'),
+      avatarSource: null,
       filename: null,
       lat: null,
       lon: null,
@@ -50,15 +51,21 @@ export default class ReportScreen extends React.Component {
       didUploadPicture: false,
 
       // Google Maps
-      region: 'unknown',
-      currentPosition: {
-        latitude: 49.260605000000005,
-        longitude: -123.24599333333332,
+      //region: 'unknown',
+      loading: true,
+      // currentPosition: {
+      //   latitude: 49.260605000000005,
+      //   longitude: -123.24599333333332,
+      //   latitudeDelta: 0,
+      //   longitudeDelta: 0
+      // },
+      region: {
+        latitude: 49.2606052,
+        longitude: -123.2459939,
         latitudeDelta: 0,
         longitudeDelta: 0
       },
 
-      lastPosition: 'unknown',
       isMapReady: false,
       userLocation: "",
       regionChangeProgress: false
@@ -69,43 +76,51 @@ export default class ReportScreen extends React.Component {
 
   componentDidMount() {
     Geolocation.getCurrentPosition((position) => {
+      console.log("Called");
       const current_pos = JSON.stringify(position);
-      this.setState({ region: current_pos });
-      console.log("latitude is: " + position["coords"]["latitude"]);
-      console.log("longitude is: " + position["coords"]["longitude"]);
+      //this.setState({ region: current_pos });
+      console.log("latitude is: " + position.coords.latitude);
+      console.log("longitude is: " + position.coords.longitude);
 
       var coordination_info = {
-        latitude: position["coords"]["latitude"],
-        longitude: position["coords"]["longitude"],
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
         latitudeDelta: LATITUDE_DELTA,
         longitudeDelta: LONGITUDE_DELTA,
       };
 
       this.setState(
         {
-          currentPosition: coordination_info,
-          lat: position["coords"]["latitude"],
-          lon: position["coords"]["longitude"],
+          region: coordination_info,
+          lat: position.coords.latitude,
+          lon: position.coords.longitude,
+          loading: false,
         });
+
     },
-      (error) => alert(JSON.stringify(error)),
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+      (error) => {
+        alert(error);
+        this.setState({
+          error: error.message,
+          loading: false,
+        })
+      },
+      { enableHighAccuracy: false, timeout: 200000, maximumAge: 5000 },
     );
   }
 
+
   onMapReady = () => {
-    this.setState({ isMapReady: true });
-    console.log(this.state.currentPosition)
+    this.setState({ isMapReady: true, });
+    //console.log(this.state.currentPosition)
   }
 
   fetchAddress = () => {
-    console.log(this.state.currentPosition.latitude + ", " + this.state.currentPosition.longitude);
-    fetch("https://maps.googleapis.com/maps/api/geocode/json?address=" + this.state.currentPosition.latitude + "," + this.state.currentPosition.longitude + "&key=" + "AIzaSyBk1oSy9YTS0SjTxnHiznhPyQpai8mgJh8")
-      .then((response) =>
-        response.json()
-      )
+    console.log(this.state.region.latitude + ", " + this.state.region.longitude);
+    fetch("https://maps.googleapis.com/maps/api/geocode/json?address=" + this.state.region.latitude + "," + this.state.region.longitude + "&key=" + "AIzaSyBk1oSy9YTS0SjTxnHiznhPyQpai8mgJh8")
+      .then((response) => response.json())
       .then((responseJson) => {
-        console.log("yooyoy" + responseJson);
+        console.log(responseJson);
         const userLocation = responseJson.results[0].formatted_address;
         console.log(userLocation);
 
@@ -118,7 +133,7 @@ export default class ReportScreen extends React.Component {
 
         this.setState(
           {
-            currentPosition: change_coordination_info,
+            region: change_coordination_info,
             userLocation: userLocation,
             lat: responseJson.results[0].geometry.location.lat,
             lon: responseJson.results[0].geometry.location.lng,
@@ -127,17 +142,12 @@ export default class ReportScreen extends React.Component {
       });
   }
 
-  onRegionChange = (currentPosition) => {
+  onRegionChange = (region) => {
     this.setState({
-      currentPosition,
+      region,
       regionChangeProgress: true
-    },
-    
-      () => {
-        console.log("calling");
-        this.fetchAddress();
-      });
-      //console.log(currentPosition);
+    }, () => this.fetchAddress());
+    //console.log(currentPosition);
   }
 
   onLocationSelect = () => alert(this.state.userLocation);
@@ -242,77 +252,84 @@ export default class ReportScreen extends React.Component {
   }
 
   render() {
-    return (
-      <View style={styles.report_container}>
+    if (this.state.loading) {
+      return (
+        // Might change this page
+        <View style={styles.report_container}>
+          <Text>Loading</Text>
+          <Text>{`${JSON.stringify(this.state.region)}`}</Text>
 
-        {/* photo part */}
-        <View style={styles.imageWrapper}>
-          <Image source={this.state.avatarSource} style={styles.report_image} />
         </View>
+      );
+    } else {
+      return (
+        <View style={styles.report_container}>
 
-        {/* google map */}
-        <View style={styles.mapcontainer} >
+          {/* photo part */}
+          <View style={styles.imageWrapper}>
+            <Image source={this.state.avatarSource} style={styles.report_image} />
+          </View>
 
-          <MapView
-            style={styles.map}
-            showUserLocation={true}
-            initialRegion={this.state.currentPosition}
-            onMapReady={this.onMapReady}
-            onRegionChangeComplete={this.onRegionChange}
-            testID={'Map_detox'}>
+          {/* google map */}
+          <View style={styles.mapcontainer} >
+            {!!this.state.region.latitude && !!this.state.region.longitude &&
+              <MapView
+                style={{ flex: 1, }}
+                initialRegion={this.state.region}
+                showsUserLocation={true}
+                onMapReady={this.onMapReady}
+                onRegionChangeComplete={this.onRegionChange}
+              >
+                <MapView.Marker
+                  coordinate={{ "latitude": this.state.region.latitude, "longitude": this.state.region.longitude }}
+                  title={"Your Location"}
+                  draggable
+                />
+              </MapView>
+            }
 
-            <MapView.Marker
-              coordinate={{
-                latitude: this.state.currentPosition.latitude,
-                longitude: this.state.currentPosition.longitude
-              }}
-              title="Your current location"
-              // image={require('../assets/pin.png')}
-              style={{ width: '5%', height: '5%' }}
-              draggable
+          </View>
+
+          {/* google map dragger and info */}
+          <View style={styles.detailSection}>
+            <Text style={styles.move_style}>Move map for location</Text>
+            <Text style={styles.loc_style}>LOCATION</Text>
+            <Text numberOfLines={2} style={styles.identity_style}>
+              {!this.state.regionChangeProgress ? this.state.userLocation : "Identifying Location..."}</Text>
+          </View>
+
+          <View style={styles.btnContainer}>
+            <Button
+              title="PICK THIS LOCATION"
+              disabled={this.state.regionChangeProgress}
+              onPress={this.onLocationSelect}
             >
-            </MapView.Marker>
-          </MapView>
+            </Button>
+          </View>
+
+          {/* user input date */}
+          <TextInput
+            style={styles.textInputField}
+            testID={'DateInput_detox'}
+            placeholder="Date: (yyyy-mm-dd hr-min)"
+            onChangeText={(value) => this.setState({ date: value })}
+            value={this.state.date}
+          ></TextInput>
+
+          <View style={styles.buttonWrapper}>
+            {/* upload photo button */}
+            <TouchableOpacity style={styles.SearchButton} testID={'UploadButton_detox'} onPress={() => this.getPhoto()}>
+              <Text style={styles.textStyle}>Upload Photos</Text>
+            </TouchableOpacity>
+
+            {/* submit report button */}
+            <TouchableOpacity style={styles.SearchButton} testID={'Reportsubmit_detox'} onPress={() => this.submit()}>
+              <Text style={styles.textStyle}>Submit</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-
-        {/* google map dragger and info */}
-        <View style={styles.detailSection}>
-          <Text style={styles.move_style}>Move map for location</Text>
-          <Text style={styles.loc_style}>LOCATION</Text>
-          <Text numberOfLines={2} style={styles.identity_style}>
-            {!this.state.regionChangeProgress ? this.state.userLocation : "Identifying Location..."}</Text>
-        </View>
-
-        <View style={styles.btnContainer}>
-          <Button 
-            title="PICK THIS LOCATION"
-            disabled={this.state.regionChangeProgress}
-            onPress={this.onLocationSelect}
-          >
-          </Button>
-        </View>
-
-        {/* user input date */}
-        <TextInput
-          style={styles.textInputField}
-          testID={'DateInput_detox'}
-          placeholder="Date: (yyyy-mm-dd hr-min)"
-          onChangeText={(value) => this.setState({ date: value })}
-          value={this.state.date}
-        ></TextInput>
-
-        <View style={styles.buttonWrapper}>
-          {/* upload photo button */}
-          <TouchableOpacity style={styles.SearchButton} testID={'UploadButton_detox'} onPress={() => this.getPhoto()}>
-            <Text style={styles.textStyle}>Upload Photos</Text>
-          </TouchableOpacity>
-
-          {/* submit report button */}
-          <TouchableOpacity style={styles.SearchButton} testID={'Reportsubmit_detox'} onPress={() => this.submit()}>
-            <Text style={styles.textStyle}>Submit</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    )
+      )
+    }
   }
 }
+
