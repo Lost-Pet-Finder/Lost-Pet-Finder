@@ -83,10 +83,13 @@ export default class BrowseScreen extends React.Component {
                     style={styles.imageView}
                   />
                   <View style={styles.detailsView}>
-                    <Text>{`Reporter ID: ${petReport.fk_user_id}`}</Text>
-                    <Text>{`Location: (${petReport.location_x}, ${petReport.location_y})`}</Text>
-                    <Text>{`Report Date: \n${petReport.report_date}`}</Text>
-                    <Button testID={'learnmore_detox'}
+                    <Text style={styles.rateText}>{`Reporter ID: ${petReport.fk_user_id}`}</Text>
+                    <Text style={styles.rateText}>{`Location: (${petReport.location_x}, ${petReport.location_y})`}</Text>
+                    <Text style={styles.rateText}>{`Report Date: \n${petReport.report_date}`}</Text>
+            
+                    <Text style={styles.rateText}>{`Matching rate: ${(pet['total score']*100).toFixed(0)+'%'}`}</Text>
+                    <Text></Text>
+                    <Button style={styles.buttonStyle} testID={'learnmore_detox'}
                       title="Learn More"
                       onPress={() => this.props.navigation.navigate('ContactOwnerScreen', {petInfo: this.state.petArray[index]})}
                     />
