@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Dimensions} from 'react-native';
 
 export default styles = StyleSheet.create({
     //signup and login components
@@ -257,6 +257,5 @@ export default styles = StyleSheet.create({
         backgroundColor: '#2196F3',
         borderRadius: 10,
         justifyContent: 'center',
-    }
-
+    },
 })
