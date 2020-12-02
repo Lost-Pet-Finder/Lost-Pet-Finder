@@ -262,7 +262,7 @@ function getDateScore(date0, date1) {
 
 	diff = new DateDiff(dateDiff0, dateDiff1).hours();
 
-	return diff;
+	return Math.abs(diff);
 }
 
 //gets the distance between two coordinates
