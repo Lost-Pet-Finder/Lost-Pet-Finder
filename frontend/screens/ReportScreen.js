@@ -151,7 +151,7 @@ export default class ReportScreen extends React.Component {
       return;
     }
 
-    if (this.state.user_id == null || this.state.filename == null || this.state.loc_x == null || this.state.loc_y == null || this.state.date == null) {
+    if (this.state.user_id == null || this.state.filename == null || this.state.lat == null || this.state.lon == null || this.state.date == null) {
       Alert.alert('Incomplete Submission!', 'Please make sure you fill in all the fields and upload a picture');
       console.log(this.state);
       return;
@@ -205,6 +205,7 @@ export default class ReportScreen extends React.Component {
         console.log('ImagePicker Error: ', response.error);
       } else {
         this.uploadPhotoToS3(response);
+        this.setState({didUploadPicture: true});
       }
     })
   }

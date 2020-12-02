@@ -26,8 +26,8 @@ export default class BrowseScreen extends React.Component {
   async componentDidMount() {
     const url =
       this.state.isFinder === 0
-        ? 'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/pets/searchFoundPets'
-        : 'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/pets/searchLostPets';
+        ? `http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/pets/searchFoundPets/${this.state.user_id}`
+        : `http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/pets/searchLostPets/${this.state.user_id}`;
 
     console.log(url);
 
@@ -36,7 +36,7 @@ export default class BrowseScreen extends React.Component {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-      },
+      }
     };
 
     const response = await fetch(url, request);
@@ -71,20 +71,21 @@ export default class BrowseScreen extends React.Component {
       <SafeAreaView style={styles.browse_container}>
         <ScrollView style={styles.scrollView} testID={'BrowseView_detox'} contentContainerStyle={styles.scrollViewCellContainer}>
           {this.state.petArray.map((pet, index) => {
+            const petReport = pet.report;
             return (
               <View style={styles.scrollViewCell} testID={'ScrollViewCell_detox'} key={index}>
                 <Text style={styles.titleText}> {pet_text} </Text>
                 <View style={styles.imageAndTextContainer}>
                   <Image
                     source={{
-                      uri: `https://lostpetpictures.s3-us-west-2.amazonaws.com/${pet.information.file_name}`,
+                      uri: `https://lostpetpictures.s3-us-west-2.amazonaws.com/${petReport.file_name}`,
                     }}
                     style={styles.imageView}
                   />
                   <View style={styles.detailsView}>
-                    <Text>{`Reporter ID: ${pet.information.fk_user_id}`}</Text>
-                    <Text>{`Location: (${pet.information.location_x}, ${pet.information.location_y})`}</Text>
-                    <Text>{`Report Date: \n${pet.information.report_date}`}</Text>
+                    <Text>{`Reporter ID: ${petReport.fk_user_id}`}</Text>
+                    <Text>{`Location: (${petReport.location_x}, ${petReport.location_y})`}</Text>
+                    <Text>{`Report Date: \n${petReport.report_date}`}</Text>
                     <Button testID={'learnmore_detox'}
                       title="Learn More"
                       onPress={() => this.props.navigation.navigate('ContactOwnerScreen', {petInfo: this.state.petArray[index]})}
