@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1606896129587" clover="3.2.0">
-  <project timestamp="1606896129587" name="All files">
+<coverage generated="1606899070072" clover="3.2.0">
+  <project timestamp="1606899070072" name="All files">
     <metrics statements="532" coveredstatements="505" conditionals="72" coveredconditionals="54" methods="51" coveredmethods="47" elements="655" coveredelements="606" complexity="0" loc="532" ncloc="532" packages="7" files="15" classes="15"/>
     <package name="src">
       <metrics statements="41" coveredstatements="24" conditionals="2" coveredconditionals="0" methods="5" coveredmethods="1"/>
@@ -439,37 +439,37 @@
         <line num="55" count="7" type="stmt"/>
         <line num="57" count="1" type="stmt"/>
         <line num="59" count="1" type="stmt"/>
-        <line num="65" count="7" type="stmt"/>
-        <line num="66" count="7" type="stmt"/>
-        <line num="69" count="6" type="stmt"/>
-        <line num="72" count="6" type="stmt"/>
-        <line num="73" count="6" type="stmt"/>
-        <line num="74" count="6" type="stmt"/>
-        <line num="76" count="6" type="stmt"/>
-        <line num="81" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="65" count="8" type="stmt"/>
+        <line num="66" count="8" type="stmt"/>
+        <line num="69" count="7" type="stmt"/>
+        <line num="72" count="7" type="stmt"/>
+        <line num="73" count="7" type="stmt"/>
+        <line num="74" count="7" type="stmt"/>
+        <line num="76" count="7" type="stmt"/>
+        <line num="81" count="7" type="cond" truecount="2" falsecount="0"/>
         <line num="82" count="3" type="stmt"/>
-        <line num="85" count="6" type="stmt"/>
-        <line num="86" count="6" type="stmt"/>
-        <line num="88" count="6" type="stmt"/>
-        <line num="89" count="6" type="stmt"/>
-        <line num="90" count="6" type="stmt"/>
-        <line num="91" count="6" type="stmt"/>
-        <line num="92" count="6" type="stmt"/>
-        <line num="93" count="6" type="cond" truecount="1" falsecount="1"/>
-        <line num="94" count="6" type="stmt"/>
-        <line num="98" count="6" type="stmt"/>
-        <line num="102" count="6" type="stmt"/>
-        <line num="103" count="6" type="stmt"/>
-        <line num="104" count="6" type="stmt"/>
-        <line num="105" count="6" type="stmt"/>
-        <line num="107" count="6" type="stmt"/>
-        <line num="108" count="6" type="stmt"/>
-        <line num="109" count="6" type="stmt"/>
-        <line num="112" count="6" type="stmt"/>
-        <line num="113" count="6" type="stmt"/>
-        <line num="117" count="6" type="stmt"/>
-        <line num="121" count="6" type="stmt"/>
-        <line num="126" count="6" type="stmt"/>
+        <line num="85" count="7" type="stmt"/>
+        <line num="86" count="7" type="stmt"/>
+        <line num="88" count="7" type="stmt"/>
+        <line num="89" count="7" type="stmt"/>
+        <line num="90" count="7" type="stmt"/>
+        <line num="91" count="7" type="stmt"/>
+        <line num="92" count="7" type="stmt"/>
+        <line num="93" count="7" type="cond" truecount="1" falsecount="1"/>
+        <line num="94" count="7" type="stmt"/>
+        <line num="98" count="7" type="stmt"/>
+        <line num="102" count="7" type="stmt"/>
+        <line num="103" count="7" type="stmt"/>
+        <line num="104" count="7" type="stmt"/>
+        <line num="105" count="7" type="stmt"/>
+        <line num="107" count="7" type="stmt"/>
+        <line num="108" count="7" type="stmt"/>
+        <line num="109" count="7" type="stmt"/>
+        <line num="112" count="7" type="stmt"/>
+        <line num="113" count="7" type="stmt"/>
+        <line num="117" count="7" type="stmt"/>
+        <line num="121" count="7" type="stmt"/>
+        <line num="126" count="7" type="stmt"/>
         <line num="128" count="1" type="stmt"/>
         <line num="129" count="1" type="stmt"/>
         <line num="140" count="11" type="stmt"/>
@@ -531,14 +531,14 @@
         <line num="261" count="22" type="stmt"/>
         <line num="263" count="22" type="stmt"/>
         <line num="265" count="22" type="stmt"/>
-        <line num="270" count="21" type="stmt"/>
-        <line num="271" count="21" type="stmt"/>
-        <line num="272" count="21" type="stmt"/>
-        <line num="274" count="21" type="stmt"/>
-        <line num="279" count="21" type="stmt"/>
-        <line num="280" count="21" type="stmt"/>
-        <line num="281" count="21" type="stmt"/>
-        <line num="285" count="84" type="stmt"/>
+        <line num="270" count="22" type="stmt"/>
+        <line num="271" count="22" type="stmt"/>
+        <line num="272" count="22" type="stmt"/>
+        <line num="274" count="22" type="stmt"/>
+        <line num="279" count="22" type="stmt"/>
+        <line num="280" count="22" type="stmt"/>
+        <line num="281" count="22" type="stmt"/>
+        <line num="285" count="88" type="stmt"/>
         <line num="289" count="7" type="stmt"/>
       </file>
       <file name="colourFunctions.js" path="D:\main\2020fall\321\actual project\Lost-Pet-Finder\backend\src\util\colourFunctions.js">

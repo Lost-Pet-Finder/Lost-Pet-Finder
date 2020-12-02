@@ -13,6 +13,7 @@ const {
 	errorBox,
 	getColourScore,
 	getIntersectionScore,
+	getDistanceScore,
 } = require('../util/awsFunctions');
 const { getAWStagsConst } = require('./awsFunctionsTestVariable');
 jest.setTimeout(100000);
@@ -655,7 +656,12 @@ test('filterforconfidence', async done => {
 			Name: 'Pet',
 			Parents: [{ Name: 'Animal' }],
 		},
-		{ Confidence: 97.96702575683594, Instances: [], Name: 'Animal', Parents: [] }
+		{
+			Confidence: 97.96702575683594,
+			Instances: [],
+			Name: 'Animal',
+			Parents: [],
+		},
 	];
 	var result = await filterForConfidence(getAWStagsConst);
 	same = tagsSame(result, data);
@@ -663,21 +669,53 @@ test('filterforconfidence', async done => {
 	done();
 });
 
-function withinTolerance(actual, expected)
-{
+function withinTolerance(actual, expected) {
 	return Math.abs(actual - expected) < 0.1;
 }
 
-function withinToleranceDate(actual, expected){
+function withinToleranceDate(actual, expected) {
 	return Math.abs(actual - expected) <= 2;
 }
 
 test('getColourScore', async done => {
-	colour0 = [255,255,255];
-	colour1 = [0,0,0];
+	colour0 = [255, 255, 255];
+	colour1 = [0, 0, 0];
 	result = await getColourScore(colour0, colour1);
-	ans = withinTolerance(result, 441.67);
+	ans = withinToleranceColor(result, 441.67);
 	expect(ans).toStrictEqual(true);
+	done();
+});
+
+function withinToleranceColor(expectedColour, actualColour) {
+	dist = Math.sqrt(
+		Math.pow(expectedColour[0] - actualColour[0], 2) +
+			Math.pow(expectedColour[1] - actualColour[1], 2) +
+			Math.pow(expectedColour[2] - actualColour[2], 2)
+	);
+	if (dist > 30) {
+		return false;
+	}
+
+	return true;
+}
+// get color functions
+test('brown on white negative', async done => {
+	validBox = {
+		BoundingBox: {
+			Width: 0.68,
+			Height: 0.903,
+			Left: 0.146,
+			Top: 0.089,
+		},
+	};
+	colour = await getColour(
+		'lostpetpictures',
+		'golden_retriever_puppy_white_background.jpg',
+		validBox
+	);
+	expectedColour = [0, 0, 0];
+	result = withinTolerance(expectedColour, colour.finalColor);
+	expect(result).toBe(false);
 	done();
 });
 
@@ -685,17 +723,15 @@ test('getDataScore', async done => {
 	date0 = '2020-10-23 22:50:00';
 	date1 = '2020-03-03 03:00:00';
 	result = await getDateScore(date0, date1);
-	console.log("-----------------------------");
+	console.log('-----------------------------');
 	console.log(result);
 	ans = withinToleranceDate(result, 5634.8);
 	expect(ans).toBe(true);
 	done();
 });
 
-
-
 test('getIntersectionScore', async done => {
-	colour0 =  [
+	colour0 = [
 		{
 			Confidence: 97.96702575683594,
 			Instances: [],
@@ -735,7 +771,12 @@ test('getIntersectionScore', async done => {
 			Name: 'Pet',
 			Parents: [{ Name: 'Animal' }],
 		},
-		{ Confidence: 97.96702575683594, Instances: [], Name: 'Animal', Parents: [] }
+		{
+			Confidence: 97.96702575683594,
+			Instances: [],
+			Name: 'Animal',
+			Parents: [],
+		},
 	];
 	colour1 = [
 		{
@@ -777,7 +818,12 @@ test('getIntersectionScore', async done => {
 			Name: 'Pet',
 			Parents: [{ Name: 'Animal' }],
 		},
-		{ Confidence: 97.96702575683594, Instances: [], Name: 'Animal', Parents: [] }
+		{
+			Confidence: 97.96702575683594,
+			Instances: [],
+			Name: 'Animal',
+			Parents: [],
+		},
 	];
 	result = await getIntersectionScore(colour0, colour1);
 	ans = withinTolerance(result, 16.9);
@@ -787,90 +833,90 @@ test('getIntersectionScore', async done => {
 
 test('filterforpets', async done => {
 	tagData = [
-			{
-				Name: 'Mammal',
-				Confidence: 88.10366821289062,
-				Instances: [],
-				Parents: [
-					{
-						Name: 'Animal',
-					},
-				],
-			},
-			{
-				Name: 'Animal',
-				Confidence: 88.10366821289062,
-				Instances: [],
-				Parents: [],
-			},
-			{
-				Name: 'Rabbit',
-				Confidence: 81.39126586914062,
-				Instances: [],
-				Parents: [
-					{
-						Name: 'Rodent',
-					},
-					{
-						Name: 'Mammal',
-					},
-					{
-						Name: 'Animal',
-					},
-				],
-			},
-			{
-				Name: 'Rodent',
-				Confidence: 81.39126586914062,
-				Instances: [],
-				Parents: [
-					{
-						Name: 'Mammal',
-					},
-					{
-						Name: 'Animal',
-					},
-				],
-			},
-			{
-				Name: 'Bunny',
-				Confidence: 81.39126586914062,
-				Instances: [],
-				Parents: [
-					{
-						Name: 'Rodent',
-					},
-					{
-						Name: 'Mammal',
-					},
-					{
-						Name: 'Animal',
-					},
-				],
-			},
-			{
-				Name: 'Pet',
-				Confidence: 68.93390655517578,
-				Instances: [],
-				Parents: [
-					{
-						Name: 'Animal',
-					},
-				],
-			},
-			{
-				Name: 'Sleeping',
-				Confidence: 56.7302360534668,
-				Instances: [],
-				Parents: [],
-			},
-			{
-				Name: 'Asleep',
-				Confidence: 56.7302360534668,
-				Instances: [],
-				Parents: [],
-			},
-		];
+		{
+			Name: 'Mammal',
+			Confidence: 88.10366821289062,
+			Instances: [],
+			Parents: [
+				{
+					Name: 'Animal',
+				},
+			],
+		},
+		{
+			Name: 'Animal',
+			Confidence: 88.10366821289062,
+			Instances: [],
+			Parents: [],
+		},
+		{
+			Name: 'Rabbit',
+			Confidence: 81.39126586914062,
+			Instances: [],
+			Parents: [
+				{
+					Name: 'Rodent',
+				},
+				{
+					Name: 'Mammal',
+				},
+				{
+					Name: 'Animal',
+				},
+			],
+		},
+		{
+			Name: 'Rodent',
+			Confidence: 81.39126586914062,
+			Instances: [],
+			Parents: [
+				{
+					Name: 'Mammal',
+				},
+				{
+					Name: 'Animal',
+				},
+			],
+		},
+		{
+			Name: 'Bunny',
+			Confidence: 81.39126586914062,
+			Instances: [],
+			Parents: [
+				{
+					Name: 'Rodent',
+				},
+				{
+					Name: 'Mammal',
+				},
+				{
+					Name: 'Animal',
+				},
+			],
+		},
+		{
+			Name: 'Pet',
+			Confidence: 68.93390655517578,
+			Instances: [],
+			Parents: [
+				{
+					Name: 'Animal',
+				},
+			],
+		},
+		{
+			Name: 'Sleeping',
+			Confidence: 56.7302360534668,
+			Instances: [],
+			Parents: [],
+		},
+		{
+			Name: 'Asleep',
+			Confidence: 56.7302360534668,
+			Instances: [],
+			Parents: [],
+		},
+	];
 	expetedTags = [
 		{
 			Name: 'Mammal',
@@ -936,25 +982,28 @@ test('filterforpets', async done => {
 					Name: 'Animal',
 				},
 			],
-		}
+		},
 	];
 	box = await filterForPets(tagData);
 	expect(box).toStrictEqual(expetedTags);
-	console.log("PETS-------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+	console.log(
+		'PETS-------------------------------------------------------------------------------------------------------------------------------------------------------------------------'
+	);
 	console.log(box);
 	done();
 });
 
 test('getIntersection', async done => {
-	date0 = ['a','b','c'];
-	date1 = ['b','d','e'];
+	date0 = ['a', 'b', 'c'];
+	date1 = ['b', 'd', 'e'];
 	result = await getIntersection(date0, date1);
 	expect(result).toStrictEqual(['b', 'd', 'e']);
-	console.log("Intersection-------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+	console.log(
+		'Intersection-------------------------------------------------------------------------------------------------------------------------------------------------------------------------'
+	);
 	console.log(result);
 	done();
 });
-
 
 test('revenge of the sith', async done => {
 	tagData = {
@@ -968,5 +1017,11 @@ test('revenge of the sith', async done => {
 
 	box = await validBoxes([]);
 	expect(box).toBe(noBox);
+	done();
+});
+
+test('get distance score', async done => {
+	score = await getDistanceScore(0, 0, 0, 0);
+	expect(score).toBe(0);
 	done();
 });
