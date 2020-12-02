@@ -20,7 +20,7 @@ async function uploadDeviceToken(req, res) {
 }
 
 async function getUserDeviceToken(req, res) {
-	const userid = req.body.userid;
+	const userid = req.params.userid;
 
 	try {
 		const rows = await sqlPool.query('CALL get_user_device_token(?)', [userid]);
@@ -131,7 +131,7 @@ async function respondToContactRequest(req, res) {
 }
 
 async function getMyPendingRequests(req, res) {
-	const userid = req.body.userid;
+	const userid = req.params.userid;
 
 	try {
 		const rows = await sqlPool.query('CALL get_my_pending_requests(?)', [
@@ -147,7 +147,7 @@ async function getMyPendingRequests(req, res) {
 }
 
 async function getMySentRequests(req, res) {
-	const userid = req.body.userid;
+	const userid = req.params.userid;
 
 	try {
 		const rows = await sqlPool.query('CALL get_my_sent_requests(?)', [userid]);

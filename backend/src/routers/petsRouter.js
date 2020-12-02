@@ -9,9 +9,9 @@ router.get('/', (req, res) => {
 	res.status(200).send('This is the pets endpoint');
 });
 
-router.get('/searchLostPets', petsController.searchLostPets);
+router.get('/searchLostPets/:userid', petsController.searchLostPets);
 router.post('/postLostPets', petsController.postLostPets);
-router.get('/searchFoundPets', petsController.searchFoundPets);
+router.get('/searchFoundPets/:userid', petsController.searchFoundPets);
 router.post('/postFoundPets', petsController.postFoundPets);
 
 module.exports = router;
