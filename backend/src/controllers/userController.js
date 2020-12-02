@@ -56,7 +56,7 @@ async function createNewUser(req, res) {
 // }
 
 async function getUserIdNumber(req, res) {
-	var uid = req.body.uid;
+	var uid = req.params.uid;
 
 	try {
 		const response = await sqlPool.query('CALL get_user_id_number(?)', [uid]);

@@ -6,7 +6,7 @@ const sqlPool = require('../sql/connection');
 
 // Should only be called by users who posted a "FOUND" report
 async function searchLostPets(req, res) {
-	var userid = req.body.userid;
+	var userid = req.params.userid;
 
 	try {
 		const myReportRows = await sqlPool.query(
@@ -174,7 +174,7 @@ async function postLostPets(req, res) {
 }
 
 async function searchFoundPets(req, res) {
-	var userid = req.body.userid;
+	var userid = req.params.userid;
 
 	try {
 		const myReportRows = await sqlPool.query('CALL get_users_lost_reports(?)', [
