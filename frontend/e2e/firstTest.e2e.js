@@ -58,11 +58,6 @@ const browse_test = async () => {
   await waitFor(element(by.id('BrowseView_detox'))).toBeVisible().withTimeout(4000);
   await expect(element(by.id('BrowseView_detox'))).toBeVisible()
         && expect(element(by.id('ScrollViewCell_detox'))).toBeVisible();
-  //await element(by.id('ScrollViewCell_detox')).atIndex(1).tap();
-  //await waitFor(element(by.text('LEARN MORE'))).toBeVisible().withTimeout(4000);
-  await element(by.text('LEARN MORE')).atIndex(1).tap();
-  await waitFor(element(by.id('ContactScreen_detox'))).toBeVisible().withTimeout(4000);
-  await expect(element(by.id('ContactScreen_detox'))).toBeVisible();
 }
 
 describe('Testing application', () => {
@@ -173,6 +168,16 @@ describe('Testing application', () => {
     await browse_test();
   });
 
+  it('Should see the contact info of the post creator', async () => {
+    await device.reloadReactNative();
+    await login_test();
+    await waitFor(element(by.id('BrowseButton_detox'))).toBeVisible().withTimeout(4000);
+    await browse_test();
+    await element(by.text('LEARN MORE')).atIndex(1).tap();
+    await waitFor(element(by.id('ContactScreen_detox'))).toBeVisible().withTimeout(4000);
+    await expect(element(by.id('ContactScreen_detox'))).toBeVisible();
+  });
+  
   // it('Should go to camera roll after clicking upload button', async () => {
   //   await device.reloadReactNative();
   //   await login_test();

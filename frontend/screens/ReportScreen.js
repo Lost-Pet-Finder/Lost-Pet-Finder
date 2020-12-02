@@ -52,8 +52,8 @@ export default class ReportScreen extends React.Component {
       // Google Maps
       region: 'unknown',
       currentPosition: {
-        latitude: 0,
-        longitude: 0,
+        latitude: 49.260605000000005,
+        longitude: -123.24599333333332,
         latitudeDelta: 0,
         longitudeDelta: 0
       },
@@ -95,6 +95,7 @@ export default class ReportScreen extends React.Component {
 
   onMapReady = () => {
     this.setState({ isMapReady: true });
+    console.log(this.state.currentPosition)
   }
 
   fetchAddress = () => {
@@ -104,9 +105,9 @@ export default class ReportScreen extends React.Component {
         response.json()
       )
       .then((responseJson) => {
-        //console.log("yooyoy" + responseJson);
+        console.log("yooyoy" + responseJson);
         const userLocation = responseJson.results[0].formatted_address;
-        //console.log(userLocation);
+        console.log(userLocation);
 
         var change_coordination_info = {
           latitude: responseJson.results[0].geometry.location.lat,
@@ -131,11 +132,12 @@ export default class ReportScreen extends React.Component {
       currentPosition,
       regionChangeProgress: true
     },
-
+    
       () => {
         console.log("calling");
         this.fetchAddress();
       });
+      //console.log(currentPosition);
   }
 
   onLocationSelect = () => alert(this.state.userLocation);
@@ -246,9 +248,6 @@ export default class ReportScreen extends React.Component {
         {/* photo part */}
         <View style={styles.imageWrapper}>
           <Image source={this.state.avatarSource} style={styles.report_image} />
-          {/* <Image style={styles.image}
-            testID={'AppLogo_detox'}
-            source={require('../assets/logo.png')} /> */}
         </View>
 
         {/* google map */}

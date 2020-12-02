@@ -45,7 +45,7 @@ class SignScreen extends React.Component {
           const url = 'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/user/createNewUser';
 
           //get the firebase UID from response and generate unique user id for each user
-          let body = JSON.stringify({ name: this.state.new_name, uid: uid, user_id: parseInt(Date.now()), phone: this.state.new_pn });
+          let body = JSON.stringify({ name: this.state.new_name, uid: uid, user_id: parseInt(Date.now()), phone_num: this.state.new_pn });
 
           fetch(url,
             {
@@ -105,17 +105,8 @@ class SignScreen extends React.Component {
     return (
 
       <View style={styles.container}>
-
+          
         <View style={styles.inputView}>
-          <TextInput
-            style={styles.inputText}
-            placeholderTextColor='#003f5c'
-            placeholder='Name'
-            onChangeText={(name_input) => this.setState({ new_name: name_input })}
-            value={this.state.new_name} />
-        </View>
-
-        {/* <View style={styles.inputView}>
           <TextInput
             style={styles.inputText}
             placeholderTextColor='#003f5c'
@@ -131,7 +122,7 @@ class SignScreen extends React.Component {
             placeholder='Last name'
             onChangeText={(ln_input) => this.setState({ new_ln: ln_input })}
             value={this.state.new_ln} />
-        </View> */}
+        </View>
 
         <View style={styles.inputView}>
           <TextInput
@@ -151,11 +142,20 @@ class SignScreen extends React.Component {
             value={this.state.new_pwd} />
         </View>
 
-        <View style={styles.inputView}>
+        {/* <View style={styles.inputView}>
           <TextInput
             style={styles.inputText}
             placeholderTextColor='#003f5c'
             placeholder='Enter phone number'
+            onChangeText={(pn_input) => this.setState({ new_pn: pn_input })}
+            value={this.state.new_pn} />
+        </View> */}
+
+        <View style={styles.inputView}>
+          <TextInput
+            style={styles.inputText}
+            placeholderTextColor='#003f5c'
+            placeholder='Found a pet?'
             onChangeText={(pn_input) => this.setState({ new_pn: pn_input })}
             value={this.state.new_pn} />
         </View>

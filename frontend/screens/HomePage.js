@@ -35,22 +35,6 @@ export default class HomePage extends React.Component {
     
   }
 
-  // render() {
-  //   return (
-  //     <View style={styles.containerView} testID={'HomePage_detox'}>
-  //       <TouchableOpacity
-  //         style={styles.reportView}
-  //         onPress={() => {
-  //           this.props.navigation.navigate('ReportScreen', {
-  //             user_id: this.state.user_id,
-  //             isFinder: this.state.isFinder,
-  //           });
-  //         }}>
-  //         <View>
-  //           <Text style={styles.viewTitle}>📸 Report 📸</Text>
-  //         </View>
-  //       </TouchableOpacity>
-
     render() {
         return (
             <View style={styles.containerView} testID={'HomePage_detox'}>

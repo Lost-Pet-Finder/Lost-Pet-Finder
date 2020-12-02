@@ -17,30 +17,37 @@ export default class ContactOwnerScreen extends React.Component {
       // croppedColor: this.props.navigation.state.params.petInfo.colours
       //   .croppedColor,
       // finalColor: this.props.navigation.state.params.petInfo.colours.finalColor,
-      //contactInfo: 'heyheyhey',
     };
   }
 
-  // async contact(){
-  //   //get the reporter's user id
-  //   var id = this.state.pet.information.fk_user_id;
-  //   const url = "http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/getUserContactInfo/" +  `${id}`;
-  //   const request = {
-  //     method: 'GET',
-  //     headers: {
-  //       Accept: 'application/json',
-  //       'Content-Type': 'application/json',
-  //     },
-  //   };
-  //   //get the reporter's contact information
-  //   let result = await fetch(url, request);
-  //   if(result.status === 400){
-  //     this.setState({contactInfo: 'Sorry, reporter rejects your contact request'});
-  //   }
-  //   else{
-  //     this.setState({contactInfo: result.json()});
-  //   }
-  // }
+  async contact(){
+    //get the reporter's user id
+    var id = this.state.pet.information.fk_user_id;
+    const url = "http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/getUserContactInfo/" +  `${id}`;
+    const request = {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    };
+    //get the reporter's contact information
+    let result = await fetch(url, request);
+    if(result.status === 400){
+      this.setState({contactInfo: 'Sorry, reporter rejects your contact request'});
+    }
+    else{
+      this.setState({contactInfo: result.json()});
+    }
+  }
+
+  printtags(arr){
+    var tag = '';
+    for(let i = 0; i < arr.length; i ++){
+      tag += JSON.parse(arr)[i].Name + ",";
+    }
+    return tag;
+  }
 
   render() {
     return (
@@ -65,12 +72,12 @@ export default class ContactOwnerScreen extends React.Component {
           <Text
             style={
               styles.infoText
-            }>{`${JSON.parse(this.state.pet.information.tags)[0].Name}`}</Text>
+            }>{`${this.printtags(this.state.pet.information.tags)}`}</Text>
         </View>
 
-        <Text>
+        {/* <Text>
             {"reporter contact information will be shown"}
-        </Text>
+        </Text> */}
 
         <TouchableOpacity style={styles.contactButton} testID={'ContactButton_detox'} onPress={() => this.contact()}>
             <Text style={styles.textStyle}>Contact reporter</Text>
