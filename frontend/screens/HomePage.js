@@ -65,8 +65,8 @@ export default class HomePage extends React.Component {
                     testID={'ContactButton_detox'}
                     onPress={() => {
                     //direct to the page displaying all the requests
-                    this.props.navigation.navigate('InfoScreen');
-                    console.log('go to info page')}}
+                    this.props.navigation.navigate('MainContactScreen', {user_id: this.state.user_id});
+                    }}
                 >
                     <View >
                         <Text style={styles.viewTitle}>📱 Contact 📱</Text>

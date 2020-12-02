@@ -9,6 +9,9 @@ import ReportScreen from '../screens/ReportScreen';
 import BrowseScreen from '../screens/BrowseScreen';
 import ContactOwnerScreen from '../screens/ContactOwnerScreen';
 
+import MainContactScreen from '../screens/MainContactScreen';
+import DetailsContactScreen from '../screens/DetailsContactScreen';
+
 const screens = {
   LoginPage: {
     screen: Login,
@@ -49,6 +52,20 @@ const screens = {
     screen: ContactOwnerScreen,
     navigationOptions: {
       title: 'Contact Owner Screen',
+      headerShown: true,
+    },
+  },
+  MainContactScreen: {
+    screen: MainContactScreen,
+    navigationOptions: {
+      title: 'Contact Requests',
+      headerShown: true,
+    },
+  },
+  DetailsContactScreen: {
+    screen: DetailsContactScreen,
+    navigationOptions: {
+      title: 'Contacts List',
       headerShown: true,
     },
   },
