@@ -39,7 +39,12 @@ test('get user contact info', async done => {
 
 // new user
 test('create a new user', async done => {
-	const req = { uid: '1', user_id: '1' };
+	const req = {
+		user_name: 'hung',
+		uid: '1',
+		user_id: '1',
+		phone_num: '123456',
+	};
 	const { body, status } = await request(server)
 		.post('/user/createNewUser')
 		.send(req);
@@ -50,7 +55,12 @@ test('create a new user', async done => {
 
 // fail to create a new user
 test('create a new user error', async done => {
-	const req = { uid: '99999', user_id: '1' };
+	const req = {
+		user_name: 'hung',
+		uid: '99999',
+		user_id: '1',
+		phone_num: '123456',
+	};
 	const { status } = await request(server)
 		.post('/user/createNewUser')
 		.send(req);
@@ -64,7 +74,7 @@ test('get user id number', async done => {
 		.get('/user/getUserIdNumber')
 		.send(req);
 	expect(status).toBe(200);
-	expect(body).toStrictEqual(['this is the expected id']);
+	expect(body).toStrictEqual(321);
 	done();
 });
 

@@ -13,36 +13,59 @@ async function getUserContactInfo(req, res) {
 	}
 }
 
-async function createNewUser(req, res){
-	var user_name = req.body.name;
-	var uid = req.body.uid;
-	var user_id = req.body.user_id;
-	var phone_num = req.body.phone;
-	
-	try{
-		const response = await sqlPool.query(
-			'CALL create_user_info(?, ?, ?, ?)',
-			[user_name, uid, user_id, phone_num]
-		);
+
+async function createNewUser(req, res) {
+	var firebase_uid = req.body.firebase_uid;
+	var first_name = req.body.first_name;
+	var last_name = req.body.last_name;
+	var isFinder = req.body.isFinder;
+
+	try {
+		const response = await sqlPool.query('CALL create_new_app_user(?, ?, ?, ?)', [
+			firebase_uid,
+			first_name,
+			last_name,
+			isFinder
+		]);
+
 		res.status(200).send(response[0]);
-	}catch(err){
+	} catch (err) {
 		console.log(err);
-		res.status(500).send("failed");
+		res.status(500).send('Request failed');
 	}
 }
 
-async function getUserIdNumber(req, res){
+// async function createNewUser(req, res) {
+// 	var user_name = req.body.user_name;
+// 	var uid = req.body.uid;
+// 	var user_id = req.body.user_id;
+// 	var phone_num = req.body.phone_num;
+
+// 	try {
+// 		const response = await sqlPool.query('CALL create_user_info(?, ?, ?, ?)', [
+// 			user_name,
+// 			uid,
+// 			user_id,
+// 			phone_num,
+// 		]);
+// 		res.status(200).send(response[0]);
+// 	} catch (err) {
+// 		console.log(err);
+// 		res.status(500).send('failed');
+// 	}
+// }
+
+async function getUserIdNumber(req, res) {
 	var uid = req.body.uid;
-	
-	try{
+
+	try {
 		const response = await sqlPool.query('CALL get_user_id_number(?)', [uid]);
 		//get user_id
-		const userIdNumber = response[1];
-		res.status(200).send(userIdNumber);
-	}
-	catch(error){
+		const userIdNumber = response[0][0].user_id;
+		res.status(200).json(userIdNumber);
+	} catch (error) {
 		console.log(error);
-		res.status(500).send("getUserIdNumber failed");
+		res.status(500).send('getUserIdNumber failed');
 	}
 }
 
