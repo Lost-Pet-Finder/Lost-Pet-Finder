@@ -22,7 +22,7 @@ export default class ContactOwnerScreen extends React.Component {
 
   async contact(){
     //get the reporter's user id
-    var id = this.state.pet.information.fk_user_id;
+    var id = this.state.pet.report.fk_user_id;
     const url = "http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/getUserContactInfo/" +  `${id}`;
     const request = {
       method: 'GET',
@@ -41,11 +41,14 @@ export default class ContactOwnerScreen extends React.Component {
     }
   }
 
-  printtags(arr){
+  extractTags(arr){
+    // console.log(arr);
     var tag = '';
-    for(let i = 0; i < arr.length; i ++){
-      tag += JSON.parse(arr)[i].Name + ",";
+    var jsonArr = JSON.parse(arr);
+    for(let i = 0; i < jsonArr.length; i ++){
+      tag = tag.concat(`${jsonArr[i].Name}, `);
     }
+    // console.log(tag);
     return tag;
   }
 
@@ -56,14 +59,14 @@ export default class ContactOwnerScreen extends React.Component {
         <View style={styles.imageAndTextContainer}>
           <Image
             source={{
-              uri: `https://lostpetpictures.s3-us-west-2.amazonaws.com/${this.state.pet.information.file_name}`,
+              uri: `https://lostpetpictures.s3-us-west-2.amazonaws.com/${this.state.pet.report.file_name}`,
             }}
             style={styles.imageView}
           />
           <View style={styles.detailsView}>
-            <Text>{`Reporter ID: ${this.state.pet.information.fk_user_id}`}</Text>
-            <Text>{`Location: (${this.state.pet.information.location_x}, ${this.state.pet.information.location_y})`}</Text>
-            <Text>{`Report Date: \n${this.state.pet.information.report_date}`}</Text>
+            <Text>{`Reporter ID: ${this.state.pet.report.fk_user_id}`}</Text>
+            <Text>{`Location: (${this.state.pet.report.location_x}, ${this.state.pet.report.location_y})`}</Text>
+            <Text>{`Report Date: \n${this.state.pet.report.report_date}`}</Text>
           </View>
         </View>
 
@@ -72,7 +75,7 @@ export default class ContactOwnerScreen extends React.Component {
           <Text
             style={
               styles.infoText
-            }>{`${this.printtags(this.state.pet.information.tags)}`}</Text>
+            }>{`${this.extractTags(this.state.pet.report.tags)}`}</Text>
         </View>
 
         {/* <Text>
