@@ -17,7 +17,7 @@ export default class HomePage extends React.Component {
 
   componentDidMount() {
     this.setupForegroundNotifications();
-    console.log(`State: ${this.state.user_id}`);
+    console.log(`My User Id is: ${this.state.user_id}`);
   }
 
   async setupForegroundNotifications() {

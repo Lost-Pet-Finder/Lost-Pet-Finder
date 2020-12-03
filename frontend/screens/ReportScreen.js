@@ -242,10 +242,11 @@ export default class ReportScreen extends React.Component {
     const config = {
       bucket: 'lostpetpictures',
       region: 'us-west-2',
-      accessKey: '123',
-      secretKey: '123',
+      accessKey: 'CHANGE ME',
+      secretKey: 'CHANGE ME',
       successActionStatus: 201
     }
+
 
     try {
       const response = await RNS3.put(file, config);
