@@ -15,9 +15,9 @@ import styles from './styles';
 
 // FCM
 import messaging from '@react-native-firebase/messaging';
-import auth, {firebase} from '@react-native-firebase/auth';
+import auth, { firebase } from '@react-native-firebase/auth';
 
-//var identity = {};
+var identity = {};
 
 class LoginScreen extends React.Component {
   constructor(props) {
@@ -29,7 +29,7 @@ class LoginScreen extends React.Component {
     }
   }
 
-  entity = {user_id: '', isFinder: null};
+  entity = { user_id: '', isFinder: null };
 
   async updateFCMDeviceToken(user_id) {
     const deviceToken = await messaging().getToken();
@@ -60,27 +60,27 @@ class LoginScreen extends React.Component {
     return;
   }
 
-  signedInAsFinder(){
-    
-    let identity = {user_id: '1', isFinder: 1};
-    //identity['isFinder'] = 1;
+  signedInAsFinder() {
 
-    this.updateFCMDeviceToken(identity.user_id);
+    //let identity = {user_id: '1', isFinder: 1};
+    identity['isFinder'] = 1;
+
+    //this.updateFCMDeviceToken(identity.user_id);
     //this.props.navigation.navigate('HomePage', {user_id: user_id, isFinder: 1});
 
     //handle firebase authentication
     this.handleLogin(identity);
   }
 
-  
+
 
   signedInAsLoser() {
     // .. get user id from server
     const user_id = '2';
-    let identity = {user_id: '2', isFinder: 0};
-    //identity['isFinder'] = 0;
+    //let identity = {user_id: '2', isFinder: 0};
+    identity['isFinder'] = 0;
 
-    this.updateFCMDeviceToken(identity.user_id);
+    //this.updateFCMDeviceToken(identity.user_id);
     //this.props.navigation.navigate('HomePage', {user_id: user_id, isFinder: 0});
 
     //handle firebase authentication
@@ -89,40 +89,51 @@ class LoginScreen extends React.Component {
 
 
 
-  handleLogin = async(identity)=>{
+  handleLogin = async (identity) => {
     console.log(identity);
 
-    if (this.state.email == null || this.state.password == null){
+    if (this.state.email == null || this.state.password == null) {
       Alert.alert('Login Information cannot be empty, plese try again');
       this.props.navigation.navigate('Login');
-      this.setState({email: null, password: null});
+      this.setState({ email: null, password: null });
     }
-    else{
+    else {
       try {
         let result = await firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password);
-        if(result) {
-          console.log(JSON.stringify(result));
+        if (result) {
+          console.log("result " + JSON.stringify(result));
 
           //get the firebase uid
-          let uid = result['user']['uid'];
+          let uid = result.user.uid;
+          console.log("uid " + uid);
+          //et user_id for application
 
-          //get user_id for application
-          // let user_id = await getUserId(uid);
-          // if(user_id != null){
-          //   identity['user_id'] = user_id;
-          //   this.props.navigation.navigate('HomePage', identity);
-          // }
-          this.props.navigation.navigate('HomePage', identity);
+          const url = 'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/user/getUserIdNumber/' + `${uid}`;
+          console.log(url);
+          let body = JSON.stringify({ uid: JSON.parse(uid) });
+          console.log("calling user id");
+          const res = await fetch(url, { method: 'GET', headers: { Accept: 'application/json', 'Content-Type': 'application/json' }, body: body });
+
+
+          let user_id = res;
+          console.log(user_id);
+          if (user_id != null) {
+            identity['user_id'] = user_id;
+            this.updateFCMDeviceToken(identity.user_id);
+            this.props.navigation.navigate('HomePage', identity);
+          }
+          console.log("nullll");
+          //this.props.navigation.navigate('HomePage', identity);
         }
       }
-      catch(e){
-        switch(e.code){
+      catch (e) {
+        switch (e.code) {
           //The provided value for the email user property is invalid. It must be a string email address.
           //Invalid input example: cpen321321, 091e10
           case 'auth/invalid-email':
             Alert.alert('Invalid email, please check if your account is correct');
             break;
-          
+
           //The provided value for the password user property is invalid. It must be a string with at least six characters.
           case 'auth/wrong-password':
             Alert.alert('Wrong password, please check if your password is correct');
@@ -132,25 +143,26 @@ class LoginScreen extends React.Component {
     }
   }
 
-  getUserId= async(uid)=>{
+  getUserId = async (uid) => {
     //access the databse to get the user_id based on firebase uid
     const url = 'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/user/getUserIdNumber';
-    let body = JSON.stringify({uid:uid});
-    const result = await fetch(url, {method: 'GET', headers: {Accept: 'application/json', 'Content-Type': 'application/json'}, body: body});
-    
-      //get the user_id successfully
-    if(result.status == 201 || result.status == 200){
+    let body = JSON.stringify({ uid: uid });
+    console.log("calling user id");
+    const result = await fetch(url, { method: 'GET', headers: { Accept: 'application/json', 'Content-Type': 'application/json' }, body: body });
+
+    //get the user_id successfully
+    if (result.status == 201 || result.status == 200) {
       console.log(result);
       return result;
     }
-    else{
+    else {
       //if not, return null
       return null;
     }
   }
 
   handleSignup() {
-      this.props.navigation.navigate('SignScreen');
+    this.props.navigation.navigate('SignScreen');
   }
 
   render() {
@@ -168,8 +180,8 @@ class LoginScreen extends React.Component {
             //labelValue={email}
             placeholder='Email'
             placeholderTextColor='#003f5c'
-            onChangeText={(email) => this.setState({email})}
-            value = {this.state.email}
+            onChangeText={(email) => this.setState({ email })}
+            value={this.state.email}
           />
         </View>
 
@@ -180,8 +192,8 @@ class LoginScreen extends React.Component {
             secureTextEntry
             placeholder='Password'
             placeholderTextColor='#003f5c'
-            onChangeText={(password) => this.setState({password})}
-            value = {this.state.password}
+            onChangeText={(password) => this.setState({ password })}
+            value={this.state.password}
           />
         </View>
 
@@ -197,7 +209,7 @@ class LoginScreen extends React.Component {
           testID={'SignInLoserButton_detox'}
           onPress={() => this.signedInAsLoser()}>
           <Text style={styles.loginText}>Sign In: Lost</Text>
-        </TouchableOpacity> 
+        </TouchableOpacity>
 
         {/* <TouchableOpacity style={styles.loginButton} testID={'SignInFinderButton_detox'} onPress={()=>this.props.navigation.navigate('HomePage', {user_id: '1', isFinder: 1})} >
         <Text style={styles.loginText}>Sign In: Found</Text>
