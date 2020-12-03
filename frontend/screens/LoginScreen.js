@@ -15,9 +15,9 @@ import styles from './styles';
 
 // FCM
 import messaging from '@react-native-firebase/messaging';
-import auth, {firebase} from '@react-native-firebase/auth';
+import auth, { firebase } from '@react-native-firebase/auth';
 
-//var identity = {};
+var identity = {};
 
 class LoginScreen extends React.Component {
   constructor(props) {
@@ -29,7 +29,7 @@ class LoginScreen extends React.Component {
     }
   }
 
-  entity = {user_id: '', isFinder: null};
+  entity = { user_id: '', isFinder: null };
 
   async updateFCMDeviceToken(user_id) {
     const deviceToken = await messaging().getToken();
@@ -78,7 +78,7 @@ class LoginScreen extends React.Component {
     }
   }
 
-  
+
 
   async signedInAsLoser() {
     // .. get user id from server
@@ -104,27 +104,27 @@ class LoginScreen extends React.Component {
     if (this.state.email == null || this.state.password == null){
       Alert.alert('Login Information cannot be empty, plese try again');
       this.props.navigation.navigate('Login');
-      this.setState({email: null, password: null});
+      this.setState({ email: null, password: null });
     }
-    else{
+    else {
       try {
         let result = await firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password);
-        if(result) {
-          console.log(JSON.stringify(result));
+        if (result) {
+          console.log("result " + JSON.stringify(result));
 
           let uid = result['user']['uid'];
           
           return uid;
         }
       }
-      catch(e){
-        switch(e.code){
+      catch (e) {
+        switch (e.code) {
           //The provided value for the email user property is invalid. It must be a string email address.
           //Invalid input example: cpen321321, 091e10
           case 'auth/invalid-email':
             Alert.alert('Invalid email, please check if your account is correct');
             break;
-          
+
           //The provided value for the password user property is invalid. It must be a string with at least six characters.
           case 'auth/wrong-password':
             Alert.alert('Wrong password, please check if your password is correct');
@@ -136,7 +136,7 @@ class LoginScreen extends React.Component {
     }
   }
 
-  getUserId= async(uid)=>{
+  getUserId = async (uid) => {
     //access the databse to get the user_id based on firebase uid
     const url = `http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/user/getUserIdNumber/${uid}`;
     // let body = JSON.stringify({uid:uid});
@@ -148,14 +148,14 @@ class LoginScreen extends React.Component {
       console.log(data);
       return data;
     }
-    else{
+    else {
       //if not, return null
       return null;
     }
   }
 
   handleSignup() {
-      this.props.navigation.navigate('SignScreen');
+    this.props.navigation.navigate('SignScreen');
   }
 
   render() {
@@ -173,8 +173,8 @@ class LoginScreen extends React.Component {
             //labelValue={email}
             placeholder='Email'
             placeholderTextColor='#003f5c'
-            onChangeText={(email) => this.setState({email})}
-            value = {this.state.email}
+            onChangeText={(email) => this.setState({ email })}
+            value={this.state.email}
           />
         </View>
 
@@ -185,8 +185,8 @@ class LoginScreen extends React.Component {
             secureTextEntry
             placeholder='Password'
             placeholderTextColor='#003f5c'
-            onChangeText={(password) => this.setState({password})}
-            value = {this.state.password}
+            onChangeText={(password) => this.setState({ password })}
+            value={this.state.password}
           />
         </View>
 
@@ -202,7 +202,7 @@ class LoginScreen extends React.Component {
           testID={'SignInLoserButton_detox'}
           onPress={() => this.signedInAsLoser()}>
           <Text style={styles.loginText}>Sign In: Lost</Text>
-        </TouchableOpacity> 
+        </TouchableOpacity>
 
         {/* <TouchableOpacity style={styles.loginButton} testID={'SignInFinderButton_detox'} onPress={()=>this.props.navigation.navigate('HomePage', {user_id: '1', isFinder: 1})} >
         <Text style={styles.loginText}>Sign In: Found</Text>

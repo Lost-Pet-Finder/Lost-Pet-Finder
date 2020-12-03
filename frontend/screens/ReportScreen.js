@@ -117,7 +117,7 @@ export default class ReportScreen extends React.Component {
 
   fetchAddress = () => {
     console.log(this.state.region.latitude + ", " + this.state.region.longitude);
-    fetch("https://maps.googleapis.com/maps/api/geocode/json?address=" + this.state.region.latitude + "," + this.state.region.longitude + "&key=" + "AIzaSyBk1oSy9YTS0SjTxnHiznhPyQpai8mgJh8")
+    fetch("https://maps.googleapis.com/maps/api/geocode/json?address=" + this.state.region.latitude + "," + this.state.region.longitude + "&key=" + "CHANGE ME")
       .then((response) => response.json())
       .then((responseJson) => {
         console.log(responseJson);
