@@ -20,7 +20,7 @@ import { withNavigation } from 'react-navigation';
 import { RNS3 } from 'react-native-aws3';
 
 import MapView from 'react-native-maps';
-import Geolocation from '@react-native-community/geolocation';
+// import Geolocation from '@react-native-community/geolocation';
 import { Callout } from 'react-native-maps';
 
 const options = {
@@ -39,7 +39,7 @@ export default class ReportScreen extends React.Component {
 
     this.state = {
       user_id: this.props.navigation.state.params.user_id,
-      isFinder: this.props.navigation.state.isFinder,
+      isFinder: this.props.navigation.state.params.isFinder,
 
       avatarSource: null,
       filename: null,
@@ -52,7 +52,7 @@ export default class ReportScreen extends React.Component {
 
       // Google Maps
       //region: 'unknown',
-      loading: true,
+      loading: false,
       // currentPosition: {
       //   latitude: 49.260605000000005,
       //   longitude: -123.24599333333332,
@@ -75,38 +75,38 @@ export default class ReportScreen extends React.Component {
 
 
   componentDidMount() {
-    Geolocation.getCurrentPosition((position) => {
-      console.log("Called");
-      const current_pos = JSON.stringify(position);
-      //this.setState({ region: current_pos });
-      console.log("latitude is: " + position.coords.latitude);
-      console.log("longitude is: " + position.coords.longitude);
+    // Geolocation.getCurrentPosition((position) => {
+    //   console.log("Called");
+    //   const current_pos = JSON.stringify(position);
+    //   //this.setState({ region: current_pos });
+    //   console.log("latitude is: " + position.coords.latitude);
+    //   console.log("longitude is: " + position.coords.longitude);
 
-      var coordination_info = {
-        latitude: position.coords.latitude,
-        longitude: position.coords.longitude,
-        latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA,
-      };
+    //   var coordination_info = {
+    //     latitude: position.coords.latitude,
+    //     longitude: position.coords.longitude,
+    //     latitudeDelta: LATITUDE_DELTA,
+    //     longitudeDelta: LONGITUDE_DELTA,
+    //   };
 
-      this.setState(
-        {
-          region: coordination_info,
-          lat: position.coords.latitude,
-          lon: position.coords.longitude,
-          loading: false,
-        });
+    //   this.setState(
+    //     {
+    //       region: coordination_info,
+    //       lat: position.coords.latitude,
+    //       lon: position.coords.longitude,
+    //       loading: false,
+    //     });
 
-    },
-      (error) => {
-        alert(error);
-        this.setState({
-          error: error.message,
-          loading: false,
-        })
-      },
-      { enableHighAccuracy: false, timeout: 200000, maximumAge: 5000 },
-    );
+    // },
+    //   (error) => {
+    //     alert(error);
+    //     this.setState({
+    //       error: error.message,
+    //       loading: false,
+    //     })
+    //   },
+    //   { enableHighAccuracy: false, timeout: 2000, maximumAge: 5000 },
+    // );
   }
 
 
@@ -200,9 +200,16 @@ export default class ReportScreen extends React.Component {
 
       console.log(json);
 
-      Alert.alert('Report Submitted!', `Tags Generated: ${json[0].tags}`, [
+      // Alert.alert('Report Submitted!', `Tags Generated: ${json[0].tags}`, [
+      //   { text: "OK", onPress: () => this.props.navigation.navigate("HomePage") }
+      // ]);
+
+      Alert.alert('Report Submitted!', `Press OK to return to home screen`, [
         { text: "OK", onPress: () => this.props.navigation.navigate("HomePage") }
       ]);
+    } else {
+      console.log(body);
+      console.log(await response.text());
     }
   }
 
@@ -235,17 +242,27 @@ export default class ReportScreen extends React.Component {
     const config = {
       bucket: 'lostpetpictures',
       region: 'us-west-2',
-      accessKey: 'AKIAI3JSFCKZ2CVX4EZA',
-      secretKey: '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',
+      accessKey: '123',
+      secretKey: '123',
       successActionStatus: 201
     }
-    const response = await RNS3.put(file, config);
 
-    if (response.status == 201 || response.status == 200) {
-      this.setState({
-        didUploadPicture: true
-      });
+    try {
+      const response = await RNS3.put(file, config);
+
+      if (response.status == 201 || response.status == 200) {
+        this.setState({
+          didUploadPicture: true
+        });
+      } else {
+        console.log('S3 upload failed')
+      }
+    } catch (err) {
+      console.log(err);
     }
+    
+
+    
 
     this.setState({
       avatarSource: source,
@@ -258,7 +275,7 @@ export default class ReportScreen extends React.Component {
         // Might change this page
         <View style={styles.report_container}>
           <Text>Loading</Text>
-          <Text>{`${JSON.stringify(this.state.region)}`}</Text>
+          {/* <Text>{`${JSON.stringify(this.state.region)}`}</Text> */}
 
         </View>
       );

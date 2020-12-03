@@ -208,9 +208,15 @@ export default styles = StyleSheet.create({
         fontSize: 13,
         textAlign: 'center',
     },
+    rateTitleText: {
+        fontSize: 15,
+        fontWeight: 'bold',
+        textAlign: 'left'
+    },
     rateText: {
-        fontSize: 13,
+        fontSize: 15,
         textAlign: 'left',
+        marginBottom: 5
     },
     buttonStyle: {
         // padding: 10,
@@ -271,5 +277,6 @@ export default styles = StyleSheet.create({
     },
     detailsView: {
         marginTop: -20,
+        width: 200
     }
 })

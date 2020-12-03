@@ -20,6 +20,8 @@ export default class BrowseScreen extends React.Component {
       petArray: null,
       user_id: this.props.navigation.state.params.user_id,
       isFinder: this.props.navigation.state.params.isFinder,
+
+      addressArr: []
     };
   }
 
@@ -44,10 +46,40 @@ export default class BrowseScreen extends React.Component {
     const data = await response.json();
     console.log(data);
     this.setStateFunction(data);
+
+
+    await this.populateAddressArr();
+
+    this.setState({loading: false});
   }
 
   setStateFunction(data) {
-    this.setState({petArray: data, loading: false});
+    this.setState({petArray: data});
+  }
+
+  async convertToAddress(latitude, longitude) {
+    console.log(`Lat: ${latitude}, lon: ${longitude}`);
+    const response = await fetch("https://maps.googleapis.com/maps/api/geocode/json?address=" + latitude + "," + longitude + "&key=" + "AIzaSyBk1oSy9YTS0SjTxnHiznhPyQpai8mgJh8")
+
+    const data = await response.json();
+    console.log(data);
+
+    if (data.results.length == 0) {
+      return `No Address: (${latitude}, ${longitude})`;
+    } else {
+      return data.results[0].formatted_address;
+    }
+  }
+
+  async populateAddressArr() {
+    for (var i = 0; i < this.state.petArray.length; i++) {
+      const report = this.state.petArray[i].report;
+      console.log(report);
+      const address = await this.convertToAddress(report.location_x, report.location_y);
+      console.log(`Address: ${address}`);
+      
+      this.state.addressArr[i] = address;
+    }
   }
 
   render() {
@@ -72,9 +104,27 @@ export default class BrowseScreen extends React.Component {
         <ScrollView style={styles.scrollView} testID={'BrowseView_detox'} contentContainerStyle={styles.scrollViewCellContainer}>
           {this.state.petArray.map((pet, index) => {
             const petReport = pet.report;
+
+            const date = new Date(petReport.report_date);
+
+            var options = {
+              timeZone: "America/New_York", 
+              hour12: true,
+              weekday: 'long',
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+              hour: 'numeric',
+              minute: 'numeric'
+            };
+            
+            console.log(date);
+
+            const dateString = date.toLocaleString('en-US');
+
             return (
               <View style={styles.scrollViewCell} testID={'ScrollViewCell_detox'} key={index}>
-                <Text style={styles.titleText}> {pet_text} </Text>
+                <Text style={styles.titleText}> {`Similarity: ${((pet['total score']*100 / 4)).toFixed(0)+'%'}`} </Text>
                 <View style={styles.imageAndTextContainer}>
                   <Image
                     source={{
@@ -83,16 +133,17 @@ export default class BrowseScreen extends React.Component {
                     style={styles.imageView}
                   />
                   <View style={styles.detailsView}>
-                    <Text style={styles.rateText}>{`Reporter ID: ${petReport.fk_user_id}`}</Text>
-                    <Text style={styles.rateText}>{`Location: (${petReport.location_x}, ${petReport.location_y})`}</Text>
-                    <Text style={styles.rateText}>{`Report Date: \n${petReport.report_date}`}</Text>
-            
-                    <Text style={styles.rateText}>{`Matching rate: ${(pet['total score']*100).toFixed(0)+'%'}`}</Text>
-                    <Text></Text>
-                    <Button style={styles.buttonStyle} testID={'learnmore_detox'}
-                      title="Learn More"
-                      onPress={() => this.props.navigation.navigate('ContactOwnerScreen', {petInfo: this.state.petArray[index]})}
-                    />
+                    <View style={{width: '100%'}}>
+                      <Text style={styles.rateTitleText}>Address: </Text>
+                      <Text style={styles.rateText}>{`${this.state.addressArr[index]}`}</Text>
+                      <Text style={styles.rateTitleText}>Reported: </Text>
+                      <Text style={styles.rateText}>{`${dateString}`}</Text>
+                      <Button style={styles.buttonStyle} testID={'learnmore_detox'}
+                        title="Learn More"
+                        onPress={() => this.props.navigation.navigate('ContactOwnerScreen', {petInfo: this.state.petArray[index], address: this.state.addressArr[index], dateString: dateString})}
+                      />
+                    </View>
+                    
                   </View>
                 </View>
               </View>

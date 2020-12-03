@@ -64,23 +64,23 @@ export default class ContactOwnerScreen extends React.Component {
             style={styles.imageView}
           />
           <View style={styles.detailsView}>
-            <Text style={styles.rateText}>{`Reporter ID: ${this.state.pet.report.fk_user_id}`}</Text>
-            <Text style={styles.rateText}>{`Location: (${this.state.pet.report.location_x}, ${this.state.pet.report.location_y})`}</Text>
-            <Text style={styles.rateText}>{`Report Date: \n${this.state.pet.report.report_date}`}</Text>
-            <Text></Text>
-            <Text style={styles.rateText}>{`Colour matching rate: ${(this.state.pet['colour score'] * 100).toFixed(0) + '%'}`}</Text>
-            <Text style={styles.rateText}>{`Date matching rate: ${(this.state.pet['date score'] * 100).toFixed(0) + '%'}`}</Text>
-            <Text style={styles.rateText}>{`Distance matching rate: ${(this.state.pet['distance score'] * 100).toFixed(0) + '%'}`}</Text>
-            <Text style={styles.rateText}>{`Intersection matching rate: ${(this.state.pet['intersection score']*100).toFixed(0)+'%'}`}</Text>
+            <Text style={styles.rateTitleText}>Address: </Text>
+            <Text style={styles.rateText}>{`${this.props.navigation.state.params.address}`}</Text>
+            <Text style={styles.rateTitleText}>Reported: </Text>
+            <Text style={styles.rateText}>{`${this.props.navigation.state.params.dateString}`}</Text>
+            <Text style={styles.rateTitleText}> {'AI Generated Tags:'}</Text>
+            <Text style={styles.rateText}>{`${this.extractTags(this.state.pet.report.tags)}`}</Text>
           </View>
         </View>
 
         <View style={styles.viewContainer}>
-          <Text style={styles.aiTags}>{'AI Generated Tags:'}</Text>
-          <Text
-            style={
-              styles.infoText
-            }>{`${this.extractTags(this.state.pet.report.tags)}`}</Text>
+            <Text style={styles.aiTags}>Scoring Breakdown: </Text>
+            <Text style={styles.infoText}>{`Colour: ${(this.state.pet['colour score'] * 100).toFixed(0) + '%'}`}</Text>
+            <Text style={styles.infoText}>{`Date: ${(this.state.pet['date score'] * 100).toFixed(0) + '%'}`}</Text>
+            <Text style={styles.infoText}>{`Location: ${(this.state.pet['distance score'] * 100).toFixed(0) + '%'}`}</Text>
+            <Text style={styles.infoText}>{`Image Recognition: ${(this.state.pet['intersection score']*100).toFixed(0)+'%'}`}</Text>
+            <Text style={styles.aiTags}>{`Total: ${(this.state.pet['total score']*100/4).toFixed(0)+'%'}`}</Text>
+
         </View>
 
         {/* <Text>
