@@ -17,12 +17,13 @@ class SignScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      new_name: '',
-      // new_fn: '',
-      // new_ln: '',
+      // new_name: '',
+      new_fn: '',
+      new_ln: '',
       new_email: '',
       new_pwd: '',
-      new_pn: '',
+      //new_pn: '',
+      isFinder: '',
       isLoading: false
     }
   }
@@ -45,8 +46,8 @@ class SignScreen extends React.Component {
           const url = 'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/user/createNewUser';
 
           //get the firebase UID from response and generate unique user id for each user
-          let body = JSON.stringify({ name: this.state.new_name, uid: uid, user_id: parseInt(Date.now()), phone_num: this.state.new_pn });
-
+          let body = JSON.stringify({ first_name: this.state.new_fn, last_name: this.state.new_ln, firebase_uid: uid, isFinder: this.state.isFinder });
+          console.log(" hahahaha" + body);  
           fetch(url,
             {
               method: 'POST',
@@ -58,13 +59,14 @@ class SignScreen extends React.Component {
             }).then((response) => {
               if (response.status == 201 || response.status == 200) {
                 console.log('user created in the database');
+                //console.log()
                 this.setState({
-                  new_name: '',
-                  // new_fn: '',
-                  // new_ln: '',
+                  //new_name: '',
+                  new_fn: '',
+                  new_ln: '',
                   new_email: '',
                   new_pwd: '',
-                  new_pn: '',
+                  isFinder: '',
                   isLoading: false
                 })
                 this.props.navigation.navigate('LoginPage');
@@ -156,8 +158,8 @@ class SignScreen extends React.Component {
             style={styles.inputText}
             placeholderTextColor='#003f5c'
             placeholder='Found a pet?'
-            onChangeText={(pn_input) => this.setState({ new_pn: pn_input })}
-            value={this.state.new_pn} />
+            onChangeText={(finder_input) => this.setState({ isFinder: finder_input })}
+            value={this.state.isFinder} />
         </View>
 
         <TouchableOpacity

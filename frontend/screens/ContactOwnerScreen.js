@@ -1,6 +1,6 @@
 import React from 'react';
 import 'react-native-gesture-handler';
-import { Button, View, Text, Image } from 'react-native';
+import { Button, View, Text, Image, Alert } from 'react-native';
 import { rgbToHex } from '../util/rgbToHex';
 import styles from './styles';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -37,6 +37,7 @@ export default class ContactOwnerScreen extends React.Component {
       this.setState({ contactInfo: 'Sorry, reporter rejects your contact request' });
     }
     else {
+      Alert.alert("Request sent!");
       this.setState({ contactInfo: result.json() });
     }
   }
@@ -62,6 +63,7 @@ export default class ContactOwnerScreen extends React.Component {
               uri: `https://lostpetpictures.s3-us-west-2.amazonaws.com/${this.state.pet.report.file_name}`,
             }}
             style={styles.imageView}
+            testID={'PetImage_detox'}
           />
           <View style={styles.detailsView}>
             <Text style={styles.rateTitleText}>Address: </Text>

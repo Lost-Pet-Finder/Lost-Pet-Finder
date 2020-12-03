@@ -96,7 +96,7 @@ export default class DetailsContactScreen extends React.Component {
             // My Sent Requests Screen
             return (
                 <SafeAreaView style={styles.browse_container}>
-                  <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollViewCellContainer}>
+                  <ScrollView style={styles.scrollView} testID={'SentView_detox'} contentContainerStyle={styles.scrollViewCellContainer}>
                     {this.state.contactsArr.map((contact, index) => {
                       const showContactInfo = contact.did_accept; 
                       const status = showContactInfo == 0 ? 'Pending' : 'Accepted';
@@ -108,11 +108,11 @@ export default class DetailsContactScreen extends React.Component {
                       };
                       return (
                         <View style={cellStyle} key={index}>
-                          <Text style={styles.titleText}> {`${contact.first_name} ${contact.last_name}`}</Text>
+                          <Text testID={'NameInfos_detox'} style={styles.titleText}> {`${contact.first_name} ${contact.last_name}`}</Text>
                           <View style={styles.detailsView}>
                               <Text>{`Status: ${status}`}</Text>
-                              <Text>{showContactInfo == 0 ? `` : `Email: ${contact.email == null ? 'did not provide' : contact.email}`}</Text>
-                              <Text>{showContactInfo == 0 ? `` : `Phone number: ${contact.phone_number == null ? 'did not provide' : contact.phone_number}`}</Text>
+                              <Text testID={'EmailInfos_detox'}>{showContactInfo == 0 ? `` : `Email: ${contact.email == null ? 'did not provide' : contact.email}`}</Text>
+                              <Text testID={'PhoneInfos_detox'}>{showContactInfo == 0 ? `` : `Phone number: ${contact.phone_number == null ? 'did not provide' : contact.phone_number}`}</Text>
                           </View>
                       </View>
                       );
@@ -124,7 +124,7 @@ export default class DetailsContactScreen extends React.Component {
             // Pending Requests Screen
             return (
                 <SafeAreaView style={styles.browse_container}>
-                  <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollViewCellContainer}>
+                  <ScrollView style={styles.scrollView} testID={'PendingView_detox'} contentContainerStyle={styles.scrollViewCellContainer}>
                     {this.state.contactsArr.map((contact, index) => {
                       const showContactInfo = contact.did_accept;
                       const status = showContactInfo == 0 ? 'Pending' : 'Accepted';
@@ -138,7 +138,7 @@ export default class DetailsContactScreen extends React.Component {
                       if (showContactInfo == 0) {
                         return (
                           <View style={cellStyle} key={index}>
-                            <Text style={styles.titleText}> {`${contact.first_name} ${contact.last_name}`}</Text>
+                            <Text  style={styles.titleText}> {`${contact.first_name} ${contact.last_name}`}</Text>
                             <View style={styles.detailsView}>
                                 <Text>{`Status: ${status}`}</Text>
                                 <View style={styles.horizontalButtonView}>
@@ -158,11 +158,11 @@ export default class DetailsContactScreen extends React.Component {
                       } else {
                         return (
                           <View style={cellStyle} key={index}>
-                            <Text style={styles.titleText}> {`${contact.first_name} ${contact.last_name}`}</Text>
+                            <Text testID={'NameInfo_detox'} style={styles.titleText}> {`${contact.first_name} ${contact.last_name}`}</Text>
                             <View style={styles.detailsView}>
                                 <Text>{`Status: ${status}`}</Text>
-                                <Text>{showContactInfo == 0 ? `` : `Email: ${contact.email == null ? 'did not provide' : contact.email}`}</Text>
-                                <Text>{showContactInfo == 0 ? `` : `Phone number: ${contact.phone_number == null ? 'did not provide' : contact.phone_number}`}</Text>
+                                <Text testID={'EmailInfo_detox'}>{showContactInfo == 0 ? `` : `Email: ${contact.email == null ? 'did not provide' : contact.email}`}</Text>
+                                <Text testID={'PhoneInfo_detox'}>{showContactInfo == 0 ? `` : `Phone number: ${contact.phone_number == null ? 'did not provide' : contact.phone_number}`}</Text>
                             </View>
                         </View>
                         );

@@ -62,7 +62,7 @@ export default class HomePage extends React.Component {
 
                 <TouchableOpacity 
                     style={styles.contactView}
-                    testID={'ContactButton_detox'}
+                    testID={'HomeContactButton_detox'}
                     onPress={() => {
                     //direct to the page displaying all the requests
                     this.props.navigation.navigate('MainContactScreen', {user_id: this.state.user_id});
