@@ -68,6 +68,7 @@ test('create a new user error', async done => {
 	done();
 });
 
+// travis run
 test('get user id number', async done => {
 	const { body, status } = await request(server).get('/user/getUserIdNumber/1');
 	expect(status).toBe(200);
