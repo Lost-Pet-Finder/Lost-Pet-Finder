@@ -162,7 +162,18 @@
 <a name='L103'></a><a href='#L103'>103</a>
 <a name='L104'></a><a href='#L104'>104</a>
 <a name='L105'></a><a href='#L105'>105</a>
-<a name='L106'></a><a href='#L106'>106</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L106'></a><a href='#L106'>106</a>
+<a name='L107'></a><a href='#L107'>107</a>
+<a name='L108'></a><a href='#L108'>108</a>
+<a name='L109'></a><a href='#L109'>109</a>
+<a name='L110'></a><a href='#L110'>110</a>
+<a name='L111'></a><a href='#L111'>111</a>
+<a name='L112'></a><a href='#L112'>112</a>
+<a name='L113'></a><a href='#L113'>113</a>
+<a name='L114'></a><a href='#L114'>114</a>
+<a name='L115'></a><a href='#L115'>115</a>
+<a name='L116'></a><a href='#L116'>116</a>
+<a name='L117'></a><a href='#L117'>117</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
@@ -185,7 +196,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -232,8 +247,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-yes">8x</span>
@@ -245,8 +258,17 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -278,95 +300,106 @@ const Jimp = require('jimp');
 const ColorThief = require('color-thief');
 &nbsp;
 async function getColour(bucketName, fileName) {
-    try {
-        const rekognitionParams = {
-            Image: {
-                S3Object: {
-                    Bucket: bucketName,
-                    Name: fileName
-                }
-            },
-            MaxLabels: 100
-        }
+	try {
+		const rekognitionParams = {
+			Image: {
+				S3Object: {
+					Bucket: bucketName,
+					Name: fileName,
+				},
+			},
+			MaxLabels: 100,
+		};
 &nbsp;
-        const rekognitionResponse = await rekognition.detectLabels(rekognitionParams).promise();
-        const image = await s3.getObject({Bucket: bucketName,Key: fileName}).promise();
+		const rekognitionResponse = await rekognition
+			.detectLabels(rekognitionParams)
+			.promise();
+		const image = await s3
+			.getObject({ Bucket: bucketName, Key: fileName })
+			.promise();
 &nbsp;
-        var color =  new ColorThief();
+		var color = new ColorThief();
 &nbsp;
-        var totalDimensions = sizeOf(image.Body);
-        var totalWidth = totalDimensions.width;
-        var totalHeight = totalDimensions.height;
+		var totalDimensions = sizeOf(image.Body);
+		var totalWidth = totalDimensions.width;
+		var totalHeight = totalDimensions.height;
 &nbsp;
-        var modeTotal = color.getColor(image.Body);
-        // pixels = color.getPalette(image.Body, 8);
-        // modeTotal2 = (pixels.sort((a,b) =&gt;
-        //   pixels.filter(v =&gt; v===a).length
-        // - pixels.filter(v =&gt; v===b).length).pop());
-        
-        var box;
-        count = 0;
+		var modeTotal = color.getColor(image.Body);
+		// pixels = color.getPalette(image.Body, 8);
+		// modeTotal2 = (pixels.sort((a,b) =&gt;
+		//   pixels.filter(v =&gt; v===a).length
+		// - pixels.filter(v =&gt; v===b).length).pop());
 &nbsp;
-        // REDO
-        rekognitionResponse.Labels.forEach(label =&gt; {
-            label.Instances.forEach(instance =&gt; {
-                box = instance.BoundingBox
-                count++;
-            })
-        })
-        if(count != 1) {
-            //throw error
-        }
+		var box;
+		count = 0;
 &nbsp;
-        var boxWidth = box.Width * totalWidth;
-        var boxHeight = box.Height * totalHeight;
+		// REDO
+		rekognitionResponse.Labels.forEach(label =&gt; {
+			label.Instances.forEach(instance =&gt; {
+				box = instance.BoundingBox;
+				count++;
+			});
+		});
+		if (count != 1) {
+			//throw error
+		}
 &nbsp;
-        var topLeft = [box.Left * totalWidth, box.Top * totalHeight];
-        var cropped = []
-        var x = await Jimp.read(image.Body).then(img =&gt; {
-            img.crop(topLeft[0], topLeft[1], boxWidth, boxHeight);
-            img.getBuffer(Jimp.MIME_JPEG, (err, buf) =&gt; {
-                <span class="missing-if-branch" title="if path not taken" >I</span>if(err) <span class="cstat-no" title="statement not covered" >throw err;</span>
-                cropped = buf;
-            });
-        });
+		var boxWidth = box.Width * totalWidth;
+		var boxHeight = box.Height * totalHeight;
 &nbsp;
-        var mode = color.getColor(cropped);
-        // pixels = color.getPalette(cropped, 8);
-        // mode2 = (pixels.sort((a,b) =&gt;
-        //   pixels.filter(v =&gt; v===a).length
-        // - pixels.filter(v =&gt; v===b).length).pop());
+		var topLeft = [box.Left * totalWidth, box.Top * totalHeight];
+		var cropped = [];
+		var x = await Jimp.read(image.Body).then(img =&gt; {
+			img.crop(topLeft[0], topLeft[1], boxWidth, boxHeight);
+			img.getBuffer(Jimp.MIME_JPEG, (err, buf) =&gt; {
+				<span class="missing-if-branch" title="if path not taken" >I</span>if (err) <span class="cstat-no" title="statement not covered" >throw err;</span>
+				cropped = buf;
+			});
+		});
 &nbsp;
+		var mode = color.getColor(cropped);
+		// pixels = color.getPalette(cropped, 8);
+		// mode2 = (pixels.sort((a,b) =&gt;
+		//   pixels.filter(v =&gt; v===a).length
+		// - pixels.filter(v =&gt; v===b).length).pop());
 &nbsp;
+		var percentArea = 1 - (boxWidth * boxHeight) / (totalWidth * totalHeight);
+		var rDiff = mode[0] - modeTotal[0];
+		var gDiff = mode[1] - modeTotal[1];
+		var bDiff = mode[2] - modeTotal[2];
 &nbsp;
-        var percentArea = 1 - ((boxWidth * boxHeight) / (totalWidth * totalHeight));
-        var rDiff = (mode[0] - modeTotal[0]);
-        var gDiff = (mode[1] - modeTotal[1]);
-        var bDiff = (mode[2] - modeTotal[2]);
+		var rDiff = Math.sign(rDiff) * Math.abs(rDiff / 128);
+		var gDiff = Math.sign(gDiff) * Math.abs(gDiff / 128);
+		var bDiff = Math.sign(bDiff) * Math.abs(bDiff / 128);
 &nbsp;
-        var rDiff = Math.sign(rDiff) * (Math.abs(rDiff / (128)));
-        var gDiff = Math.sign(gDiff) * (Math.abs(gDiff / (128)));
-        var bDiff = Math.sign(bDiff) * (Math.abs(bDiff / (128)));
+		var modeCorrected = [];
+		modeCorrected[0] = Math.max(
+			Math.min(mode[0] + percentArea * rDiff * modeTotal[0], 255),
+			0
+		);
+		modeCorrected[1] = Math.max(
+			Math.min(mode[1] + percentArea * gDiff * modeTotal[1], 255),
+			0
+		);
+		modeCorrected[2] = Math.max(
+			Math.min(mode[2] + percentArea * bDiff * modeTotal[2], 255),
+			0
+		);
 &nbsp;
-        var modeCorrected = []
-        modeCorrected[0] = Math.max(Math.min(mode[0] + percentArea * rDiff * modeTotal[0], 255), 0) ;
-        modeCorrected[1] = Math.max(Math.min(mode[1] + percentArea * gDiff * modeTotal[1], 255), 0) ;
-        modeCorrected[2] = Math.max(Math.min(mode[2] + percentArea * bDiff * modeTotal[2], 255), 0) ;
+		// console.log(modeCorrected);
 &nbsp;
-        // console.log(modeCorrected);
+		const calculatedColors = {
+			totalColor: modeTotal,
+			croppedColor: mode,
+			finalColor: modeCorrected,
+		};
 &nbsp;
-        const calculatedColors = {
-            totalColor: modeTotal,
-            croppedColor: mode,
-            finalColor: modeCorrected
-        }
+		return calculatedColors;
+	} catch (err) {
+		console.log(err);
 &nbsp;
-        return calculatedColors
-    } catch (err) {
-        console.log(err);
-        
-        return null;
-    }
+		return null;
+	}
 }
 &nbsp;
 module.exports = {
@@ -379,7 +412,7 @@ module.exports = {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Wed Dec 02 2020 18:34:40 GMT-0800 (Pacific Standard Time)
+                at Wed Dec 02 2020 22:15:43 GMT-0800 (Pacific Standard Time)
             </div>
         </div>
         <script src="../../prettify.js"></script>
