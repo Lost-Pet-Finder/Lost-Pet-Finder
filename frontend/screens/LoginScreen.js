@@ -60,39 +60,48 @@ class LoginScreen extends React.Component {
     return;
   }
 
-  signedInAsFinder() {
+  async signedInAsFinder(){
 
-    //let identity = {user_id: '1', isFinder: 1};
-    identity['isFinder'] = 1;
+    const uid = await this.handleLogin();
 
-    //this.updateFCMDeviceToken(identity.user_id);
-    //this.props.navigation.navigate('HomePage', {user_id: user_id, isFinder: 1});
+    if (uid != -1) {
+      let user_id = await this.getUserId(uid);
 
-    //handle firebase authentication
-    this.handleLogin(identity);
+      if (user_id == null) {
+        Alert.alert('User Does Not Exist in Database');
+      } else {
+        let identity = {user_id: user_id, isFinder: 1}
+        this.updateFCMDeviceToken(identity.user_id);
+        this.handleLogin(identity);
+        this.props.navigation.navigate('HomePage', identity);
+      }
+    }
   }
 
 
 
-  signedInAsLoser() {
+  async signedInAsLoser() {
     // .. get user id from server
-    const user_id = '2';
-    //let identity = {user_id: '2', isFinder: 0};
-    identity['isFinder'] = 0;
+    const uid = await this.handleLogin();
 
-    //this.updateFCMDeviceToken(identity.user_id);
-    //this.props.navigation.navigate('HomePage', {user_id: user_id, isFinder: 0});
+    if (uid != -1) {
+      let user_id = await this.getUserId(uid);
 
-    //handle firebase authentication
-    this.handleLogin(identity);
+      if (user_id == null) {
+        Alert.alert('User Does Not Exist in Database');
+      } else {
+        let identity = {user_id: user_id, isFinder: 0}
+        this.updateFCMDeviceToken(identity.user_id);
+        this.handleLogin(identity);
+        this.props.navigation.navigate('HomePage', identity);
+      }
+    }
   }
 
 
 
-  handleLogin = async (identity) => {
-    console.log(identity);
-
-    if (this.state.email == null || this.state.password == null) {
+  handleLogin = async()=>{
+    if (this.state.email == null || this.state.password == null){
       Alert.alert('Login Information cannot be empty, plese try again');
       this.props.navigation.navigate('Login');
       this.setState({ email: null, password: null });
@@ -103,27 +112,9 @@ class LoginScreen extends React.Component {
         if (result) {
           console.log("result " + JSON.stringify(result));
 
-          //get the firebase uid
-          let uid = result.user.uid;
-          console.log("uid " + uid);
-          //et user_id for application
-
-          const url = 'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/user/getUserIdNumber/' + `${uid}`;
-          console.log(url);
-          let body = JSON.stringify({ uid: JSON.parse(uid) });
-          console.log("calling user id");
-          const res = await fetch(url, { method: 'GET', headers: { Accept: 'application/json', 'Content-Type': 'application/json' }, body: body });
-
-
-          let user_id = res;
-          console.log(user_id);
-          if (user_id != null) {
-            identity['user_id'] = user_id;
-            this.updateFCMDeviceToken(identity.user_id);
-            this.props.navigation.navigate('HomePage', identity);
-          }
-          console.log("nullll");
-          //this.props.navigation.navigate('HomePage', identity);
+          let uid = result['user']['uid'];
+          
+          return uid;
         }
       }
       catch (e) {
@@ -139,21 +130,23 @@ class LoginScreen extends React.Component {
             Alert.alert('Wrong password, please check if your password is correct');
             break;
         }
+
+        return -1;
       }
     }
   }
 
   getUserId = async (uid) => {
     //access the databse to get the user_id based on firebase uid
-    const url = 'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/user/getUserIdNumber';
-    let body = JSON.stringify({ uid: uid });
-    console.log("calling user id");
-    const result = await fetch(url, { method: 'GET', headers: { Accept: 'application/json', 'Content-Type': 'application/json' }, body: body });
-
-    //get the user_id successfully
-    if (result.status == 201 || result.status == 200) {
-      console.log(result);
-      return result;
+    const url = `http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/user/getUserIdNumber/${uid}`;
+    // let body = JSON.stringify({uid:uid});
+    const result = await fetch(url, {method: 'GET', headers: {Accept: 'application/json', 'Content-Type': 'application/json'}});
+    
+      //get the user_id successfully
+    if(result.status == 201 || result.status == 200){
+      const data = await result.json();
+      console.log(data);
+      return data;
     }
     else {
       //if not, return null
