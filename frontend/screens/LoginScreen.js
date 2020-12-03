@@ -17,8 +17,6 @@ import styles from './styles';
 import messaging from '@react-native-firebase/messaging';
 import auth, {firebase} from '@react-native-firebase/auth';
 
-var identity = {};
-
 class LoginScreen extends React.Component {
   constructor(props) {
     super(props);
