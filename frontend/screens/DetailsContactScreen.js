@@ -8,7 +8,7 @@ import {
   Text,
   Image,
   ScrollView,
-  StyleSheet
+  StyleSheet,
 } from 'react-native';
 
 export default class DetailsContactScreen extends React.Component {
@@ -17,14 +17,13 @@ export default class DetailsContactScreen extends React.Component {
         this.state = {
             screenType: this.props.navigation.state.params.screenType,
             user_id: this.props.navigation.state.params.user_id,
-            requestUrl: this.props.navigation.state.params.requestUrl,
-            
+            requestUrl: this.props.navigation.state.params.requestUrl,           
             loading: true,
             contactsArr: null,
         };
       }
     
-      componentDidMount() {    
+      componentDidMount() {  
         this.getContactsList();
       }
 
@@ -34,7 +33,7 @@ export default class DetailsContactScreen extends React.Component {
           headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
-          }
+          },
         };
     
         const response = await fetch(`${this.state.requestUrl}/${this.state.user_id}`, request);
@@ -62,7 +61,7 @@ export default class DetailsContactScreen extends React.Component {
             Accept: 'application/json',
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(body)
+          body: JSON.stringify(body),
         };
 
         console.log(request);

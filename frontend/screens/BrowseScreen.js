@@ -20,8 +20,7 @@ export default class BrowseScreen extends React.Component {
       petArray: null,
       user_id: this.props.navigation.state.params.user_id,
       isFinder: this.props.navigation.state.params.isFinder,
-
-      addressArr: []
+      addressArr: [],
     };
   }
 
@@ -38,7 +37,7 @@ export default class BrowseScreen extends React.Component {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-      }
+      },
     };
 
     const response = await fetch(url, request);
@@ -77,7 +76,6 @@ export default class BrowseScreen extends React.Component {
       console.log(report);
       const address = await this.convertToAddress(report.location_x, report.location_y);
       console.log(`Address: ${address}`);
-      
       this.state.addressArr[i] = address;
     }
   }
@@ -108,14 +106,14 @@ export default class BrowseScreen extends React.Component {
             const date = new Date(petReport.report_date);
 
             var options = {
-              timeZone: "America/New_York", 
+              timeZone: 'America/New_York', 
               hour12: true,
               weekday: 'long',
               year: 'numeric',
               month: 'long',
               day: 'numeric',
               hour: 'numeric',
-              minute: 'numeric'
+              minute: 'numeric',
             };
             
             console.log(date);

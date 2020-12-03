@@ -10,8 +10,7 @@ const browse_test = async () => {
     await waitFor(element(by.id('BrowseButton_detox'))).toBeVisible().withTimeout(4000);
     await element(by.id('BrowseButton_detox')).tap();
     await waitFor(element(by.id('BrowseView_detox'))).toBeVisible().withTimeout(4000);
-    await expect(element(by.id('BrowseView_detox'))).toBeVisible()
-        && expect(element(by.id('ScrollViewCell_detox'))).toBeVisible();
+    await expect(element(by.id('BrowseView_detox'))).toBeVisible() && expect(element(by.id('ScrollViewCell_detox'))).toBeVisible();
 }
 
 describe('Testing browse posts use case', () => {
@@ -32,16 +31,7 @@ describe('Testing browse posts use case', () => {
         await browse_test();
         await element(by.text('LEARN MORE')).atIndex(1).tap();
         await waitFor(element(by.id('ContactButton_detox'))).toBeVisible().withTimeout(4000);
-        await expect(element(by.id('ContactButton_detox'))).toBeVisible()
-            && expect(element(by.id('PetImage_detox'))).toBeVisible()
-            && expect(element(by.id('Reporter_detox'))).toBeVisible()
-            && expect(element(by.id('Location_detox'))).toBeVisible()
-            && expect(element(by.id('ReportDate_detox'))).toBeVisible()
-            && expect(element(by.id('Color_detox'))).toBeVisible()
-            && expect(element(by.id('Date_detox'))).toBeVisible()
-            && expect(element(by.id('Distance_detox'))).toBeVisible()
-            && expect(element(by.id('intersection_detox'))).toBeVisible()
-            && expect(element(by.id('Tags_detox'))).toBeVisible();
+        await expect(element(by.id('ContactButton_detox'))).toBeVisible() && expect(element(by.id('PetImage_detox'))).toBeVisible() && expect(element(by.id('Reporter_detox'))).toBeVisible() && expect(element(by.id('Location_detox'))).toBeVisible()  && expect(element(by.id('ReportDate_detox'))).toBeVisible() && expect(element(by.id('Color_detox'))).toBeVisible() && expect(element(by.id('Date_detox'))).toBeVisible() && expect(element(by.id('Distance_detox'))).toBeVisible() && expect(element(by.id('intersection_detox'))).toBeVisible() && expect(element(by.id('Tags_detox'))).toBeVisible();
         await element(by.id('ContactButton_detox')).tap();
         await waitFor(element(by.text('Request sent!'))).toBeVisible().withTimeout(4000);
         await expect(element(by.text('Request sent!'))).toBeVisible();
