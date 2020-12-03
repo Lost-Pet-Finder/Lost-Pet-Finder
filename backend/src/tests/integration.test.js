@@ -84,8 +84,10 @@ test('search Found Pets', async done => {
 	);
 	expect(status).toBe(200);
 	// the best result must be at first index and it should be the same file
-	expect(body[0].report.file_name).toBe('golden_retriever_0.jpg');
+	expect(body[0].report.file_name).toBe(
+		'golden-retriever-dog-breed-info (1).jpg'
+	);
 	// id of the user that contains the testing data
-	expect(body[0].report.fk_user_id).toBe(77777);
+	expect(body[0].report.fk_user_id).toBe(2);
 	done();
 });
