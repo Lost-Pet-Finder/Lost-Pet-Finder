@@ -13,7 +13,6 @@ async function getUserContactInfo(req, res) {
 	}
 }
 
-
 async function createNewUser(req, res) {
 	var firebase_uid = req.body.firebase_uid;
 	var first_name = req.body.first_name;
@@ -21,12 +20,10 @@ async function createNewUser(req, res) {
 	var isFinder = req.body.isFinder;
 
 	try {
-		const response = await sqlPool.query('CALL create_new_app_user(?, ?, ?, ?)', [
-			firebase_uid,
-			first_name,
-			last_name,
-			isFinder
-		]);
+		const response = await sqlPool.query(
+			'CALL create_new_app_user(?, ?, ?, ?)',
+			[firebase_uid, first_name, last_name, isFinder]
+		);
 
 		res.status(200).send(response[0]);
 	} catch (err) {

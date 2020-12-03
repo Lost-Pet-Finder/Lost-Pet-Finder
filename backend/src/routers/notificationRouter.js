@@ -10,11 +10,20 @@ router.get('/', (req, res) => {
 });
 
 router.post('/uploadDeviceToken', notificationController.uploadDeviceToken);
-router.get('/getUserDeviceToken/:userid', notificationController.getUserDeviceToken);
+router.get(
+	'/getUserDeviceToken/:userid',
+	notificationController.getUserDeviceToken
+);
 
 router.post('/sendContactRequest', notificationController.sendContactRequest);
-router.post('/respondToContactRequest', notificationController.respondToContactRequest);
-router.get('/pendingRequests/:userid', notificationController.getMyPendingRequests);
+router.post(
+	'/respondToContactRequest',
+	notificationController.respondToContactRequest
+);
+router.get(
+	'/pendingRequests/:userid',
+	notificationController.getMyPendingRequests
+);
 router.get('/sentRequests/:userid', notificationController.getMySentRequests);
 
 module.exports = router;

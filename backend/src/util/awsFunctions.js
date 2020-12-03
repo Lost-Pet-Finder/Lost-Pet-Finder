@@ -104,9 +104,9 @@ async function getColour(bucketName, fileName, validBox) {
 		gDiff = colourBox[1] - colourTotal[1];
 		bDiff = colourBox[2] - colourTotal[2];
 
-		rDiff = Math.sign(rDiff) * Math.abs(rDiff / (128));
-		gDiff = Math.sign(gDiff) * Math.abs(gDiff / (128));
-		bDiff = Math.sign(bDiff) * Math.abs(bDiff / (128));
+		rDiff = Math.sign(rDiff) * Math.abs(rDiff / 128);
+		gDiff = Math.sign(gDiff) * Math.abs(gDiff / 128);
+		bDiff = Math.sign(bDiff) * Math.abs(bDiff / 128);
 
 		//get colour of pet by subtracting total scaled with %s from the cropped
 		colourPet = [];
