@@ -25,6 +25,7 @@ export default class MainContactScreen extends React.Component {
             <View style={styles.containerView}>
                 <TouchableOpacity 
                     style={styles.reportView}
+                    testID={'Pending_detox'}
                     onPress={() => {
                     this.props.navigation.navigate('DetailsContactScreen', {screenType: 'pending', requestUrl: `http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/notif/pendingRequests`, user_id: this.props.navigation.state.params.user_id})}}
                 >
@@ -35,6 +36,7 @@ export default class MainContactScreen extends React.Component {
 
                 <TouchableOpacity 
                     style={styles.browseView}
+                    testID={'Sent_detox'}
                     onPress={() => {
                     this.props.navigation.navigate('DetailsContactScreen', {screenType: 'sent', requestUrl: `http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/notif/sentRequests`, user_id: this.props.navigation.state.params.user_id})}}
                 >

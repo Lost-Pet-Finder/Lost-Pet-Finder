@@ -1,6 +1,6 @@
 import React from 'react';
 import 'react-native-gesture-handler';
-import { Button, View, Text, Image } from 'react-native';
+import { Button, View, Text, Image, Alert } from 'react-native';
 import { rgbToHex } from '../util/rgbToHex';
 import styles from './styles';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -37,6 +37,7 @@ export default class ContactOwnerScreen extends React.Component {
       this.setState({ contactInfo: 'Sorry, reporter rejects your contact request' });
     }
     else {
+      Alert.alert("Request sent!");
       this.setState({ contactInfo: result.json() });
     }
   }
@@ -62,20 +63,21 @@ export default class ContactOwnerScreen extends React.Component {
               uri: `https://lostpetpictures.s3-us-west-2.amazonaws.com/${this.state.pet.report.file_name}`,
             }}
             style={styles.imageView}
+            testID={'PetImage_detox'}
           />
           <View style={styles.detailsView}>
-            <Text style={styles.rateText}>{`Reporter ID: ${this.state.pet.report.fk_user_id}`}</Text>
-            <Text style={styles.rateText}>{`Location: (${this.state.pet.report.location_x}, ${this.state.pet.report.location_y})`}</Text>
-            <Text style={styles.rateText}>{`Report Date: \n${this.state.pet.report.report_date}`}</Text>
+            <Text style={styles.rateText} testID={'Reporter_detox'}>{`Reporter ID: ${this.state.pet.report.fk_user_id}`}</Text>
+            <Text style={styles.rateText} testID={'Location_detox'}>{`Location: (${this.state.pet.report.location_x}, ${this.state.pet.report.location_y})`}</Text>
+            <Text style={styles.rateText} testID={'ReportDate_detox'}>{`Report Date: \n${this.state.pet.report.report_date}`}</Text>
             <Text></Text>
-            <Text style={styles.rateText}>{`Colour matching rate: ${(this.state.pet['colour score'] * 100).toFixed(0) + '%'}`}</Text>
-            <Text style={styles.rateText}>{`Date matching rate: ${(this.state.pet['date score'] * 100).toFixed(0) + '%'}`}</Text>
-            <Text style={styles.rateText}>{`Distance matching rate: ${(this.state.pet['distance score'] * 100).toFixed(0) + '%'}`}</Text>
-            <Text style={styles.rateText}>{`Intersection matching rate: ${(this.state.pet['intersection score']*100).toFixed(0)+'%'}`}</Text>
+            <Text style={styles.rateText} testID={'Color_detox'}>{`Colour matching rate: ${(this.state.pet['colour score'] * 100).toFixed(0) + '%'}`}</Text>
+            <Text style={styles.rateText} testID={'Date_detox'}>{`Date matching rate: ${(this.state.pet['date score'] * 100).toFixed(0) + '%'}`}</Text>
+            <Text style={styles.rateText} testID={'Distance_detox'}>{`Distance matching rate: ${(this.state.pet['distance score'] * 100).toFixed(0) + '%'}`}</Text>
+            <Text style={styles.rateText} testID={'Intersection_detox'}>{`Intersection matching rate: ${(this.state.pet['intersection score']*100).toFixed(0)+'%'}`}</Text>
           </View>
         </View>
 
-        <View style={styles.viewContainer}>
+        <View style={styles.viewContainer} testID={'Tags_detox'}>
           <Text style={styles.aiTags}>{'AI Generated Tags:'}</Text>
           <Text
             style={

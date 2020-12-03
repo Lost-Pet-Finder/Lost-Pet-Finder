@@ -176,7 +176,7 @@ export default class ReportScreen extends React.Component {
         date: this.state.date,
         bucketName: this.state.bucket,
       });
-
+    
     this.postToNodeServer(body, url);
 
     return;
