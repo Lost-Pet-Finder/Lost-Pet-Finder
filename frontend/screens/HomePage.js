@@ -31,46 +31,53 @@ export default class HomePage extends React.Component {
     return unsubscribeFore;
   }
 
-  async getPetInfo(){}
+  async getPetInfo() {}
 
-    render() {
-        return (
-            <View style={styles.containerView} testID={'HomePage_detox'}>
-                <TouchableOpacity 
-                    style={styles.reportView}
-                    testID={'ReportButton_detox'}
-                    onPress={() => {
-                    this.props.navigation.navigate('ReportScreen', {user_id: this.state.user_id, isFinder: this.state.isFinder})}}
-                >
-                    <View >
-                        <Text style={styles.viewTitle} >📸 Report 📸</Text>
-                    </View>
-                </TouchableOpacity>
+  render() {
+    return (
+      <View style={styles.containerView} testID={'HomePage_detox'}>
+        <TouchableOpacity
+          style={styles.reportView}
+          testID={'ReportButton_detox'}
+          onPress={() => {
+            this.props.navigation.navigate('ReportScreen', {
+              user_id: this.state.user_id,
+              isFinder: this.state.isFinder,
+            });
+          }}>
+          <View>
+            <Text style={styles.viewTitle}>📸 Report 📸</Text>
+          </View>
+        </TouchableOpacity>
 
-                <TouchableOpacity 
-                    style={styles.browseView}
-                    testID={'BrowseButton_detox'}
-                    onPress={() => {
-                    this.props.navigation.navigate('BrowseScreen', {user_id: this.state.user_id, isFinder: this.state.isFinder})}}
-                >
-                    <View >
-                        <Text style={styles.viewTitle}>🔎 Browse 🔍</Text>
-                    </View>
-                </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.browseView}
+          testID={'BrowseButton_detox'}
+          onPress={() => {
+            this.props.navigation.navigate('BrowseScreen', {
+              user_id: this.state.user_id,
+              isFinder: this.state.isFinder,
+            });
+          }}>
+          <View>
+            <Text style={styles.viewTitle}>🔎 Browse 🔍</Text>
+          </View>
+        </TouchableOpacity>
 
-                <TouchableOpacity 
-                    style={styles.contactView}
-                    testID={'HomeContactButton_detox'}
-                    onPress={() => {
-                    //direct to the page displaying all the requests
-                    this.props.navigation.navigate('MainContactScreen', {user_id: this.state.user_id});
-                    }}
-                >
-                    <View >
-                        <Text style={styles.viewTitle}>📱 Contact 📱</Text>
-                    </View>
-                </TouchableOpacity>
-            </View>
-        );
-    }
+        <TouchableOpacity
+          style={styles.contactView}
+          testID={'HomeContactButton_detox'}
+          onPress={() => {
+            //direct to the page displaying all the requests
+            this.props.navigation.navigate('MainContactScreen', {
+              user_id: this.state.user_id,
+            });
+          }}>
+          <View>
+            <Text style={styles.viewTitle}>📱 Contact 📱</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+    );
+  }
 }

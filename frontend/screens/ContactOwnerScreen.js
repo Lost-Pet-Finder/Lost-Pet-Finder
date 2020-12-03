@@ -1,9 +1,9 @@
 import React from 'react';
 import 'react-native-gesture-handler';
-import { Button, View, Text, Image, Alert } from 'react-native';
-import { rgbToHex } from '../util/rgbToHex';
+import {Button, View, Text, Image, Alert} from 'react-native';
+import {rgbToHex} from '../util/rgbToHex';
 import styles from './styles';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const pet_text = "Pet's Information";
 
@@ -23,7 +23,9 @@ export default class ContactOwnerScreen extends React.Component {
   async contact() {
     //get the reporter's user id
     var id = this.state.pet.report.fk_user_id;
-    const url = 'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/getUserContactInfo/' + `${id}`;
+    const url =
+      'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/getUserContactInfo/' +
+      `${id}`;
     const request = {
       method: 'GET',
       headers: {
@@ -34,11 +36,12 @@ export default class ContactOwnerScreen extends React.Component {
     //get the reporter's contact information
     let result = await fetch(url, request);
     if (result.status === 400) {
-      this.setState({ contactInfo: 'Sorry, reporter rejects your contact request' });
-    }
-    else {
+      this.setState({
+        contactInfo: 'Sorry, reporter rejects your contact request',
+      });
+    } else {
       Alert.alert('Request sent!');
-      this.setState({ contactInfo: result.json() });
+      this.setState({contactInfo: result.json()});
     }
   }
 
@@ -67,32 +70,51 @@ export default class ContactOwnerScreen extends React.Component {
           />
           <View style={styles.detailsView}>
             <Text style={styles.rateTitleText}>Address: </Text>
-            <Text style={styles.rateText}>{`${this.props.navigation.state.params.address}`}</Text>
+            <Text
+              style={
+                styles.rateText
+              }>{`${this.props.navigation.state.params.address}`}</Text>
             <Text style={styles.rateTitleText}>Reported: </Text>
-            <Text style={styles.rateText}>{`${this.props.navigation.state.params.dateString}`}</Text>
+            <Text
+              style={
+                styles.rateText
+              }>{`${this.props.navigation.state.params.dateString}`}</Text>
             <Text style={styles.rateTitleText}> {'AI Generated Tags:'}</Text>
-            <Text style={styles.rateText}>{`${this.extractTags(this.state.pet.report.tags)}`}</Text>
+            <Text style={styles.rateText}>{`${this.extractTags(
+              this.state.pet.report.tags,
+            )}`}</Text>
           </View>
         </View>
 
         <View style={styles.viewContainer}>
-            <Text style={styles.aiTags}>Scoring Breakdown: </Text>
-            <Text style={styles.infoText}>{`Colour: ${(this.state.pet['colour score'] * 100).toFixed(0) + '%'}`}</Text>
-            <Text style={styles.infoText}>{`Date: ${(this.state.pet['date score'] * 100).toFixed(0) + '%'}`}</Text>
-            <Text style={styles.infoText}>{`Location: ${(this.state.pet['distance score'] * 100).toFixed(0) + '%'}`}</Text>
-            <Text style={styles.infoText}>{`Image Recognition: ${(this.state.pet['intersection score']*100).toFixed(0)+'%'}`}</Text>
-            <Text style={styles.aiTags}>{`Total: ${(this.state.pet['total score']*100/4).toFixed(0)+'%'}`}</Text>
-
+          <Text style={styles.aiTags}>Scoring Breakdown: </Text>
+          <Text style={styles.infoText}>{`Colour: ${
+            (this.state.pet['colour score'] * 100).toFixed(0) + '%'
+          }`}</Text>
+          <Text style={styles.infoText}>{`Date: ${
+            (this.state.pet['date score'] * 100).toFixed(0) + '%'
+          }`}</Text>
+          <Text style={styles.infoText}>{`Location: ${
+            (this.state.pet['distance score'] * 100).toFixed(0) + '%'
+          }`}</Text>
+          <Text style={styles.infoText}>{`Image Recognition: ${
+            (this.state.pet['intersection score'] * 100).toFixed(0) + '%'
+          }`}</Text>
+          <Text style={styles.aiTags}>{`Total: ${
+            ((this.state.pet['total score'] * 100) / 4).toFixed(0) + '%'
+          }`}</Text>
         </View>
 
         {/* <Text>
             {"reporter contact information will be shown"}
         </Text> */}
 
-        <TouchableOpacity style={styles.contactButton} testID={'ContactButton_detox'} onPress={() => this.contact()}>
+        <TouchableOpacity
+          style={styles.contactButton}
+          testID={'ContactButton_detox'}
+          onPress={() => this.contact()}>
           <Text style={styles.textStyle}>Contact reporter</Text>
         </TouchableOpacity>
-
 
         {/* <View style={styles.horizontalFlexContainer}>
           <View style={styles.colorUnit}>
