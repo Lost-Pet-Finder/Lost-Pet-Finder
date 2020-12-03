@@ -8,7 +8,7 @@ import {
   Image,
   TouchableOpacity,
   Button,
-  Alert
+  Alert,
 } from 'react-native';
 
 import styles from './styles';
@@ -25,7 +25,7 @@ class LoginScreen extends React.Component {
     this.state = {
       email: null,
       password: null,
-      errorMsg: null
+      errorMsg: null,
     }
   }
 
@@ -110,8 +110,7 @@ class LoginScreen extends React.Component {
       try {
         let result = await firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password);
         if (result) {
-          console.log("result " + JSON.stringify(result));
-
+          
           let uid = result['user']['uid'];
           
           return uid;
@@ -143,7 +142,7 @@ class LoginScreen extends React.Component {
     const result = await fetch(url, {method: 'GET', headers: {Accept: 'application/json', 'Content-Type': 'application/json'}});
     
       //get the user_id successfully
-    if(result.status == 201 || result.status == 200){
+    if (result.status == 201 || result.status == 200){
       const data = await result.json();
       console.log(data);
       return data;

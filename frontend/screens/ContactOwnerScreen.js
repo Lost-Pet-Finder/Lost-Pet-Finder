@@ -23,7 +23,7 @@ export default class ContactOwnerScreen extends React.Component {
   async contact() {
     //get the reporter's user id
     var id = this.state.pet.report.fk_user_id;
-    const url = "http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/getUserContactInfo/" + `${id}`;
+    const url = 'http://ec2-34-214-245-195.us-west-2.compute.amazonaws.com:6464/getUserContactInfo/' + `${id}`;
     const request = {
       method: 'GET',
       headers: {
@@ -37,7 +37,7 @@ export default class ContactOwnerScreen extends React.Component {
       this.setState({ contactInfo: 'Sorry, reporter rejects your contact request' });
     }
     else {
-      Alert.alert("Request sent!");
+      Alert.alert('Request sent!');
       this.setState({ contactInfo: result.json() });
     }
   }

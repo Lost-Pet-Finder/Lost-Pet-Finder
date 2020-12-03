@@ -25,7 +25,7 @@ const screens = {
     navigationOptions: {
       title: 'SignUp Page',
       headerShown: false,
-    }
+    },
   },
   HomePage: {
     screen: HomePage,

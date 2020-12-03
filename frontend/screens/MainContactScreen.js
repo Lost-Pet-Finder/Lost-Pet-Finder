@@ -8,7 +8,7 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
-  StyleSheet
+  StyleSheet,
 } from 'react-native';
 
 export default class MainContactScreen extends React.Component {
@@ -23,7 +23,7 @@ export default class MainContactScreen extends React.Component {
     render() {
         return (
             <View style={styles.containerView}>
-                <TouchableOpacity 
+                <TouchableOpacity
                     style={styles.reportView}
                     testID={'Pending_detox'}
                     onPress={() => {
@@ -34,7 +34,7 @@ export default class MainContactScreen extends React.Component {
                     </View>
                 </TouchableOpacity>
 
-                <TouchableOpacity 
+                <TouchableOpacity
                     style={styles.browseView}
                     testID={'Sent_detox'}
                     onPress={() => {

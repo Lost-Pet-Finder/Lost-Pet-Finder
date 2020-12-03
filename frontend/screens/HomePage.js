@@ -31,9 +31,7 @@ export default class HomePage extends React.Component {
     return unsubscribeFore;
   }
 
-  async getPetInfo(){
-    
-  }
+  async getPetInfo(){}
 
     render() {
         return (
