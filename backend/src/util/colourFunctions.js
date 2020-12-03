@@ -49,7 +49,7 @@ async function getColour(bucketName, fileName) {
 				count++;
 			});
 		});
-		if (count != 1) {
+		if (count !== 1) {
 			//throw error
 		}
 

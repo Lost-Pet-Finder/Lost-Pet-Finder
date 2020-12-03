@@ -166,7 +166,7 @@ function validBoxes(tagData) {
 		}
 	}
 
-	if (boxes.length == 0) return noBox;
+	if (boxes.length === 0) return noBox;
 
 	return boxes[Math.floor(boxes.length / 2)];
 }

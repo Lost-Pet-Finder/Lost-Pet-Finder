@@ -36,29 +36,35 @@ const query = (string, userid) => {
 		userid[4] === '202099 0303'
 	) {
 		return null;
-	} else if (string === 'CALL get_users_found_reports(?)' && userid != 99999) {
+	} else if (
+		string === 'CALL get_users_found_reports(?)' &&
+		userid != '99999'
+	) {
 		return myReportRowsLost;
-	} else if (string === 'CALL get_users_found_reports(?)' && userid == 99999) {
+	} else if (
+		string === 'CALL get_users_found_reports(?)' &&
+		userid == '99999'
+	) {
 		return [1];
-	} else if (string === 'CALL get_users_lost_reports(?)' && userid != 99999) {
+	} else if (string === 'CALL get_users_lost_reports(?)' && userid != '99999') {
 		return myReportRowsFound;
-	} else if (string === 'CALL get_users_lost_reports(?)' && userid == 99999) {
+	} else if (string === 'CALL get_users_lost_reports(?)' && userid == '99999') {
 		return [1];
-	} else if (string === 'CALL get_user_contact_info(?)' && userid != 99999) {
+	} else if (string === 'CALL get_user_contact_info(?)' && userid != '99999') {
 		const data = [[0], [1]];
 		return data;
 	} else if (
 		string === 'CALL create_new_app_user(?, ?, ?, ?)' &&
-		userid[0] != 99999
+		userid[0] != '99999'
 	) {
 		const data = [[0], [1]];
 		return data;
 	} else if (
 		string === 'CALL create_new_app_user(?, ?, ?, ?)' &&
-		userid[0] == 99999
+		userid[0] == '99999'
 	) {
 		return null;
-	} else if (string === 'CALL get_user_id_number(?)' && userid != 99999) {
+	} else if (string === 'CALL get_user_id_number(?)' && userid != '99999') {
 		const data = [
 			[{ user_id: 321 }],
 			{
@@ -73,23 +79,32 @@ const query = (string, userid) => {
 			},
 		];
 		return data;
-	} else if (string === 'CALL get_my_pending_requests(?)' && userid != 99999) {
+	} else if (
+		string === 'CALL get_my_pending_requests(?)' &&
+		userid != '99999'
+	) {
 		const data = [[0], [1]];
 		return data;
-	} else if (string === 'CALL get_my_sent_requests(?)' && userid != 99999) {
+	} else if (string === 'CALL get_my_sent_requests(?)' && userid != '99999') {
 		const data = [[0], [1]];
 		return data;
-	} else if (string === 'CALL get_user_device_token(?)' && userid != 99999) {
+	} else if (string === 'CALL get_user_device_token(?)' && userid != '99999') {
 		const data = [[0], [1]];
 		return data;
-	} else if (string === 'CALL upload_device_token(?,?)' && userid[0] != 99999) {
+	} else if (
+		string === 'CALL upload_device_token(?,?)' &&
+		userid[0] != '99999'
+	) {
 		const data = [[0], [1]];
 		return data;
-	} else if (string === 'CALL upload_device_token(?,?)' && userid[0] == 99999) {
+	} else if (
+		string === 'CALL upload_device_token(?,?)' &&
+		userid[0] == '99999'
+	) {
 		return null;
 	} else if (string === 'CALL send_contact_request(?,?)') {
 		return 1;
-	} else if (string === 'CALL get_user_contact_info(?)' && userid != 99999) {
+	} else if (string === 'CALL get_user_contact_info(?)' && userid != '99999') {
 		return [
 			[
 				{
@@ -114,7 +129,10 @@ const query = (string, userid) => {
 				changedRows: 0,
 			},
 		];
-	} else if (string === 'CALL get_user_device_token(?)' && userid[0] != 99999) {
+	} else if (
+		string === 'CALL get_user_device_token(?)' &&
+		userid[0] != '99999'
+	) {
 		return [[0], [1]];
 	}
 };
