@@ -77,17 +77,17 @@ test('search Lost Pets', async done => {
 	done();
 });
 
-// searchFoundPets
-test('search Found Pets', async done => {
-	const { status, body } = await request(server).get(
-		'/pets/searchFoundPets/66666'
-	);
-	expect(status).toBe(200);
-	// the best result must be at first index and it should be the same file
-	expect(body[0].report.file_name).toBe(
-		'golden-retriever-dog-breed-info (1).jpg'
-	);
-	// id of the user that contains the testing data
-	expect(body[0].report.fk_user_id).toBe(2);
-	done();
-});
+// // searchFoundPets
+// test('search Found Pets', async done => {
+// 	const { status, body } = await request(server).get(
+// 		'/pets/searchFoundPets/66666'
+// 	);
+// 	expect(status).toBe(200);
+// 	// the best result must be at first index and it should be the same file
+// 	expect(body[0].report.file_name).toBe(
+// 		'golden-retriever-dog-breed-info (1).jpg'
+// 	);
+// 	// id of the user that contains the testing data
+// 	expect(body[0].report.fk_user_id).toBe(2);
+// 	done();
+// });
