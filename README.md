@@ -15,7 +15,7 @@ Upon login, the user has three possible actions: _Create A Report_, _Browse prev
 The effects of each action depend on what the type of the user is (finder or loser).
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+*REPORT*
 If a finder finds a lost pet, they can create a found pet report. If a pet owner has lost their pet, they can create a lost pet report.
 
 The report must contain: where the pet was found/lost, when the pet was found/lost, and an image of the pet.
@@ -39,7 +39,7 @@ Completed report:
 Once a report is completed, it can be used in the _other_ type of user's searches. That is, a found pet report will appear in a pet loser's searches, and a lost pet report will show up in a pet finder's searches.
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+*SEARCH*
 If a user has found a pet and has reported it, they may search previously reported _lost_ pets, to see if there is a potential match. Likewise, someone who has lost a pet and reported it may seacrh previously reported _found_ pets for a match.
 
 The search results are ranked on similarity. 
@@ -75,7 +75,7 @@ The "image recognition score" is calculated by getting the number of _Amazon Rek
 Finally, if the user decides that there is a plausible match, they may attempt to contact the other reporter. 
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+*CONTACT*
 A user may view all their sent and received contact requests.
 
 <img src = "READMEPICTURES/11.PNG" width = "200">
