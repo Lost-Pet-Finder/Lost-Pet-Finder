@@ -51,3 +51,45 @@ The search results are ranked on similarity.
 The above results' _similarity_ scores are compared to that of a light coloured dog.
 
 A user may select _learn more_ to see the report information, the score breakdown of the similarity, and the contact button for the finder/loser.
+
+
+<img src = "READMEPICTURES/8.PNG" width = "200">
+
+The score is based on four factors: colour, location, date, and Amazon Rekognition Generated species information. For the first three factors, for which a _difference_ may be calculated, the difference between the current user's report, and all the previous reports is calculated. The max difference then divides all other differences to normalize the scores. 
+
+When a report is initially made, the image is analyzed to get the colour of the pet. Amazon Rekognition provides a box that tightly bounds the pet in the image. The colour of the background is then subtracted from the colour of the animal's box. 
+
+Note the difference in colour scores for the following two reports, when compared to a light coloured pet:
+
+
+<img src = "READMEPICTURES/8.PNG" width = "200">
+
+<img src = "READMEPICTURES/9.PNG" width = "200">
+
+The location score is simply calculated by getting the dfference in the two physical locations.
+
+The time score is calculated by getting the difference in dates, to the nearest hour.
+
+The "image recognition score" is calculated by getting the number of _Amazon Rekognition_ species information tags that are shared by the two pets under comparison. 
+
+Finally, if the user decides that there is a plausible match, they may attempt to contact the other reporter. 
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+A user may view all their sent and received contact requests.
+
+<img src = "READMEPICTURES/11.PNG" width = "200">
+
+Received:
+
+<img src = "READMEPICTURES/12.PNG" width = "200">
+
+Sent:
+
+<img src = "READMEPICTURES/13.PNG" width = "200">
+
+Once a request has been approved by both users, they can see each other's contact information:
+
+<img src = "READMEPICTURES/14.PNG" width = "200">
+
+<img src = "READMEPICTURES/15.PNG" width = "200">
