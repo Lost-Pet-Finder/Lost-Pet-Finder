@@ -10,7 +10,7 @@ Each user can be signed in as a pet finder, or a pet owner who has lost their pe
 Upon login, the user has three possible actions: _Create A Report_, _Browse previous reports_, and _Contact Reporter_.
 
 
-<img src = "READMEPICTURES/2.jpg" width = "200">
+<img src = "READMEPICTURES/1.jpg" width = "200">
 
 The effects of each action depend on what the type of the user is (finder or loser).
 
