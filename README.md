@@ -5,4 +5,4 @@ This is an android application for finding lost pets. The idea is to help people
 
 Each user can be signed in as a pet finder, or a pet owner who has lost their pet.
 
-<img src = "READMEPICTURES/0.jpg">
+<img src = "READMEPICTURES/0.jpg" width = "200">
