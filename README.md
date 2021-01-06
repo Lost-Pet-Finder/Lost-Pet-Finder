@@ -90,6 +90,6 @@ Sent:
 
 Once a request has been approved by both users, they can see each other's contact information:
 
-<img src = "READMEPICTURES/14.PNG" width = "200">
-
 <img src = "READMEPICTURES/15.PNG" width = "200">
+
+<img src = "READMEPICTURES/16.PNG" width = "200">
